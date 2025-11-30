@@ -108,7 +108,7 @@ const ContactButton: React.FC = () => {
         onClick={() => setIsOpen(true)}
         className={`
           fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50
-          w-14 h-14 sm:w-16 sm:h-16
+          w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20
           bg-gradient-to-r from-purple-700 via-purple-600 to-violet-600
           hover:from-purple-800 hover:via-purple-700 hover:to-violet-700
           text-white rounded-full
@@ -121,7 +121,7 @@ const ContactButton: React.FC = () => {
         `}
         aria-label="Contact Us"
       >
-        <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7" />
+        <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9" />
       </button>
 
       {/* Modal Overlay */}
