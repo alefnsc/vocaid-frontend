@@ -51,39 +51,39 @@ export default function Home() {
       <DefaultLayout className="flex flex-col overflow-hidden items-center bg-white">
         {/* Notification banner for incompatibility or other messages */}
         {notification && (
-          <div className={`w-full max-w-4xl mx-auto mt-4 px-4 sm:px-6 lg:px-8`}>
+          <div className={`w-full max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto mt-4 md:mt-6 lg:mt-8 px-4 sm:px-6 lg:px-8 xl:px-12`}>
             <div className={`
-              p-4 rounded-lg border shadow-sm
+              p-4 md:p-5 lg:p-6 rounded-lg lg:rounded-xl border shadow-sm
               ${notification.type === 'incompatibility' 
                 ? 'bg-purple-50 border-purple-200 text-purple-800' 
                 : notification.type === 'early_interruption'
                 ? 'bg-amber-50 border-amber-200 text-amber-800'
                 : 'bg-blue-50 border-blue-200 text-blue-800'}
             `}>
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 md:gap-4">
                 <div className="flex-shrink-0">
                   {notification.type === 'incompatibility' ? (
-                    <svg className="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 md:w-6 md:h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   ) : notification.type === 'early_interruption' ? (
-                    <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 md:w-6 md:h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   ) : (
-                    <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 md:w-6 md:h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   )}
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium">{notification.message}</p>
+                  <p className="text-sm md:text-base lg:text-lg font-medium">{notification.message}</p>
                 </div>
                 <button 
                   onClick={() => setNotification(null)}
-                  className="flex-shrink-0 text-gray-400 hover:text-gray-600"
+                  className="flex-shrink-0 text-gray-400 hover:text-gray-600 p-1"
                 >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -92,36 +92,53 @@ export default function Home() {
           </div>
         )}
 
-        <div className="lg:mt-10 relative flex flex-col md:flex-row lg:flex-row xl:flex-row items-center justify-center gap-6 md:gap-8 lg:gap-20 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Main hero section with improved spacing and sizing */}
+        <div className="
+          mt-8 md:mt-12 lg:mt-16 xl:mt-20 2xl:mt-24
+          relative flex flex-col md:flex-row items-center justify-center
+          gap-8 md:gap-10 lg:gap-16 xl:gap-24 2xl:gap-32
+          w-full max-w-5xl xl:max-w-6xl 2xl:max-w-7xl
+          px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16
+          pb-8 md:pb-12 lg:pb-16
+        ">
           {/* Show image above text on mobile, to the right on desktop */}
           {isMobile && (
-            <div className="flex flex-col w-full items-center mb-6">
+            <div className="flex flex-col w-full items-center mb-4">
               <img
                 src='/Main.png'
-                alt="Interview"
-                className="rounded-3xl w-[60%] max-w-[300px] shadow-inner-2xl"
+                alt="Voxly AI Interview"
+                className="rounded-3xl w-[70%] max-w-[320px] shadow-2xl shadow-purple-200/50"
               />
             </div>
           )}
 
-          <Suspense fallback={<div className="h-40 flex items-center justify-center text-gray-600">Loading content...</div>}>
+          <Suspense fallback={<div className="h-40 lg:h-60 flex items-center justify-center text-gray-600">Loading content...</div>}>
             <BodyCopy isMobile={Boolean(isMobile)} />
           </Suspense>
 
           {!isMobile && (
-            <div className="flex flex-col h-full overflow-hidden w-full md:w-[45%] items-end">
+            <div className="flex flex-col h-full overflow-hidden w-full md:w-[50%] lg:w-[45%] items-center justify-center">
               <img
                 src='/Main.png'
-                alt="Interview"
-                className="flex rounded-3xl w-[80%] shadow-inner-2xl"
+                alt="Voxly AI Interview"
+                className="
+                  rounded-3xl shadow-2xl shadow-purple-200/50
+                  w-[85%] md:w-[90%] lg:w-[95%] xl:w-full
+                  max-w-[400px] lg:max-w-[450px] xl:max-w-[500px] 2xl:max-w-[550px]
+                  transition-transform duration-300 hover:scale-105
+                "
               />
             </div>
           )}
         </div>
       </DefaultLayout>
-      <Separator />
-      <div id="form" className="relative flex flex-col w-full items-center justify-center m-auto py-20 bg-gray-50">
-        <Suspense fallback={<div className="h-40 flex items-center justify-center text-gray-600">Loading form...</div>}>
+      <Separator className="my-0" />
+      <div id="form" className="
+        relative flex flex-col w-full items-center justify-center m-auto
+        py-12 md:py-16 lg:py-20 xl:py-24 2xl:py-28
+        bg-gray-50
+      ">
+        <Suspense fallback={<div className="h-40 lg:h-60 flex items-center justify-center text-gray-600">Loading form...</div>}>
           <InputForm isMobile={Boolean(isMobile)} credits={userCredits} />
         </Suspense>
       </div>
