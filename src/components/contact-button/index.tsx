@@ -128,7 +128,7 @@ const ContactButton: React.FC = () => {
         onClick={() => setIsOpen(true)}
         className={`
           fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50
-          w-12 h-12 sm:w-14 sm:h-14
+          w-14 h-14 sm:w-16 sm:h-16
           bg-gradient-to-r from-purple-700 via-purple-600 to-violet-600
           hover:from-purple-800 hover:via-purple-700 hover:to-violet-700
           text-white rounded-full
@@ -141,18 +141,18 @@ const ContactButton: React.FC = () => {
         `}
         aria-label="Contact Us"
       >
-        <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
+        <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7" />
       </button>
 
       {/* Modal Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-start sm:items-center justify-center p-4 pt-8 sm:pt-4 overflow-y-auto"
           onClick={handleClose}
         >
           {/* Modal Content */}
           <div
-            className="bg-white rounded-t-2xl sm:rounded-2xl w-full max-w-md shadow-2xl transform transition-all duration-300 animate-slide-up"
+            className="bg-white rounded-2xl w-full max-w-md shadow-2xl transform transition-all duration-300 animate-slide-up my-auto sm:my-0"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}

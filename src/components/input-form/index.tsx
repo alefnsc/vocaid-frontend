@@ -54,15 +54,6 @@ const InputForm: React.FC<InputFormProps> = ({ isMobile, credits }) => {
     const firstName = user?.firstName || '';
     const lastName = user?.lastName || '';
 
-    // Debug logging
-    console.log('🔍 InputForm Debug:', {
-        user: user?.id,
-        firstName,
-        lastName,
-        isLoading,
-        userCredits
-    });
-
     // Use the credits prop if provided, otherwise use userCredits from the hook
     const availableCredits = credits !== undefined ? credits : userCredits;
 

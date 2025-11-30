@@ -12,26 +12,19 @@ import ErrorBoundary from './components/error-boundary';
 
 const CLERK_PUBLISHABLE_KEY = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY || '';
 
-// Validate required environment variables in development
-if (process.env.NODE_ENV === 'development') {
-  if (!CLERK_PUBLISHABLE_KEY) {
-    console.error('❌ Missing REACT_APP_CLERK_PUBLISHABLE_KEY in .env file');
-    console.error('📝 Create a .env file in the project root with:');
-    console.error('   REACT_APP_CLERK_PUBLISHABLE_KEY=your_key_here');
-    console.error('🔗 Get your key at: https://dashboard.clerk.com/last-active?path=api-keys');
-  }
-  
-  console.log('🔧 Environment Configuration:');
-  console.log('   - Clerk Key:', CLERK_PUBLISHABLE_KEY ? '✅ Configured' : '❌ Missing');
-  console.log('   - MercadoPago Key:', process.env.REACT_APP_MERCADOPAGO_PUBLIC_KEY ? '✅ Configured' : '⚠️ Not configured');
-  console.log('   - Architecture: Serverless (No backend required)');
+// Validate required environment variables in development (only log errors)
+if (process.env.NODE_ENV === 'development' && !CLERK_PUBLISHABLE_KEY) {
+  console.error('❌ Missing REACT_APP_CLERK_PUBLISHABLE_KEY in .env file');
+  console.error('📝 Create a .env file in the project root with:');
+  console.error('   REACT_APP_CLERK_PUBLISHABLE_KEY=your_key_here');
+  console.error('🔗 Get your key at: https://dashboard.clerk.com/last-active?path=api-keys');
 }
 
 const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} afterSignOutUrl="/">
-        <Router>
+        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />

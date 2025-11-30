@@ -12,21 +12,16 @@ export const useAuthCheck = () => {
   useEffect(() => {
     const loadUserCredits = async () => {
       if (!isLoaded) {
-        console.log('🔄 Clerk not loaded yet');
         setIsLoading(false);
         return;
       }
 
       // If user is not signed in, set credits to 0
       if (!isSignedIn || !user) {
-        console.log('🚫 User not signed in');
         setIsLoading(false);
         setUserCredits(0);
         return;
       }
-
-      console.log('👤 User signed in:', user.id);
-      console.log('🔍 Loading credits from publicMetadata...');
 
       try {
         // Get credits from Clerk publicMetadata with validation
@@ -43,10 +38,9 @@ export const useAuthCheck = () => {
           }
         }
         
-        console.log('💰 User credits from metadata:', credits);
         setUserCredits(credits);
       } catch (error) {
-        console.error('❌ Error loading user credits:', error);
+        console.error('Error loading user credits:', error);
         setUserCredits(0);
       } finally {
         setIsLoading(false);
@@ -98,13 +92,10 @@ export const useAuthCheck = () => {
       if (action === 'use') {
         // Optimistic update - deduct credit locally
         const newCredits = userCredits - 1;
-        console.log(`💰 Credits updated: ${userCredits} → ${newCredits}`);
         setUserCredits(newCredits);
         
         // Note: In production, this should trigger a serverless function
         // that uses Clerk Admin API to update user metadata
-        // For now, we're doing optimistic client-side update
-        console.warn('⚠️ Credit deduction should be persisted via serverless function');
         
         return newCredits;
       } else {
