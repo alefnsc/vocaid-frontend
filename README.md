@@ -1,265 +1,397 @@
-# Voxly AI Mock Interview - Setup Guide
+# Voxly AI - Frontend
 
-## Architecture Overview
+<p align="center">
+  <img src="public/Main.png" alt="Voxly AI Logo" width="200"/>
+</p>
 
-This application uses **Clerk for authentication** with a **serverless-first approach**. User roles and credits are managed entirely through Clerk's metadata system, **eliminating the need for backend API calls** for authentication logic.
+<p align="center">
+  <strong>AI-Powered Mock Interview Platform</strong><br>
+  Practice interviews with an intelligent AI interviewer and receive instant, actionable feedback.
+</p>
 
-### Key Features
-- ✅ **Direct Clerk Integration** - Roles read from `publicMetadata`
-- ✅ **No Auth Backend Required** - Client-side role checking
-- ✅ **Automatic Credit Management** - Stored in `unsafeMetadata`
-- ✅ **Optional Backend** - Only needed for interview/feedback services
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#quick-start">Quick Start</a> •
+  <a href="#architecture">Architecture</a> •
+  <a href="#deployment">Deployment</a>
+</p>
 
-## Prerequisites
+---
 
-- Node.js 18+ 
+## Features
+
+### 🎯 AI Mock Interviews
+- **Voice-based interviews** powered by Retell AI with real-time conversation
+- **Field-specific interviews** for Engineering, Marketing, AI/ML, Agriculture, and Physics
+- **15-minute timed sessions** with automatic warnings and graceful endings
+- **Resume congruency detection** - AI verifies your resume matches the job description
+
+### 🔐 Authentication (Clerk)
+- Seamless sign-up/sign-in with multiple providers (Google, Email, etc.)
+- User profile management with first/last name
+- Role-based access via `publicMetadata`
+- Credits stored in `publicMetadata` (backend-managed)
+
+### 💳 Payment System (MercadoPago)
+- **Three credit packages**: Starter (5), Intermediate (10), Professional (15)
+- Prices displayed in USD, processed in BRL
+- Secure popup checkout flow
+- Automatic credit addition via webhooks
+- Payment status polling for real-time updates
+
+### 📊 Credit System
+- Credits required to start interviews
+- Automatic deduction when interview begins
+- Credit restoration for technical issues (mic failures)
+- Real-time credit display in UI
+
+### 📝 Contact Us (Formspree)
+- Floating contact button on Home and Feedback pages
+- Protected - only visible to signed-in users
+- Google reCAPTCHA v3 spam protection
+- Message validation (50-250 characters)
+- Thank you page with auto-redirect
+
+### 📈 Feedback & Reports
+- **AI-generated feedback** analyzing interview performance
+- **Star rating** visualization (1-5 scale)
+- **Structured feedback**: Strengths, Areas for Improvement, Recommendations
+- **PDF download** of complete feedback report
+- Markdown rendering for rich text display
+
+### 🎨 Audio Visualizer
+- Real-time 3D audio visualization using Three.js
+- Separate visualizations for agent and user audio
+- Responsive design with animated bars
+
+---
+
+## Quick Start
+
+### Prerequisites
+
+- Node.js 18+
 - npm or yarn
-- Clerk account (for authentication)
+- Clerk account
+- Backend server running (for interviews)
 
-## Environment Setup
-
-### Frontend (.env)
-
-Create a `.env` file in `ai-mock-interview-front/`:
-
-```env
-BASE_URL_DEVELOPMENT=http://localhost:3000/
-REACT_APP_BACKEND_URL=http://localhost:3001
-
-# Clerk Configuration
-REACT_APP_CLERK_PUBLISHABLE_KEY=pk_test_YOUR_KEY_HERE
-
-# Retell API (for voice interviews)
-REACT_APP_RETELL_API_KEY=YOUR_RETELL_API_KEY
-```
-
-### Backend (.env)
-
-Create a `.env` file in `ai-mock-interview-back/`:
-
-```env
-# Clerk Configuration
-CLERK_PUBLISHABLE_KEY=pk_test_YOUR_KEY_HERE
-CLERK_SECRET_KEY=sk_test_YOUR_SECRET_KEY_HERE
-
-# Server Configuration
-PORT=3001
-NODE_ENV=development
-
-# API Security
-API_KEY=voxly_ai_security
-```
-
-## Getting Your Clerk Keys
-
-1. Go to [Clerk Dashboard](https://dashboard.clerk.com/)
-2. Create a new application or select existing one
-3. Navigate to "API Keys"
-4. Copy the **Publishable Key** (starts with `pk_test_` for test or `pk_live_` for production)
-5. Copy the **Secret Key** (starts with `sk_test_` for test or `sk_live_` for production)
-
-## Clerk User Metadata Configuration
-
-### Setting User Roles
-
-Users need the `ProgramadorSemPatria` role to access the application. The frontend reads this **directly from Clerk's publicMetadata** (no backend API needed).
-
-#### Method 1: Clerk Dashboard (Recommended)
-1. Go to [Clerk Dashboard](https://dashboard.clerk.com)
-2. Navigate to **Users** → Select user
-3. Scroll to **Public Metadata** section
-4. Add:
-```json
-{
-  "role": ["ProgramadorSemPatria"]
-}
-```
-
-#### Method 2: Programmatically (if using backend)
-```javascript
-await clerkClient.users.updateUser(userId, {
-  publicMetadata: {
-    role: ["ProgramadorSemPatria"]
-  }
-});
-```
-
-### Credit System
-
-Credits are automatically managed in `unsafeMetadata`:
-- **Initial Credits**: 2 per month
-- **Auto-Reset**: First day of each month
-- **Client-Side Updates**: No backend API needed
-- **Storage**: `{ credits: 2, year: 2025, month: 11 }`
-
-The application automatically:
-1. Checks if user has PSP role (from `publicMetadata`)
-2. Assigns credits if role is present
-3. Resets credits monthly
-4. Updates credits after each interview
-
-## Installation
-
-### Install Frontend Dependencies
+### Installation
 
 ```bash
-cd ai-mock-interview-front
+# Clone repository
+git clone https://github.com/alefnsc/voxly-frontend.git
+cd voxly-frontend
+
+# Install dependencies
 npm install
-```
 
-### Install Backend Dependencies
+# Configure environment
+cp .env.example .env
+# Edit .env with your keys (see below)
 
-```bash
-cd ai-mock-interview-back
-npm install
-```
-
-## Running the Application
-
-### Start Backend Server
-
-```bash
-cd ai-mock-interview-back
-npm run dev
-```
-
-The server will run on `http://localhost:3001`
-
-### Start Frontend Application
-
-```bash
-cd ai-mock-interview-front
+# Start development server
 npm start
 ```
 
-The app will run on `http://localhost:3000`
+App runs at http://localhost:3000
 
-## Database (Optional)
+### Environment Variables
 
-A PostgreSQL database is available via Docker Compose but **not currently used**. The application stores all user data in Clerk's metadata.
+Create a `.env` file in the project root:
 
-To start PostgreSQL (for future features):
+```env
+# Clerk Authentication (Required)
+# Get keys at: https://dashboard.clerk.com/
+REACT_APP_CLERK_PUBLISHABLE_KEY=pk_test_your_key_here
 
-```bash
-docker-compose up -d
+# Google reCAPTCHA v3 (Required for Contact Form)
+# Get keys at: https://www.google.com/recaptcha/admin
+REACT_APP_RECAPTCHA_SITE_KEY=your_site_key_here
+
+# MercadoPago (Required for Payments)
+# Get keys at: https://www.mercadopago.com/developers/panel/credentials
+REACT_APP_MERCADOPAGO_PUBLIC_KEY=APP_USR-your_key_here
+
+# Backend URL (Required for Interviews)
+REACT_APP_BACKEND_URL=http://localhost:3001
+REACT_APP_API_URL=http://localhost:3001
 ```
 
-Access:
-- **PostgreSQL**: localhost:5432
-- **PgAdmin**: http://localhost:5050
-  - Email: admin@voxly.com
-  - Password: admin
+---
 
-Database Credentials:
-- User: voxly_user
-- Password: voxly_password
-- Database: voxly_db
+## Architecture
 
-## API Endpoints
+### Tech Stack
 
-### Backend API (Optional)
+| Layer | Technology |
+|-------|------------|
+| Framework | React 18 with TypeScript |
+| Routing | React Router v6 |
+| Styling | Tailwind CSS |
+| Authentication | Clerk |
+| Payments | MercadoPago SDK |
+| Contact Form | Formspree + reCAPTCHA v3 |
+| Voice Calls | Retell Web Client |
+| 3D Graphics | Three.js + React Three Fiber |
+| PDF Generation | jsPDF |
+| Testing | Jest + Cypress |
 
-The backend is **optional** and only needed for interview/feedback services:
+### Project Structure
 
-**Still Used:**
-- `POST /register-call` - Register new interview call with Retell
-- `GET /get-call/:call_id` - Get interview call details
-- `GET /get-feedback-for-interview/:call_id` - Get AI feedback
+```
+src/
+├── components/
+│   ├── audio-visualizer/     # 3D audio visualization
+│   ├── contact-button/       # Floating contact form
+│   ├── credit-packages/      # Payment packages UI
+│   ├── credits-modal/        # Credits purchase modal
+│   ├── input-form/           # Interview setup form
+│   ├── interview-content/    # Interview UI components
+│   ├── mic-permission-modal/ # Microphone access modal
+│   ├── quit-interview-modal/ # Interview exit confirmation
+│   └── ui/                   # Reusable UI components
+├── hooks/
+│   ├── use-auth-check/       # Authentication & credits
+│   ├── use-call-manager/     # Retell call management
+│   ├── use-credits-restoration/ # Credit recovery
+│   ├── use-interview-timer/  # 15-min timer
+│   └── use-token-validation/ # Session validation
+├── pages/
+│   ├── Home/                 # Landing page + form
+│   ├── Interview/            # Live interview page
+│   ├── Feedback/             # AI feedback results
+│   ├── PaymentResult/        # Payment status
+│   └── ContactThankYou/      # Contact confirmation
+├── services/
+│   ├── APIService.ts         # Backend API calls
+│   └── MercadoPagoService.ts # Payment processing
+└── App.tsx                   # Main app + routing
+```
 
-**No Longer Needed (Replaced by Clerk):**
-- ~~`GET /get-user-info/:userId`~~ - **Now using Clerk's publicMetadata**
-- ~~`POST /update-credits`~~ - **Now using Clerk's unsafeMetadata**
+### Application Flow
 
-### Authentication Flow
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         HOME PAGE                                │
+│  ┌─────────────────┐    ┌─────────────────────────────────┐    │
+│  │   Body Copy     │    │        Input Form               │    │
+│  │   - Features    │    │  - Company, Job Title           │    │
+│  │   - CTA Button  │    │  - Job Description              │    │
+│  └─────────────────┘    │  - Resume Upload (PDF)          │    │
+│                         │  - Credit Check → Payment Modal  │    │
+│                         └─────────────────────────────────┘    │
+└───────────────────────────────┬─────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      INTERVIEW PAGE                              │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │  Mic Permission → Retell Connection → AI Conversation   │   │
+│  │  - Audio Visualizer (3D bars)                           │   │
+│  │  - Timer (15 min max)                                   │   │
+│  │  - Quit button                                          │   │
+│  └─────────────────────────────────────────────────────────┘   │
+└───────────────────────────────┬─────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      FEEDBACK PAGE                               │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │  - Star Rating (1-5)                                    │   │
+│  │  - Summary                                              │   │
+│  │  - Strengths / Areas for Improvement / Recommendations  │   │
+│  │  - PDF Download                                         │   │
+│  │  - Retry Interview button                               │   │
+│  └─────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-1. User signs in via Clerk
-2. **Frontend reads role directly from `user.publicMetadata.role`** (no backend call)
-3. If user has `ProgramadorSemPatria` role, grant access
-4. Credits managed client-side in Clerk's `unsafeMetadata`
-5. Credits automatically reset monthly
+---
+
+## Core Features Deep Dive
+
+### Interview System
+
+1. **Form Submission**: User fills company, job title, job description, uploads resume
+2. **Credit Check**: System verifies user has available credits
+3. **Call Registration**: Backend registers call with Retell, returns access token
+4. **Voice Connection**: Retell Web Client connects via WebSocket
+5. **AI Conversation**: Custom LLM (backend) processes responses with field-specific prompts
+6. **Auto-termination**: Interview ends at 15 minutes or on congruency mismatch
+7. **Feedback Generation**: AI analyzes transcript and generates structured feedback
+
+### Payment Flow
+
+```
+User selects package → Backend creates MercadoPago preference
+       ↓
+Popup opens with MercadoPago checkout
+       ↓
+User completes payment → Webhook notifies backend
+       ↓
+Backend adds credits via Clerk Admin API
+       ↓
+Frontend polls for credit update → UI refreshes
+```
+
+### Credit Packages
+
+| Package | Credits | Price (USD) | Price (BRL) | Per Interview |
+|---------|---------|-------------|-------------|---------------|
+| Starter | 5 | $3.99 | R$ 23.94 | $0.80 |
+| Intermediate | 10 | $5.99 | R$ 35.94 | $0.60 |
+| Professional | 15 | $7.99 | R$ 47.94 | $0.53 |
+
+### Contact Form (Formspree)
+
+- **Form ID**: Configured in `contact-button/index.tsx`
+- **reCAPTCHA**: v3 with invisible verification
+- **Validation**: 50-250 character message, email required
+- **Visibility**: Only on `/` and `/feedback` pages, only for signed-in users
+
+---
 
 ## Testing
 
-### Frontend Tests
+### Unit Tests
 
 ```bash
-cd ai-mock-interview-front
 npm test
 ```
 
 ### E2E Tests (Cypress)
 
 ```bash
-cd ai-mock-interview-front
+# Interactive mode
 npm run cypress:open
+
+# Headless mode
+npm run cypress:run
 ```
 
-## Troubleshooting
+### Test Coverage
 
-### Clerk Authentication Not Working
+```bash
+npm test -- --coverage
+```
 
-1. Verify your Clerk keys are correct in `.env`
-2. Make sure you're using the correct key type (test vs live)
-3. Check that CORS is enabled for `http://localhost:3000`
-
-### Role Check Failing
-
-1. Ensure user has `ProgramadorSemPatria` in **Public Metadata** (not unsafe metadata)
-2. Check browser console for role check logs:
-   ```
-   🔍 Checking roles from publicMetadata: ["ProgramadorSemPatria"]
-   ✅ User has PSP role
-   ```
-3. Verify in Clerk Dashboard: Users → Select User → Public Metadata
-4. Role must be in `publicMetadata.role` array
-3. Verify backend URL is correct in frontend `.env`
-
-### Credits Not Updating
-
-1. Credits are stored in Clerk's `unsafeMetadata`
-2. They auto-reset at the start of each month
-3. Check browser console for credit update errors
-
-## Architecture Decisions
-
-### Why No Database?
-
-- **Clerk handles all user data** via metadata
-- **Simpler architecture** - no database migrations or ORM
-- **Scalability** - Clerk's infrastructure handles scale
-- **Security** - Clerk manages authentication & data security
-
-### When to Add a Database?
-
-Consider PostgreSQL when you need:
-- Complex data relationships
-- Interview history/analytics
-- Large amounts of user-generated content
-- Advanced querying capabilities
+---
 
 ## Deployment
 
-### Frontend (Vercel/Netlify)
+### Vercel (Recommended)
 
-1. Connect your GitHub repo
-2. Set environment variables
+1. Connect GitHub repository to Vercel
+2. Configure environment variables in Vercel dashboard:
+   - `REACT_APP_CLERK_PUBLISHABLE_KEY`
+   - `REACT_APP_RECAPTCHA_SITE_KEY`
+   - `REACT_APP_MERCADOPAGO_PUBLIC_KEY`
+   - `REACT_APP_BACKEND_URL`
+   - `REACT_APP_API_URL`
 3. Deploy
 
-### Backend (Heroku/Railway/Render)
+```bash
+# Manual deploy
+vercel --prod
+```
 
-1. Push to GitHub
-2. Connect to deployment platform
-3. Set environment variables
-4. Deploy
+### Environment-Specific Config
+
+| Environment | Clerk Key | Backend URL |
+|-------------|-----------|-------------|
+| Development | `pk_test_*` | `http://localhost:3001` |
+| Production | `pk_live_*` | `https://your-backend.com` |
+
+---
+
+## Configuration
+
+### Clerk Setup
+
+1. Create application at [Clerk Dashboard](https://dashboard.clerk.com/)
+2. Enable desired sign-in methods (Google, Email, etc.)
+3. Configure redirect URLs:
+   - Development: `http://localhost:3000`
+   - Production: `https://your-domain.com`
+
+### reCAPTCHA Setup
+
+1. Go to [Google reCAPTCHA Admin](https://www.google.com/recaptcha/admin)
+2. Create a new site with reCAPTCHA v3
+3. Add domains:
+   - `localhost` (for development)
+   - Your production domain
+4. Copy Site Key to `REACT_APP_RECAPTCHA_SITE_KEY`
+5. Add Secret Key to Formspree dashboard
+
+### Formspree Setup
+
+1. Create form at [Formspree](https://formspree.io/)
+2. Enable reCAPTCHA in form settings
+3. Add your reCAPTCHA Secret Key
+4. Set domain restrictions to your production URL
+5. Update form ID in `contact-button/index.tsx`
+
+---
+
+## Troubleshooting
+
+### Interview Not Starting
+
+1. Check backend is running and accessible
+2. Verify `REACT_APP_BACKEND_URL` is correct
+3. Ensure user has available credits
+4. Check browser microphone permissions
+
+### Payment Not Completing
+
+1. Verify MercadoPago credentials
+2. Check backend webhook endpoint is accessible
+3. Look for errors in browser console
+4. Verify ngrok tunnel (if using for webhooks)
+
+### Contact Form Errors
+
+- **403 Forbidden**: Domain not allowed in Formspree settings
+- **400 Bad Request**: Missing required fields or reCAPTCHA failure
+- Check browser console for detailed error messages
+
+### Credits Not Updating
+
+1. Ensure backend webhook received payment notification
+2. Check Clerk Admin API access
+3. Try refreshing the page or signing out/in
+
+---
 
 ## Security Notes
 
 - Never commit `.env` files
-- Use different Clerk keys for dev/prod
-- API key should be regenerated for production
-- Enable rate limiting in production
-- Use HTTPS in production
+- Use test keys for development, live keys for production
+- reCAPTCHA protects contact form from spam
+- All payments processed securely via MercadoPago
+- User data stored securely in Clerk
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+---
+
+## License
+
+MIT
+
+---
 
 ## Support
 
-For issues or questions, contact the development team or check the documentation.
+For issues or questions:
+- Open a GitHub issue
+- Use the in-app Contact Us form
