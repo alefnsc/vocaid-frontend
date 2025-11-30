@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
+import { useForm, ValidationError } from '@formspree/react';
 import { MessageCircle, X, Send, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/mqaregzo';
+const FORMSPREE_FORM_ID = 'mqaregzo';
 
 // Validation constants matching Formspree settings
 const MESSAGE_MIN_LENGTH = 50;
@@ -12,10 +13,9 @@ const MESSAGE_MAX_LENGTH = 250;
 const ContactButton: React.FC = () => {
   const location = useLocation();
   const { user, isSignedIn } = useUser();
+  const [state, handleFormspreeSubmit] = useForm(FORMSPREE_FORM_ID);
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [touched, setTouched] = useState(false);
 
   // Only show on home (/) and feedback (/feedback) pages
@@ -48,61 +48,35 @@ const ContactButton: React.FC = () => {
     };
   }, [messageLength, userEmail]);
 
+  // Redirect to thank you page on successful submission
+  useEffect(() => {
+    if (state.succeeded) {
+      const timer = setTimeout(() => {
+        window.location.href = '/contact/thank-you';
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [state.succeeded]);
+
   // Don't render if not on allowed pages or user not signed in
   // This check must come AFTER all hooks are called
   if (!shouldShow || !isSignedIn) {
     return null;
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setTouched(true);
     
     if (!validation.isValid) return;
 
-    setIsSubmitting(true);
-    setSubmitStatus('idle');
-
-    try {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify({
-          name: userName,
-          email: userEmail,
-          message: message.trim(),
-          _subject: `Voxly Feedback from ${userName}`,
-        }),
-      });
-
-      if (response.ok) {
-        setSubmitStatus('success');
-        setMessage('');
-        setTouched(false);
-        // Redirect to thank you page after brief delay
-        setTimeout(() => {
-          window.location.href = '/contact/thank-you';
-        }, 500);
-      } else {
-        const errorData = await response.json().catch(() => ({}));
-        console.error('Formspree error:', errorData);
-        setSubmitStatus('error');
-      }
-    } catch (error) {
-      console.error('Error submitting feedback:', error);
-      setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Submit using Formspree's handler (handles CAPTCHA automatically)
+    await handleFormspreeSubmit(e);
   };
 
   const handleClose = () => {
     setIsOpen(false);
     setMessage('');
-    setSubmitStatus('idle');
     setTouched(false);
   };
 
@@ -176,16 +150,20 @@ const ContactButton: React.FC = () => {
               </button>
             </div>
 
-            {/* Form */}
+            {/* Form - using Formspree's form handling */}
             <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4">
-              {/* User Info (Read-only) */}
+              {/* Hidden fields for Formspree */}
+              <input type="hidden" name="_subject" value={`Voxly Feedback from ${userName}`} />
+              
+              {/* User Info (Read-only but also sent to Formspree) */}
               <div className="space-y-3">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                   <input
                     type="text"
+                    name="name"
                     value={userName}
-                    disabled
+                    readOnly
                     className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-600 cursor-not-allowed"
                   />
                 </div>
@@ -195,12 +173,15 @@ const ContactButton: React.FC = () => {
                   </label>
                   <input
                     type="email"
+                    name="email"
                     value={userEmail}
-                    disabled
+                    readOnly
+                    required
                     className={`w-full px-4 py-2.5 bg-gray-50 border rounded-xl text-gray-600 cursor-not-allowed ${
                       !userEmail && touched ? 'border-red-300' : 'border-gray-200'
                     }`}
                   />
+                  <ValidationError prefix="Email" field="email" errors={state.errors} />
                   {!userEmail && touched && (
                     <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
                       <AlertCircle className="w-3 h-3" />
@@ -216,6 +197,7 @@ const ContactButton: React.FC = () => {
                   Message <span className="text-red-500">*</span>
                 </label>
                 <textarea
+                  name="message"
                   value={message}
                   onChange={handleMessageChange}
                   onBlur={() => setTouched(true)}
@@ -234,6 +216,7 @@ const ContactButton: React.FC = () => {
                       : 'border-gray-200'
                   }`}
                 />
+                <ValidationError prefix="Message" field="message" errors={state.errors} />
                 {/* Character count and validation feedback */}
                 <div className="mt-1 flex items-center justify-between">
                   <div className="flex-1">
@@ -263,7 +246,7 @@ const ContactButton: React.FC = () => {
               </div>
 
               {/* Error Message */}
-              {submitStatus === 'error' && (
+              {state.errors && Object.keys(state.errors).length > 0 && !state.succeeded && (
                 <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-center">
                   <p className="text-red-600 text-sm">Failed to send message. Please try again.</p>
                 </div>
@@ -272,7 +255,7 @@ const ContactButton: React.FC = () => {
               {/* Submit Button */}
               <button
                 type="submit"
-                disabled={isSubmitting || !validation.isValid}
+                disabled={state.submitting || !validation.isValid}
                 className={`
                   w-full py-3 px-6 rounded-xl font-bold text-base
                   flex items-center justify-center gap-2
@@ -281,18 +264,18 @@ const ContactButton: React.FC = () => {
                   transform hover:scale-[1.02] active:scale-[0.98]
                   disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none
                   touch-manipulation
-                  ${submitStatus === 'success'
+                  ${state.succeeded
                     ? 'bg-green-500 text-white'
                     : 'bg-gradient-to-r from-purple-700 via-purple-600 to-violet-600 text-white hover:from-purple-800 hover:via-purple-700 hover:to-violet-700 shadow-purple-500/30'
                   }
                 `}
               >
-                {isSubmitting ? (
+                {state.submitting ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
                     <span>Sending...</span>
                   </>
-                ) : submitStatus === 'success' ? (
+                ) : state.succeeded ? (
                   <>
                     <CheckCircle className="w-5 h-5" />
                     <span>Sent!</span>
