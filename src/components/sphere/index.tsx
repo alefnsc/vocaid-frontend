@@ -17,7 +17,6 @@ function Line(props: LineProps) {
     const [smoothedIntensity, setSmoothedIntensity] = useState(0);
     const [height, setHeight] = useState(0.2);
     const rotationRef = useRef(0);
-    const initialPosition = useRef<[number, number, number]>([...props.position]);
 
     useEffect(() => {
         if (props.isAgentTalking && props.agentAudioData && props.agentAudioData.length > 0) {

@@ -249,6 +249,7 @@ export const useCallManager = (body, navigate) => {
                 handleCallEnded();
             }
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [handleCallEnded]);
 
     // Check if the agent mentioned incompatibility (credit restoration)

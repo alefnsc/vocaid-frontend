@@ -42,6 +42,7 @@ export const useTokenValidation = (navigate: any) => {
             sessionStorage.removeItem('interviewValidationToken');
             sessionStorage.removeItem('tokenExpiration');
         };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigate, isSignedIn, isLoaded]);
 
     const getTokenData = () => {

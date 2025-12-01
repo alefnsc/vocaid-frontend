@@ -13,7 +13,7 @@ describe('Metadata', () => {
     it('sets correct title', () => {
         render(<Metadata />);
         const helmet = Helmet.peek();
-        expect(helmet.title).toBe('Voxly AI | Mock Interview');
+        expect(helmet.title).toBe('Voxly ');
     });
 
     it('sets correct description', () => {
@@ -33,7 +33,7 @@ describe('Metadata', () => {
     it('handles custom title prop', () => {
         render(<Metadata title="Custom Title" />);
         const helmet = Helmet.peek();
-        expect(helmet.title).toBe('Voxly AI | Mock Interview');
+        expect(helmet.title).toBe('Voxly ');
     });
 
     it('handles custom description prop', () => {

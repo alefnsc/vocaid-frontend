@@ -1,7 +1,7 @@
-# Voxly AI - Frontend
+# Voxly - Frontend
 
 <p align="center">
-  <img src="public/Main.png" alt="Voxly AI Logo" width="200"/>
+  <img src="public/Main.png" alt="Voxly Logo" width="200"/>
 </p>
 
 <p align="center">

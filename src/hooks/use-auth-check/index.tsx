@@ -1,6 +1,5 @@
 import { useUser } from '@clerk/clerk-react';
 import { useState, useEffect, useCallback } from 'react';
-import mercadoPagoService from '../../services/MercadoPagoService';
 
 export const useAuthCheck = () => {
   const { isLoaded, isSignedIn, user } = useUser();

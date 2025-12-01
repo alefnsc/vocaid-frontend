@@ -14,6 +14,7 @@ const Loading: React.FC<LoadingProps> = ({ message = 'Loading...' }) => {
             aria-label={message}
         >
             <div className="flex gap-x-2 items-center">
+                {/* eslint-disable-next-line react/jsx-pascal-case */}
                 <Icons.loader className="animate-spin h-6 w-6 text-gray-600" aria-hidden="true" />
                 <span className="text-sm font-medium text-gray-600">
                     {message}

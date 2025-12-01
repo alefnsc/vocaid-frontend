@@ -32,7 +32,6 @@ const Interview = () => {
 
     // Use call manager hook
     const {
-        callId,
         isCalling,
         isConnecting,
         isAgentTalking,

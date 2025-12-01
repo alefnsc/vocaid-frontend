@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { DefaultLayout } from 'components/default-layout'
 import { useEffect, useState, useCallback, useRef } from 'react';
 import APIService from "services/APIService";
-import Loading from 'components/loading';
 import StarRating from 'components/star-rate/StarRating';
 import { Card } from "components/ui/card";
 import { Button } from "components/ui/button";

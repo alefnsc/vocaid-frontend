@@ -304,7 +304,7 @@ const ContactButton: React.FC = () => {
             {/* Footer */}
             <div className="px-4 sm:px-6 pb-4 sm:pb-6">
               <p className="text-xs text-center text-gray-400">
-                Your feedback helps us improve Voxly AI
+                Your feedback helps us improve Voxly
               </p>
             </div>
           </div>

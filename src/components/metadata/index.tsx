@@ -3,7 +3,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 const appConfig = {
-  name: 'Voxly AI | Mock Interview',
+  name: 'Voxly ',
   description: 'Your AI Interviewer for surpassing hiring challenges.',
 };
 

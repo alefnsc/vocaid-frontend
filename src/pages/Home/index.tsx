@@ -106,8 +106,8 @@ export default function Home() {
             <div className="flex flex-col w-full items-center mb-4">
               <img
                 src='/Main.png'
-                alt="Voxly AI Interview"
-                className="w-[80%] max-w-[380px] drop-shadow-[0_4px_12px_rgba(147,51,234,0.15)]"
+                alt="Voxly Interview"
+                className="w-[65%] max-w-[280px]"
               />
             </div>
           )}
@@ -120,11 +120,10 @@ export default function Home() {
             <div className="flex flex-col h-full overflow-hidden w-full md:w-[50%] lg:w-[45%] items-center justify-center">
               <img
                 src='/Main.png'
-                alt="Voxly AI Interview"
+                alt="Voxly Interview"
                 className="
-                  w-[95%] md:w-full lg:w-full xl:w-full
-                  max-w-[450px] lg:max-w-[520px] xl:max-w-[580px] 2xl:max-w-[650px]
-                  drop-shadow-[0_6px_16px_rgba(147,51,234,0.18)]
+                  w-full
+                  max-w-[480px] lg:max-w-[600px] xl:max-w-[700px] 2xl:max-w-[800px]
                 "
               />
             </div>

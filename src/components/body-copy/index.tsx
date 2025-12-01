@@ -1,8 +1,6 @@
 import { Link as ScrollLink } from 'react-scroll';
 import TypingTextEffect from 'components/typing-text-effect/TypingTextEffect'
 import { Target, Clock1, UserCheck, BrainCircuit } from 'lucide-react'
-import { useUser } from '@clerk/clerk-react'
-
 import { Button } from 'components/ui/button'
 
 type BodyCopyProps = {
@@ -12,7 +10,6 @@ type BodyCopyProps = {
 const BodyCopy = ({
     isMobile
 }: BodyCopyProps) => {
-    const { isSignedIn } = useUser();
 
     return (
         <div className="
@@ -26,12 +23,12 @@ const BodyCopy = ({
             <div className="flex flex-row items-center justify-center w-full md:justify-start">
                 <h1 className='
                     text-primary font-bold
-                    text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl
+                    text-3xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl
                     mb-4 md:mb-6 lg:mb-8 xl:mb-10
                     text-center md:text-left
                     leading-tight
                 '>
-                    Unlock Your Next <span className='text-gray-700'>Voxly</span> Job
+                    Unlock Your Next <span className='text-4xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gradient bg-gradient-to-r from-gray-700 via-gray-500 to-gray-700'>VOXLY</span> Job
                 </h1>
             </div>
 
@@ -52,14 +49,14 @@ const BodyCopy = ({
                         <Target className="w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 xl:w-8 xl:h-8 flex-shrink-0" />
                         <TypingTextEffect text='Master Interview: ' />
                     </h2>
-                    <p className="
+                    <div className="
                         text-gray-600
                         text-base md:text-lg lg:text-xl xl:text-xl
                         mt-1 md:mt-2 lg:mt-2
                         ml-7 md:ml-9 lg:ml-11 xl:ml-12
                     ">
                         <TypingTextEffect text="Refine answers with AI-driven mock interview." />
-                    </p>
+                    </div>
                 </div>
 
                 {/* Feature 2: Tailored Recommendations */}
@@ -72,14 +69,14 @@ const BodyCopy = ({
                         <BrainCircuit className="w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 xl:w-8 xl:h-8 flex-shrink-0" />
                         <TypingTextEffect text='Tailored Recommendations: ' />
                     </h2>
-                    <p className="
+                    <div className="
                         text-gray-600
                         text-base md:text-lg lg:text-xl xl:text-xl
                         mt-1 md:mt-2 lg:mt-2
                         ml-7 md:ml-9 lg:ml-11 xl:ml-12
                     ">
                         <TypingTextEffect text="Get tips to showcase your skills based on job description and seniority." />
-                    </p>
+                    </div>
                 </div>
 
                 {/* Feature 3: Real-Time Feedback */}
@@ -92,14 +89,14 @@ const BodyCopy = ({
                         <Clock1 className="w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 xl:w-8 xl:h-8 flex-shrink-0" />
                         <TypingTextEffect text='Real-Time Feedback:' />
                     </h2>
-                    <p className="
+                    <div className="
                         text-gray-600
                         text-base md:text-lg lg:text-xl xl:text-xl
                         mt-1 md:mt-2 lg:mt-2
                         ml-7 md:ml-9 lg:ml-11 xl:ml-12
                     ">
                         <TypingTextEffect text="Receive instant, constructive feedback." />
-                    </p>
+                    </div>
                 </div>
 
                 {/* Feature 4: Comprehensive Results */}
@@ -112,14 +109,14 @@ const BodyCopy = ({
                         <UserCheck className="w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7 xl:w-8 xl:h-8 flex-shrink-0" />
                         <TypingTextEffect text='Comprehensive Results: ' />
                     </h2>
-                    <p className="
+                    <div className="
                         text-gray-600
                         text-base md:text-lg lg:text-xl xl:text-xl
                         mt-1 md:mt-2 lg:mt-2
                         ml-7 md:ml-9 lg:ml-11 xl:ml-12
                     ">
                         <TypingTextEffect text="Review detailed performance, strengths and opportunities." />
-                    </p>
+                    </div>
                 </div>
             </div>
 
@@ -129,14 +126,14 @@ const BodyCopy = ({
                 w-full
                 mt-6 md:mt-8 lg:mt-10 xl:mt-12
             ">
-                <Button 
+                <Button
                     className='
                         py-6 px-8 md:py-7 md:px-10 lg:py-8 lg:px-12 xl:py-9 xl:px-14
                         w-full md:w-auto
                         shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30
                         transition-all duration-300
                         transform hover:scale-105
-                    ' 
+                    '
                     size={isMobile ? 'lg' : 'default'}
                 >
                     <ScrollLink

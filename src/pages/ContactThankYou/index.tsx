@@ -89,7 +89,7 @@ const ContactThankYou: React.FC = () => {
                         </span>
                     </div>
                     <p className="text-xs sm:text-sm text-gray-500 mt-2 sm:mt-3">
-                        Your feedback helps us improve Voxly AI
+                        Your feedback helps us improve Voxly
                     </p>
                 </div>
             </div>

@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Button } from 'components/ui/button'
 import { Textarea } from 'components/ui/textarea'
 import { Input } from 'components/ui/input'
 import { Coins, LogIn, Gift } from 'lucide-react'
-import pdfToText from "react-pdftotext";
 import { useNavigate } from 'react-router-dom';
 import { Checkbox } from 'components/ui/checkbox';
 import { useAuthCheck } from 'hooks/use-auth-check';
@@ -35,7 +34,6 @@ const InputForm: React.FC<InputFormProps> = ({ isMobile, credits }) => {
         companyName: '',
         jobTitle: '', jobDescription: '', resume: '', policy: ''
     });
-    const [firstError, setFirstError] = useState('');
     const [isChecked, setIsChecked] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -65,7 +63,6 @@ const InputForm: React.FC<InputFormProps> = ({ isMobile, credits }) => {
         // Clear error for this field if it exists
         if (errors[name as FieldName]) {
             setErrors(prev => ({ ...prev, [name]: '' }));
-            setFirstError('');
         }
     }, [errors]);
 
@@ -77,7 +74,6 @@ const InputForm: React.FC<InputFormProps> = ({ isMobile, credits }) => {
             setFormValues(prev => ({ ...prev, resume: file.name }));
             if (errors.resume) {
                 setErrors(prev => ({ ...prev, resume: '' }));
-                setFirstError('');
             }
         }
     }, [errors.resume]);
@@ -122,7 +118,6 @@ const InputForm: React.FC<InputFormProps> = ({ isMobile, credits }) => {
         // Find the first error
         const firstErrorField = Object.keys(newErrors).find(key => newErrors[key as FieldName]);
         if (firstErrorField) {
-            setFirstError(newErrors[firstErrorField as FieldName]);
             return false;
         }
 
@@ -180,6 +175,7 @@ const InputForm: React.FC<InputFormProps> = ({ isMobile, credits }) => {
             // Show error in the policy field area since it's at the bottom
             setErrors(prev => ({ ...prev, policy: 'Failed to start interview. Please try again.' }));
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [validateForm, availableCredits, updateCredits, navigate, formValues, setShowCreditsModal]);
 
     // Show loading state
@@ -345,7 +341,7 @@ const InputForm: React.FC<InputFormProps> = ({ isMobile, credits }) => {
                             onCheckedChange={(checked) => setIsChecked(checked === true)}
                         />
                         <label htmlFor="acceptPolicy" className="text-md lg:text-lg">
-                            I accept <a href="https://docs.google.com/document/d/1u-kOOKMET0PpfQETzgl484watytsuooRJ2mKMvo5T9U/" className="text-purple-600 hover:underline">Privacy Policy</a> and <a href="https://docs.google.com/document/d/1JoUUjBiQvavP1FjJHdJqDWFHJamzSkje2CekivAzCcM" className="text-purple-600 hover:underline">Terms of Use.</a>
+                            I accept <a href="https://drive.google.com/file/d/1697V9WvT0jzGWQ4_YJQjW2lpD_fBJLah/view" className="text-purple-600 hover:underline">Privacy Policy</a> and <a href="https://drive.google.com/file/d/1KVWSGgYNaFFZ3OWQuPqB0puFzaWkRRbm/view?usp=sharing" className="text-purple-600 hover:underline">Terms of Use.</a>
                         </label>
                     </div>
                     {errors.policy && (
