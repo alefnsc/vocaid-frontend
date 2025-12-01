@@ -17,7 +17,7 @@ const TopBar: React.FC = () => {
           {user ? (
             <div className="flex items-center gap-2">
               {/* Desktop only: Show first name */}
-              <span className="hidden md:block text-base font-medium text-gray-700">
+              <span className="hidden md:block text-base font-medium text-gray-700 pr-2">
                 {user.firstName}
               </span>
               <UserButton 

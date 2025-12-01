@@ -103,7 +103,7 @@ export default function Home() {
         ">
           {/* Show image above text on mobile, to the right on desktop */}
           {isMobile && (
-            <div className="flex flex-col w-full items-center mb-4">
+            <div className="flex flex-col w-full items-center">
               <img
                 src='/Main.png'
                 alt="Voxly Interview"

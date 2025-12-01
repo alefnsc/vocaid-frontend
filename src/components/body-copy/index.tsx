@@ -23,12 +23,12 @@ const BodyCopy = ({
             <div className="flex flex-row items-center justify-center w-full md:justify-start">
                 <h1 className='
                     text-primary font-bold
-                    text-3xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl
+                    text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-6xl 2xl:text-6xl
                     mb-4 md:mb-6 lg:mb-8 xl:mb-10
                     text-center md:text-left
                     leading-tight
                 '>
-                    Unlock Your Next <span className='text-4xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-gradient bg-gradient-to-r from-gray-700 via-gray-500 to-gray-700'>VOXLY</span> Job
+                    Unlock Your Next <span className='text-4xl sm:text-5xl md:text-5xl lg:text-6xl xl:text-6xl 2xl:text-7xl font-bold text-gradient bg-gradient-to-r from-gray-700 via-gray-500 to-gray-700'>VOXLY</span> Job
                 </h1>
             </div>
 
