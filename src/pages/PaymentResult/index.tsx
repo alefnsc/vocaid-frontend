@@ -6,6 +6,7 @@ import { useUser } from '@clerk/clerk-react'
 import { DefaultLayout } from 'components/default-layout'
 import { Button } from 'components/ui/button'
 import { Check, X, Clock, Loader2, RefreshCw, Sparkles } from 'lucide-react'
+import apiService from 'services/APIService'
 
 type PaymentStatus = 'success' | 'failure' | 'pending' | 'loading'
 
@@ -34,26 +35,28 @@ export default function PaymentResult() {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [pollAttempts, setPollAttempts] = useState(0)
 
-  // Poll for credits update
+  // Poll for credits update from backend PostgreSQL (source of truth)
   const pollForCredits = useCallback(async () => {
     if (!user || creditsVerified) return
 
     try {
       setIsRefreshing(true)
-      await user.reload()
-      const currentCredits = (user.publicMetadata?.credits as number) || 0
       
-      console.log(`Polling credits: attempt ${pollAttempts + 1}, credits: ${currentCredits}`)
+      // Fetch credits from backend PostgreSQL
+      const result = await apiService.getCurrentUser(user.id)
+      const currentCredits = result.user?.credits || 0
+      
+      console.log(`Polling credits from backend: attempt ${pollAttempts + 1}, credits: ${currentCredits}`)
       
       // If credits > 0, consider it verified (webhook processed)
       if (currentCredits > 0) {
         setCreditsVerified(true)
-        console.log('✅ Credits verified:', currentCredits)
+        console.log('✅ Credits verified from PostgreSQL:', currentCredits)
       }
       
       setPollAttempts(prev => prev + 1)
     } catch (error) {
-      console.error('Error polling credits:', error)
+      console.error('Error polling credits from backend:', error)
     } finally {
       setIsRefreshing(false)
     }

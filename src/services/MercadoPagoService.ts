@@ -3,6 +3,8 @@
 // Note: This is a client-side only implementation. In production, payment processing
 // should be handled through secure serverless functions (e.g., Vercel Functions, AWS Lambda)
 
+import { config } from "../lib/config";
+
 export interface CreditPackage {
   id: string;
   name: string;
@@ -73,10 +75,20 @@ export interface PreferenceResponse {
 class MercadoPagoService {
   private publicKey: string;
   private backendUrl: string;
+  private isProduction: boolean;
 
   constructor() {
-    this.publicKey = process.env.REACT_APP_MERCADOPAGO_PUBLIC_KEY || '';
-    this.backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+    // Use environment-aware config
+    this.publicKey = config.mercadoPagoPublicKey;
+    this.backendUrl = config.backendUrl;
+    this.isProduction = config.isProduction;
+    
+    console.log('💳 MercadoPago Service initialized:', {
+      environment: config.env,
+      isProduction: this.isProduction,
+      publicKey: this.publicKey ? `${this.publicKey.slice(0, 20)}...` : 'NOT SET',
+      backendUrl: this.backendUrl
+    });
   }
 
   /**

@@ -1,8 +1,12 @@
 import { RetellWebClient } from "retell-client-js-sdk";
+import { config } from "../lib/config";
 
 // Note: This service still requires backend API for Retell interview functionality
 // Backend is NOT needed for: Authentication (Clerk), Credits (Clerk metadata), Payments (MercadoPago)
 // Backend IS needed for: Interview calls (Retell API proxy), Feedback generation
+
+// Backend URL from environment config
+const BACKEND_URL = config.backendUrl;
 
 // Get headers with optional user authentication
 const getHeaders = (userId?: string): Record<string, string> => {
@@ -63,6 +67,65 @@ interface UserInfoResponse {
     user: UserInfo;
 }
 
+// Dashboard Types
+export interface DashboardStats {
+    totalInterviews: number;
+    completedInterviews: number;
+    averageScore: number;
+    totalSpent: number;
+    creditsRemaining: number;
+    scoreChange: number; // Percentage change from previous period
+    interviewsThisMonth: number;
+}
+
+export interface InterviewSummary {
+    id: string;
+    retellCallId: string;
+    position: string;
+    company: string;
+    createdAt: string;
+    duration: number; // in minutes
+    overallScore: number | null;
+    status: 'completed' | 'in_progress' | 'cancelled';
+}
+
+export interface InterviewDetail extends InterviewSummary {
+    feedback: {
+        overallScore: number;
+        contentScore: number;
+        communicationScore: number;
+        confidenceScore: number;
+        technicalScore: number;
+        summary: string;
+        strengths: string[];
+        improvements: string[];
+        recommendations: string[];
+    } | null;
+    transcript: string | null;
+    resumeUrl: string | null;
+}
+
+export interface PaymentHistoryItem {
+    id: string;
+    amount: number;
+    currency: string;
+    credits: number;
+    status: string;
+    createdAt: string;
+    paymentMethod: string;
+}
+
+export interface ScoreDataPoint {
+    date: string;
+    score: number;
+    interviewId: string;
+}
+
+export interface SpendingDataPoint {
+    month: string;
+    amount: number;
+}
+
 class APIService {
     private retellWebClient: RetellWebClient;
 
@@ -81,11 +144,11 @@ class APIService {
         console.log('📞 Registering call with backend:', {
             candidate: body.metadata.first_name,
             position: body.metadata.job_title,
-            backend_url: process.env.REACT_APP_BACKEND_URL,
+            backend_url: BACKEND_URL,
             userId: body.userId ? '✅ Present' : '❌ Missing'
         });
         
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/register-call`, {
+        const response = await fetch(`${BACKEND_URL}/register-call`, {
             method: "POST",
             headers: getHeaders(body.userId),
             body: JSON.stringify(body),
@@ -110,7 +173,7 @@ class APIService {
         console.log('🌐 APIService: Making request to getUserInfo for user:', userId);
         console.log('⚠️ Consider using Clerk user data instead of backend API');
         
-        const url = `${process.env.REACT_APP_BACKEND_URL}/get-user-info/${userId}`;
+        const url = `${BACKEND_URL}/get-user-info/${userId}`;
         console.log('🌐 APIService: Full URL:', url);
         
         const response = await fetch(url, {
@@ -134,25 +197,25 @@ class APIService {
 
     async getCall(call_id: string): Promise<Response> {
         // Backend endpoint required for Retell call data
-        return await fetch(`${process.env.REACT_APP_BACKEND_URL}/get-call/`+call_id, {
+        return await fetch(`${BACKEND_URL}/get-call/`+call_id, {
             headers: getHeaders()
         });
     }
 
     async getFeedback(call_id: string): Promise<Response> {
         // Backend endpoint required for AI-generated interview feedback
-        return await fetch(`${process.env.REACT_APP_BACKEND_URL}/get-feedback-for-interview/${call_id}`, 
+        return await fetch(`${BACKEND_URL}/get-feedback-for-interview/${call_id}`, 
             {
               method: 'GET',
               headers: getHeaders()
             });
     }
 
-    async restoreCredit(userId: string, reason: string, callId?: string): Promise<{ status: string; newCredits?: number }> {
+    async restoreCredit(userId: string, reason: string, callId?: string): Promise<{ status: string; newCredits?: number; message?: string }> {
         // Restore credit when interview is cancelled due to incompatibility
         console.log('💳 Requesting credit restoration:', { userId, reason, callId });
         
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/restore-credit`, {
+        const response = await fetch(`${BACKEND_URL}/restore-credit`, {
             method: 'POST',
             headers: getHeaders(userId),
             body: JSON.stringify({ userId, reason, callId })
@@ -168,11 +231,11 @@ class APIService {
         return result;
     }
 
-    async consumeCredit(userId: string, callId?: string): Promise<{ status: string; newCredits?: number }> {
+    async consumeCredit(userId: string, callId?: string): Promise<{ status: string; newCredits?: number; message?: string }> {
         // Consume credit when interview starts
         console.log('💳 Consuming credit:', { userId, callId });
         
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/consume-credit`, {
+        const response = await fetch(`${BACKEND_URL}/consume-credit`, {
             method: 'POST',
             headers: getHeaders(userId),
             body: JSON.stringify({ userId, callId })
@@ -258,11 +321,227 @@ class APIService {
             throw error;
         }
     }
-
-
     stopCall() {
         this.retellWebClient.stopCall();
 
+    }
+
+    // ==========================================
+    // DASHBOARD API METHODS
+    // ==========================================
+
+    /**
+     * Get dashboard statistics for a user
+     */
+    async getDashboardStats(userId: string): Promise<DashboardStats> {
+        console.log('📊 Fetching dashboard stats for user:', userId);
+        
+        const response = await fetch(`${BACKEND_URL}/api/users/${userId}/stats`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            console.error('❌ Failed to fetch dashboard stats:', response.status);
+            throw new Error(`Error fetching dashboard stats: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log('✅ Dashboard stats received:', result);
+        return result.data;
+    }
+
+    /**
+     * Get list of user's interviews
+     */
+    async getUserInterviews(userId: string, page = 1, limit = 10): Promise<{ interviews: InterviewSummary[]; total: number; page: number; totalPages: number }> {
+        console.log('📋 Fetching interviews for user:', userId);
+        
+        const response = await fetch(`${BACKEND_URL}/api/users/${userId}/interviews?page=${page}&limit=${limit}`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            console.error('❌ Failed to fetch interviews:', response.status);
+            throw new Error(`Error fetching interviews: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log('✅ Interviews received:', result.data?.length || 0);
+        return {
+            interviews: result.data || [],
+            total: result.pagination?.total || 0,
+            page: result.pagination?.page || 1,
+            totalPages: result.pagination?.totalPages || 1
+        };
+    }
+
+    /**
+     * Get detailed interview information by ID
+     */
+    async getInterviewDetails(interviewId: string, userId: string): Promise<InterviewDetail> {
+        console.log('🔍 Fetching interview details:', interviewId);
+        
+        const response = await fetch(`${BACKEND_URL}/api/interviews/${interviewId}`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            console.error('❌ Failed to fetch interview details:', response.status);
+            throw new Error(`Error fetching interview details: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log('✅ Interview details received');
+        return result.data;
+    }
+
+    /**
+     * Get user's payment history
+     */
+    async getPaymentHistory(userId: string): Promise<PaymentHistoryItem[]> {
+        console.log('💰 Fetching payment history for user:', userId);
+        
+        const response = await fetch(`${BACKEND_URL}/api/users/${userId}/payments`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            console.error('❌ Failed to fetch payment history:', response.status);
+            throw new Error(`Error fetching payment history: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log('✅ Payment history received:', result.data?.length || 0);
+        return result.data || [];
+    }
+
+    /**
+     * Get score evolution data for charts
+     */
+    async getScoreEvolution(userId: string, months = 6): Promise<ScoreDataPoint[]> {
+        console.log('📈 Fetching score evolution for user:', userId);
+        
+        const response = await fetch(`${BACKEND_URL}/api/users/${userId}/score-evolution?months=${months}`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            console.error('❌ Failed to fetch score evolution:', response.status);
+            throw new Error(`Error fetching score evolution: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log('✅ Score evolution received:', result.data?.length || 0);
+        return result.data || [];
+    }
+
+    /**
+     * Get spending data for charts
+     */
+    async getSpendingHistory(userId: string, months = 6): Promise<SpendingDataPoint[]> {
+        console.log('💵 Fetching spending history for user:', userId);
+        
+        const response = await fetch(`${BACKEND_URL}/api/users/${userId}/spending?months=${months}`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            console.error('❌ Failed to fetch spending history:', response.status);
+            throw new Error(`Error fetching spending history: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log('✅ Spending history received:', result.data?.length || 0);
+        return result.data || [];
+    }
+
+    // ========================================
+    // USER SYNC METHODS
+    // ========================================
+
+    /**
+     * Sync user data to backend database on login
+     * This ensures user exists in local database even if webhook wasn't received
+     */
+    async syncUser(userId: string): Promise<{ status: string; user: any; message: string }> {
+        console.log('🔄 Syncing user to backend:', userId);
+        
+        const response = await fetch(`${BACKEND_URL}/api/users/sync`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            console.error('❌ User sync failed:', response.status);
+            throw new Error(`Error syncing user: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log('✅ User synced:', {
+            status: result.status,
+            message: result.message,
+            userId: result.user?.id
+        });
+        return result;
+    }
+
+    /**
+     * Validate user session and ensure user exists in database
+     * Called on interview page load and critical actions
+     */
+    async validateUser(userId: string): Promise<{ status: string; user: any; message: string; freeTrialGranted?: boolean }> {
+        console.log('🔐 Validating user session:', userId);
+        
+        const response = await fetch(`${BACKEND_URL}/api/users/validate`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            console.error('❌ User validation failed:', response.status);
+            throw new Error(`Error validating user: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log('✅ User validated:', {
+            status: result.status,
+            message: result.message,
+            userId: result.user?.id,
+            credits: result.user?.credits,
+            freeTrialGranted: result.freeTrialGranted
+        });
+        return result;
+    }
+
+    /**
+     * Get current user data from backend
+     */
+    async getCurrentUser(userId: string): Promise<{ status: string; user: any }> {
+        console.log('👤 Getting current user from backend:', userId);
+        
+        const response = await fetch(`${BACKEND_URL}/api/users/me`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            console.error('❌ Failed to get current user:', response.status);
+            throw new Error(`Error getting user: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log('✅ Current user received:', {
+            id: result.user?.id,
+            email: result.user?.email,
+            credits: result.user?.credits
+        });
+        return result;
     }
 }
 const apiService =  new APIService();

@@ -1,26 +1,75 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useUser } from '@clerk/clerk-react';
 import { DefaultLayout } from 'components/default-layout';
 import Loading from 'components/loading';
+import apiService from 'services/APIService';
 
 // Custom hooks
 import { useTokenValidation } from 'hooks/use-token-validation';
 import { useStateValidation } from 'hooks/use-state-validation';
 import { useCallManager } from 'hooks/use-call-manager';
 import { useInterviewTimer } from 'hooks/use-interview-timer';
+import { useInterviewFlow } from 'hooks/use-interview-flow';
 
 // Components
 import MicPermissionModal from 'components/mic-permission-modal';
 import QuitInterviewModal from 'components/quit-interview-modal';
 import InterviewContent from 'components/interview-content';
+import InterviewBreadcrumbs from 'components/interview-breadcrumbs';
 
 const Interview = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { body } = location.state || {};
+    const { user, isLoaded: isUserLoaded } = useUser();
+    const { setStage } = useInterviewFlow();
     
     // Track if call has been started to prevent double initialization
     const callStartedRef = useRef(false);
+    // Track if user validation has been attempted
+    const validationAttemptedRef = useRef(false);
+
+    // Set stage to interview on mount
+    useEffect(() => {
+        setStage('interview');
+    }, [setStage]);
+
+    // Validate user session on interview page load
+    useEffect(() => {
+        const validateUserSession = async () => {
+            if (!isUserLoaded || !user?.id || validationAttemptedRef.current) {
+                return;
+            }
+            
+            validationAttemptedRef.current = true;
+            
+            try {
+                console.log('🔐 Validating user session for interview...');
+                const result = await apiService.validateUser(user.id);
+                
+                if (result.status === 'success' && result.user) {
+                    console.log('✅ User validated for interview:', {
+                        userId: result.user.id,
+                        credits: result.user.credits
+                    });
+                    
+                    // Check if user has credits
+                    if (result.user.credits <= 0) {
+                        console.warn('⚠️ User has no credits');
+                        navigate('/', { state: { error: 'No credits available. Please purchase credits to continue.' } });
+                    }
+                } else {
+                    throw new Error('Validation returned unsuccessful status');
+                }
+            } catch (error: any) {
+                console.error('❌ User validation failed:', error);
+                navigate('/', { state: { error: 'Failed to validate session. Please try again.' } });
+            }
+        };
+
+        validateUserSession();
+    }, [isUserLoaded, user?.id, navigate]);
 
     // Use validation hooks
     useTokenValidation(navigate);
@@ -73,6 +122,14 @@ const Interview = () => {
 
     return (
         <DefaultLayout className="flex flex-col overflow-hidden items-center bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
+            {/* Breadcrumbs - hidden during interview but present for flow tracking */}
+            <div className="w-full max-w-5xl px-4 sm:px-6 lg:px-8 pt-4">
+                <InterviewBreadcrumbs 
+                    currentStage="interview" 
+                    showBackArrow={false}
+                />
+            </div>
+
             {/* Microphone permission modal */}
             <MicPermissionModal
                 onPermissionGranted={handleMicPermission}

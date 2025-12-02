@@ -11,12 +11,21 @@ import { Separator } from "components/ui/separator";
 import TextBox from "components/ui/text-box";
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { Download, RotateCcw } from 'lucide-react';
+import { Download, RotateCcw, Home } from 'lucide-react';
+import InterviewBreadcrumbs from 'components/interview-breadcrumbs';
+import { useInterviewFlow } from 'hooks/use-interview-flow';
+import PurpleButton from 'components/ui/purple-button';
 
 const Feedback = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const state = location.state;
+  const { setStage, resetFlow } = useInterviewFlow();
+  
+  // Set stage to feedback on mount
+  useEffect(() => {
+    setStage('feedback');
+  }, [setStage]);
   
   // State management
   const [isLoading, setIsLoading] = useState(true);
@@ -184,8 +193,14 @@ const Feedback = () => {
   }, [candidateName, rating, summary, feedback, jobDescription]);
 
   const handleRetryInterview = useCallback(() => {
+    resetFlow();
+    navigate('/interview-setup');
+  }, [navigate, resetFlow]);
+
+  const handleBackToDashboard = useCallback(() => {
+    resetFlow();
     navigate('/');
-  }, [navigate]);
+  }, [navigate, resetFlow]);
 
   const handleRatingChange = useCallback((newRating: number) => {
     setRating(newRating);
@@ -245,6 +260,14 @@ const Feedback = () => {
 
   return (
     <DefaultLayout className="flex flex-col overflow-hidden items-center bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen py-6 sm:py-10">
+      {/* Breadcrumbs */}
+      <div className="w-full max-w-5xl px-4 sm:px-6 lg:px-8 mb-6">
+        <InterviewBreadcrumbs 
+          currentStage="feedback" 
+          showBackArrow={true}
+        />
+      </div>
+
       <Card className="xl:w-[80%] lg:w-[90%] w-[95%] flex flex-col p-4 sm:p-6 md:p-8 relative items-center justify-center mb-12 max-w-5xl shadow-lg bg-white border border-gray-200">
         {/* Header */}
         <h1 className='text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mt-4 sm:mt-6 mb-2'>
@@ -342,6 +365,15 @@ const Feedback = () => {
               <RotateCcw className="w-4 h-4" />
               New Interview
             </Button>
+            <PurpleButton
+              variant="outline"
+              size="md"
+              onClick={handleBackToDashboard}
+              className="w-full sm:w-auto"
+            >
+              <Home className="w-4 h-4" />
+              Back to Dashboard
+            </PurpleButton>
           </div>
         </div>
       </Card>

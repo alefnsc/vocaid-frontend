@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { useUser } from '@clerk/clerk-react';
+import React, { useState, useEffect } from 'react';
+import { useUser, useClerk } from '@clerk/clerk-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { Check, Sparkles, Crown, Star, Loader2, CreditCard } from 'lucide-react';
 import mercadoPagoService, { CREDIT_PACKAGES, CreditPackage } from '../../services/MercadoPagoService';
+import apiService from '../../services/APIService';
 
 interface CreditPackagesProps {
   onPurchaseComplete?: () => void;
@@ -160,11 +161,81 @@ const PackageCard: React.FC<PackageCardProps> = ({
 
 // Main component
 const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) => {
-  const { user } = useUser();
+  const { user, isSignedIn } = useUser();
+  const { openSignIn } = useClerk();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingPackageId, setLoadingPackageId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
+  const [pendingPackage, setPendingPackage] = useState<CreditPackage | null>(null);
+
+  // Effect to handle purchase after sign-in
+  useEffect(() => {
+    if (isSignedIn && user && pendingPackage) {
+      // User just signed in and has a pending package to purchase
+      console.log('🔐 User signed in, proceeding with pending purchase...');
+      const pkg = pendingPackage;
+      setPendingPackage(null);
+      // Small delay to ensure user data is ready - inline the purchase logic
+      setTimeout(async () => {
+        if (!user) {
+          setError('Authentication failed. Please try again.');
+          return;
+        }
+
+        setIsLoading(true);
+        setLoadingPackageId(pkg.id);
+        setError(null);
+        setPaymentStatus('Opening payment window...');
+
+        try {
+          const paymentUrl = await mercadoPagoService.getPaymentUrl(
+            pkg.id,
+            user.id,
+            user.primaryEmailAddress?.emailAddress || ''
+          );
+
+          const popupWidth = 600;
+          const popupHeight = 700;
+          const left = (window.screen.width - popupWidth) / 2;
+          const top = (window.screen.height - popupHeight) / 2;
+
+          const popup = window.open(
+            paymentUrl,
+            'MercadoPago Checkout',
+            `width=${popupWidth},height=${popupHeight},left=${left},top=${top},scrollbars=yes,resizable=yes`
+          );
+
+          if (!popup) {
+            setPaymentStatus('Redirecting to payment...');
+            window.location.href = paymentUrl;
+            return;
+          }
+
+          setPaymentStatus('Complete payment in the popup window. This page will update automatically.');
+
+          // Get current credits from backend PostgreSQL (source of truth)
+          let currentCredits = 0;
+          try {
+            const userResult = await apiService.getCurrentUser(user.id);
+            currentCredits = userResult.user?.credits || 0;
+          } catch (e) {
+            console.warn('Could not fetch current credits, using 0');
+          }
+          const expectedCredits = currentCredits + pkg.credits;
+
+          pollForCreditsChange(currentCredits, expectedCredits, popup);
+        } catch (err) {
+          console.error('❌ Purchase error:', err);
+          setError('Failed to initiate payment. Please try again.');
+          setPaymentStatus(null);
+          setIsLoading(false);
+          setLoadingPackageId(null);
+        }
+      }, 500);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSignedIn, user, pendingPackage]);
 
   // Get icon for each package type
   const getPackageIcon = (packageId: string) => {
@@ -179,7 +250,7 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
     }
   };
 
-  // Poll for credits change (more reliable than payment status)
+  // Poll for credits change from PostgreSQL backend (source of truth)
   const pollForCreditsChange = async (initialCredits: number, expectedCredits: number, popup: Window | null) => {
     let attempts = 0;
     const maxAttempts = 60; // 5 minutes max (5s intervals)
@@ -191,14 +262,19 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
           setPaymentStatus('Payment window closed. Checking for credit update...');
         }
 
-        // Reload user to get fresh credits from Clerk
-        await user?.reload();
-        const currentCredits = (user?.publicMetadata?.credits as number) || 0;
+        // Fetch credits from backend PostgreSQL (source of truth)
+        if (!user?.id) {
+          console.error('No user ID available for credit check');
+          return;
+        }
 
-        console.log(`Checking credits: initial=${initialCredits}, current=${currentCredits}, expected=${expectedCredits}`);
+        const result = await apiService.getCurrentUser(user.id);
+        const currentCredits = result.user?.credits || 0;
+
+        console.log(`Checking credits from backend: initial=${initialCredits}, current=${currentCredits}, expected=${expectedCredits}`);
 
         if (currentCredits >= expectedCredits) {
-          console.log('✅ Credits updated!');
+          console.log('✅ Credits updated in PostgreSQL!');
           setPaymentStatus('Payment successful! Credits added.');
 
           // Close popup if still open
@@ -223,7 +299,7 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
           setLoadingPackageId(null);
         }
       } catch (err) {
-        console.error('Error checking credits:', err);
+        console.error('Error checking credits from backend:', err);
         attempts++;
         if (attempts < maxAttempts) {
           setTimeout(checkCredits, 5000);
@@ -235,10 +311,10 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
     setTimeout(checkCredits, 5000);
   };
 
-  // Handle purchase - open MercadoPago in popup and poll for credits
-  const handlePurchase = async (pkg: CreditPackage) => {
+  // Handle purchase after authentication (for users who just signed in)
+  const handlePurchaseAfterAuth = async (pkg: CreditPackage) => {
     if (!user) {
-      setError('Please sign in to purchase credits');
+      setError('Authentication failed. Please try again.');
       return;
     }
 
@@ -283,8 +359,14 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
 
       setPaymentStatus('Complete payment in the popup window. This page will update automatically.');
 
-      // Get current credits to detect change
-      const currentCredits = (user.publicMetadata?.credits as number) || 0;
+      // Get current credits from backend PostgreSQL (source of truth)
+      let currentCredits = 0;
+      try {
+        const userResult = await apiService.getCurrentUser(user.id);
+        currentCredits = userResult.user?.credits || 0;
+      } catch (e) {
+        console.warn('Could not fetch current credits, using 0');
+      }
       const expectedCredits = currentCredits + pkg.credits;
 
       // Start polling for credits change
@@ -296,6 +378,24 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
       setIsLoading(false);
       setLoadingPackageId(null);
     }
+  };
+
+  // Handle purchase - open MercadoPago in popup and poll for credits
+  const handlePurchase = async (pkg: CreditPackage) => {
+    // If user is not authenticated, prompt sign-in and store pending package
+    if (!user) {
+      console.log('🔐 User not authenticated, prompting sign-in...');
+      setPendingPackage(pkg);
+      setError(null);
+      openSignIn({
+        afterSignInUrl: window.location.href,
+        afterSignUpUrl: window.location.href,
+      });
+      return;
+    }
+
+    // User is authenticated, proceed with purchase
+    handlePurchaseAfterAuth(pkg);
   };
 
   // Sort packages: Starter first, then Intermediate, then Professional

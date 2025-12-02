@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import APIService from 'services/APIService';
+import { config } from 'lib/config';
 
 // Minimum interview duration in ms before going to feedback (45 seconds from first agent speech)
 const MIN_INTERVIEW_DURATION_MS = 45000;
@@ -51,7 +52,8 @@ export const useCallManager = (body, navigate) => {
                 if (registerCallResponse.access_token) {
                     console.log('🔑 Starting call with access token');
                     console.log('   • Call ID:', registerCallResponse.call_id);
-                    console.log('   • Backend URL:', process.env.REACT_APP_BACKEND_URL);
+                    console.log('   • Backend URL:', config.backendUrl);
+                    console.log('   • Environment:', config.env);
                     
                     await APIService.startCall(registerCallResponse.access_token, true);
                     setIsCalling(false);

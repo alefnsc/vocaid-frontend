@@ -32,6 +32,22 @@
     --input: 0 0% 90%;
     --ring: 0 0% 60%;
 
+    /* Voxly Brand Colors */
+    --voxly-purple: 264 83% 44%;
+    --voxly-purple-light: 264 83% 54%;
+    --voxly-purple-dark: 264 83% 34%;
+    --voxly-green: 160 76% 55%;
+    --voxly-gray-50: 0 0% 98%;
+    --voxly-gray-100: 0 0% 96%;
+    --voxly-gray-200: 0 0% 90%;
+    --voxly-gray-300: 0 0% 83%;
+    --voxly-gray-400: 0 0% 64%;
+    --voxly-gray-500: 0 0% 45%;
+    --voxly-gray-600: 0 0% 32%;
+    --voxly-gray-700: 0 0% 25%;
+    --voxly-gray-800: 0 0% 15%;
+    --voxly-gray-900: 0 0% 9%;
+
     --novel-highlight-default: #f5f5f5;
     --novel-highlight-purple: #e5e5e5;
     --novel-highlight-red: #f0f0f0;
@@ -41,6 +57,13 @@
     --novel-highlight-orange: #f6f6f6;
     --novel-highlight-pink: #efefef;
     --novel-highlight-gray: #e8e8e8;
+
+    /* Dashboard Chart Colors */
+    --chart-purple: 264 83% 44%;
+    --chart-green: 160 76% 55%;
+    --chart-blue: 217 91% 60%;
+    --chart-orange: 25 95% 53%;
+    --chart-red: 0 84% 60%;
   }
 }
 
@@ -400,4 +423,202 @@ ul[data-type="taskList"] li[data-checked="true"] > div > p {
 .animate-gradient {
   background-size: 200% 200%;
   animation: gradient 3s ease infinite;
+}
+
+/* ==========================================
+   VOXLY GLOBAL STYLES & RESPONSIVE STANDARDS
+   ========================================== */
+
+/* Voxly Brand Colors */
+@layer utilities {
+  /* Purple variations */
+  .bg-voxly-purple {
+    background-color: hsl(var(--voxly-purple));
+  }
+  .bg-voxly-purple-light {
+    background-color: hsl(var(--voxly-purple-light));
+  }
+  .bg-voxly-purple-dark {
+    background-color: hsl(var(--voxly-purple-dark));
+  }
+  .text-voxly-purple {
+    color: hsl(var(--voxly-purple));
+  }
+  .text-voxly-purple-light {
+    color: hsl(var(--voxly-purple-light));
+  }
+  .text-voxly-purple-dark {
+    color: hsl(var(--voxly-purple-dark));
+  }
+  .border-voxly-purple {
+    border-color: hsl(var(--voxly-purple));
+  }
+
+  /* Green variations */
+  .bg-voxly-green {
+    background-color: hsl(var(--voxly-green));
+  }
+  .text-voxly-green {
+    color: hsl(var(--voxly-green));
+  }
+  .border-voxly-green {
+    border-color: hsl(var(--voxly-green));
+  }
+
+  /* Purple gradient backgrounds */
+  .bg-voxly-gradient {
+    background: linear-gradient(135deg, hsl(var(--voxly-purple-dark)) 0%, hsl(var(--voxly-purple)) 50%, hsl(var(--voxly-purple-light)) 100%);
+  }
+  .bg-voxly-gradient-horizontal {
+    background: linear-gradient(90deg, hsl(var(--voxly-purple-dark)) 0%, hsl(var(--voxly-purple-light)) 100%);
+  }
+
+  /* Chart colors */
+  .chart-purple { color: hsl(var(--chart-purple)); }
+  .chart-green { color: hsl(var(--chart-green)); }
+  .chart-blue { color: hsl(var(--chart-blue)); }
+  .chart-orange { color: hsl(var(--chart-orange)); }
+  .chart-red { color: hsl(var(--chart-red)); }
+}
+
+/* Responsive Container Standards */
+@layer components {
+  /* Page container with consistent padding */
+  .page-container {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10;
+  }
+
+  /* Card component with Voxly styling */
+  .voxly-card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6;
+  }
+
+  /* Stats card for dashboard */
+  .stats-card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 flex flex-col;
+  }
+
+  /* Primary button with Voxly purple */
+  .btn-voxly {
+    @apply px-4 py-2 text-sm font-medium text-white rounded-lg transition-all duration-200;
+    background-color: hsl(var(--voxly-purple));
+  }
+  .btn-voxly:hover {
+    background-color: hsl(var(--voxly-purple-dark));
+  }
+  .btn-voxly:focus {
+    @apply outline-none ring-2 ring-offset-2;
+    --tw-ring-color: hsl(var(--voxly-purple-light));
+  }
+
+  /* Secondary button */
+  .btn-voxly-secondary {
+    @apply px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 border;
+    color: hsl(var(--voxly-purple));
+    border-color: hsl(var(--voxly-purple));
+    background-color: transparent;
+  }
+  .btn-voxly-secondary:hover {
+    background-color: hsl(var(--voxly-purple));
+    @apply text-white;
+  }
+
+  /* Navigation link styling */
+  .nav-link {
+    @apply text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200 px-3 py-2 rounded-lg;
+  }
+  .nav-link:hover {
+    @apply bg-gray-100;
+  }
+  .nav-link-active {
+    @apply text-sm font-medium px-3 py-2 rounded-lg;
+    color: hsl(var(--voxly-purple));
+    background-color: hsl(var(--voxly-purple) / 0.1);
+  }
+
+  /* Mobile menu styling */
+  .mobile-menu-overlay {
+    @apply fixed inset-0 bg-black/50 z-40 transition-opacity duration-300;
+  }
+  .mobile-menu-panel {
+    @apply fixed top-0 right-0 h-full w-64 bg-white shadow-xl z-50 transform transition-transform duration-300;
+  }
+}
+
+/* Responsive Typography */
+@layer base {
+  /* Heading sizes */
+  h1, .h1 {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
+  }
+  h2, .h2 {
+    @apply text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight;
+  }
+  h3, .h3 {
+    @apply text-lg sm:text-xl md:text-2xl font-semibold;
+  }
+  h4, .h4 {
+    @apply text-base sm:text-lg md:text-xl font-medium;
+  }
+
+  /* Body text */
+  .text-body-lg {
+    @apply text-base sm:text-lg leading-relaxed;
+  }
+  .text-body {
+    @apply text-sm sm:text-base leading-relaxed;
+  }
+  .text-body-sm {
+    @apply text-xs sm:text-sm leading-relaxed;
+  }
+}
+
+/* Dashboard-specific styles */
+@layer components {
+  /* Metric value display */
+  .metric-value {
+    @apply text-2xl sm:text-3xl md:text-4xl font-bold;
+    color: hsl(var(--voxly-purple));
+  }
+  .metric-label {
+    @apply text-xs sm:text-sm text-gray-500 uppercase tracking-wide;
+  }
+  .metric-change-positive {
+    @apply text-xs sm:text-sm font-medium text-green-600;
+  }
+  .metric-change-negative {
+    @apply text-xs sm:text-sm font-medium text-red-600;
+  }
+
+  /* Chart container */
+  .chart-container {
+    @apply w-full h-48 sm:h-64 md:h-80;
+  }
+
+  /* Interview history list item */
+  .interview-list-item {
+    @apply flex flex-col sm:flex-row sm:items-center justify-between p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer;
+  }
+  .interview-list-item:last-child {
+    @apply border-b-0;
+  }
+}
+
+/* Score badge styling */
+@layer components {
+  .score-badge {
+    @apply inline-flex items-center justify-center px-2 py-1 rounded-full text-xs font-semibold;
+  }
+  .score-badge-excellent {
+    @apply bg-green-100 text-green-800;
+  }
+  .score-badge-good {
+    @apply bg-blue-100 text-blue-800;
+  }
+  .score-badge-average {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+  .score-badge-needs-improvement {
+    @apply bg-red-100 text-red-800;
+  }
 }

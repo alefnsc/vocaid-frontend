@@ -1,83 +1,94 @@
 import { useUser } from '@clerk/clerk-react';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import apiService from '../../services/APIService';
 
 export const useAuthCheck = () => {
   const { isLoaded, isSignedIn, user } = useUser();
   const [isLoading, setIsLoading] = useState(true);
   const [userCredits, setUserCredits] = useState<number>(0);
   const [showCreditsModal, setShowCreditsModal] = useState(false);
+  const [isSynced, setIsSynced] = useState(false);
+  const [dbUser, setDbUser] = useState<any>(null);
+  const syncAttemptedRef = useRef(false);
 
-  // Load user credits from Clerk publicMetadata
+  // Validate and sync user to backend on login
+  // This ensures user exists in local database even if Clerk webhook wasn't received
+  // PostgreSQL is the source of truth for credits
   useEffect(() => {
-    const loadUserCredits = async () => {
-      if (!isLoaded) {
-        setIsLoading(false);
+    const validateAndSyncUser = async () => {
+      if (!isLoaded || !isSignedIn || !user?.id || syncAttemptedRef.current) {
+        if (isLoaded && !isSignedIn) {
+          setIsLoading(false);
+          setUserCredits(0);
+        }
         return;
       }
 
-      // If user is not signed in, set credits to 0
-      if (!isSignedIn || !user) {
-        setIsLoading(false);
-        setUserCredits(0);
-        return;
-      }
+      // Mark sync as attempted to prevent duplicate calls
+      syncAttemptedRef.current = true;
+      setIsLoading(true);
 
       try {
-        // Get credits from Clerk publicMetadata with validation
-        const creditsValue = user.publicMetadata?.credits;
+        console.log('🔐 Validating and syncing user to backend on login...');
+        // Use validateUser to get user data from PostgreSQL
+        const result = await apiService.validateUser(user.id);
+        console.log('✅ User validation result:', result.message);
+        setIsSynced(true);
+        setDbUser(result.user);
         
-        // Validate credits to prevent injection and ensure it's a valid number
-        let credits = 0;
-        if (typeof creditsValue === 'number' && !isNaN(creditsValue) && creditsValue >= 0) {
-          credits = Math.floor(creditsValue); // Ensure integer value
-        } else if (typeof creditsValue === 'string') {
-          const parsed = parseInt(creditsValue, 10);
-          if (!isNaN(parsed) && parsed >= 0) {
-            credits = parsed;
-          }
+        // Backend PostgreSQL is source of truth for credits
+        if (result.user?.credits !== undefined) {
+          setUserCredits(result.user.credits);
+          console.log('💳 Credits from PostgreSQL:', result.user.credits);
+        } else {
+          setUserCredits(0);
         }
         
-        setUserCredits(credits);
+        // If free trial was granted, log it
+        if (result.freeTrialGranted) {
+          console.log('🎉 Free trial credit granted to new user!');
+        }
       } catch (error) {
-        console.error('Error loading user credits:', error);
+        console.error('⚠️ Failed to validate/sync user to backend:', error);
+        // Don't block the app if sync fails
+        setIsSynced(false);
         setUserCredits(0);
       } finally {
         setIsLoading(false);
       }
     };
 
-    loadUserCredits();
-  }, [isLoaded, isSignedIn, user]);
+    validateAndSyncUser();
+  }, [isLoaded, isSignedIn, user?.id]);
 
-  // Refresh credits from Clerk after purchase
+  // Reset sync flag when user signs out
+  useEffect(() => {
+    if (!isSignedIn) {
+      syncAttemptedRef.current = false;
+      setIsSynced(false);
+      setDbUser(null);
+      setUserCredits(0);
+    }
+  }, [isSignedIn]);
+
+  // Refresh credits from backend PostgreSQL
   const refreshCredits = useCallback(async () => {
     if (!user?.id) return;
 
     try {
-      // Reload user to get updated metadata
-      await user.reload();
+      console.log('🔄 Refreshing credits from backend...');
+      const result = await apiService.getCurrentUser(user.id);
       
-      // Validate the refreshed credits value
-      const creditsValue = user.publicMetadata?.credits;
-      let updatedCredits = 0;
-      
-      if (typeof creditsValue === 'number' && !isNaN(creditsValue) && creditsValue >= 0) {
-        updatedCredits = Math.floor(creditsValue);
-      } else if (typeof creditsValue === 'string') {
-        const parsed = parseInt(creditsValue, 10);
-        if (!isNaN(parsed) && parsed >= 0) {
-          updatedCredits = parsed;
-        }
+      if (result.user?.credits !== undefined) {
+        setUserCredits(result.user.credits);
+        console.log('💳 Credits refreshed from PostgreSQL:', result.user.credits);
       }
-      
-      console.log('🔄 Credits refreshed:', updatedCredits);
-      setUserCredits(updatedCredits);
     } catch (error) {
-      console.error('Failed to refresh credits:', error);
+      console.error('Failed to refresh credits from backend:', error);
     }
-  }, [user]);
+  }, [user?.id]);
 
-  // Update credits (deduct when starting interview)
+  // Update credits via backend API (deduct when starting interview)
   const updateCredits = useCallback(async (action: 'use' | 'restore') => {
     if (!isSignedIn || !user) {
       throw new Error('User not authenticated');
@@ -89,26 +100,37 @@ export const useAuthCheck = () => {
 
     try {
       if (action === 'use') {
-        // Optimistic update - deduct credit locally
-        const newCredits = userCredits - 1;
-        setUserCredits(newCredits);
+        // Call backend to consume credit
+        console.log('💳 Consuming credit via backend...');
+        const response = await apiService.consumeCredit(user.id);
         
-        // Note: In production, this should trigger a serverless function
-        // that uses Clerk Admin API to update user metadata
-        
-        return newCredits;
+        if (response.status === 'success') {
+          const newCredits = response.newCredits ?? userCredits - 1;
+          setUserCredits(newCredits);
+          console.log('✅ Credit consumed, new balance:', newCredits);
+          return newCredits;
+        } else {
+          throw new Error(response.message || 'Failed to consume credit');
+        }
       } else {
-        // Restore credit (add back)
-        const newCredits = userCredits + 1;
-        setUserCredits(newCredits);
-        await refreshCredits();
-        return newCredits;
+        // Call backend to restore credit
+        console.log('💳 Restoring credit via backend...');
+        const response = await apiService.restoreCredit(user.id, 'Interview cancelled');
+        
+        if (response.status === 'success') {
+          const newCredits = response.newCredits ?? userCredits + 1;
+          setUserCredits(newCredits);
+          console.log('✅ Credit restored, new balance:', newCredits);
+          return newCredits;
+        } else {
+          throw new Error(response.message || 'Failed to restore credit');
+        }
       }
     } catch (error) {
       console.error('Failed to update credits:', error);
       throw error;
     }
-  }, [isSignedIn, user, userCredits, refreshCredits]);
+  }, [isSignedIn, user, userCredits]);
 
   return {
     isSignedIn,
@@ -119,5 +141,7 @@ export const useAuthCheck = () => {
     setShowCreditsModal,
     updateCredits,
     refreshCredits,
+    isSynced, // Indicates if user has been synced to backend database
+    dbUser,   // User data from backend database (includes UUID, full profile)
   };
 };
