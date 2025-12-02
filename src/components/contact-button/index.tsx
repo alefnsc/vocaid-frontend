@@ -22,11 +22,12 @@ const ContactButton: React.FC = () => {
     data: { 'g-recaptcha-response': executeRecaptcha }
   });
   const [isOpen, setIsOpen] = useState(false);
+  const [subject, setSubject] = useState('feedback');
   const [message, setMessage] = useState('');
   const [touched, setTouched] = useState(false);
 
-  // Only show on home (/) and feedback (/feedback) pages
-  const allowedPaths = ['/', '/feedback'];
+  // Only show on specific pages (home, feedback, about, credits)
+  const allowedPaths = ['/', '/feedback', '/about', '/credits'];
   const shouldShow = allowedPaths.includes(location.pathname);
 
   const userName = user?.fullName || user?.firstName || 'User';
@@ -88,6 +89,7 @@ const ContactButton: React.FC = () => {
 
   const handleClose = () => {
     setIsOpen(false);
+    setSubject('feedback');
     setMessage('');
     setTouched(false);
   };
@@ -165,7 +167,7 @@ const ContactButton: React.FC = () => {
             {/* Form - using Formspree's form handling */}
             <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4">
               {/* Hidden fields for Formspree - these ensure values are always submitted */}
-              <input type="hidden" name="_subject" value={`Voxly Feedback from ${userName}`} />
+              <input type="hidden" name="_subject" value={`Voxly ${subject.charAt(0).toUpperCase() + subject.slice(1)} from ${userName}`} />
               <input type="hidden" name="name" value={userName} />
               <input type="hidden" name="email" value={userEmail} />
               
@@ -200,6 +202,27 @@ const ContactButton: React.FC = () => {
                     </p>
                   )}
                 </div>
+              </div>
+
+              {/* Subject Dropdown */}
+              <div>
+                <label htmlFor="contact-subject" className="block text-sm font-medium text-gray-700 mb-1">
+                  Subject
+                </label>
+                <select
+                  id="contact-subject"
+                  name="subject"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white"
+                >
+                  <option value="feedback">Feedback</option>
+                  <option value="general">General Inquiry</option>
+                  <option value="support">Technical Support</option>
+                  <option value="billing">Billing Question</option>
+                  <option value="partnership">Partnership Opportunity</option>
+                  <option value="other">Other</option>
+                </select>
               </div>
 
               {/* Message Input */}

@@ -107,12 +107,15 @@ export interface InterviewDetail extends InterviewSummary {
 
 export interface PaymentHistoryItem {
     id: string;
-    amount: number;
-    currency: string;
-    credits: number;
+    packageId?: string;
+    packageName: string;
+    creditsAmount: number;
+    amountUSD: number;
+    amountBRL: number;
     status: string;
+    statusDetail?: string;
+    paidAt?: string;
     createdAt: string;
-    paymentMethod: string;
 }
 
 export interface ScoreDataPoint {

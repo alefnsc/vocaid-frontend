@@ -1,6 +1,7 @@
 'use client'
 
 import { DefaultLayout } from 'components/default-layout'
+import ContactButton from 'components/contact-button'
 
 export default function About() {
   return (
@@ -136,6 +137,9 @@ export default function About() {
           </a>
         </div>
       </div>
+      
+      {/* Contact Button */}
+      <ContactButton />
     </DefaultLayout>
   )
 }

@@ -12,6 +12,7 @@ import Dashboard from './pages/Dashboard';
 import InterviewDetails from './pages/InterviewDetails';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Credits from './pages/Credits';
 import InterviewSetup from './pages/InterviewSetup';
 import { ProtectedInterviewRoute } from './components/protected-interview-route';
 import ErrorBoundary from './components/error-boundary';
@@ -51,6 +52,7 @@ const App: React.FC = () => {
                 {/* Static Pages */}
                 <Route path="about" element={<About />} />
                 <Route path="contact" element={<Contact />} />
+                <Route path="credits" element={<Credits />} />
                 {/* Payment result routes */}
                 <Route path="payment/success" element={<PaymentResult />} />
                 <Route path="payment/failure" element={<PaymentResult />} />

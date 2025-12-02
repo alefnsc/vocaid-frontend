@@ -34,6 +34,40 @@ export default function PaymentResult() {
   const [creditsVerified, setCreditsVerified] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [pollAttempts, setPollAttempts] = useState(0)
+  const [isPopup, setIsPopup] = useState(false)
+
+  // Check if we're in a popup and handle redirect to opener
+  useEffect(() => {
+    const isInPopup = window.opener !== null && window.opener !== window
+    setIsPopup(isInPopup)
+
+    if (isInPopup) {
+      console.log('📦 Payment result loaded in popup, will redirect opener...')
+      
+      // Build the redirect URL with all query params
+      const currentUrl = window.location.href
+      
+      try {
+        // Try to redirect the opener window
+        if (window.opener && !window.opener.closed) {
+          // Navigate the opener to this payment result page
+          window.opener.location.href = currentUrl
+          
+          // Close this popup after a short delay
+          setTimeout(() => {
+            window.close()
+          }, 500)
+        }
+      } catch (e) {
+        // Cross-origin restriction - opener may be on different domain
+        console.warn('Could not access opener window:', e)
+        // In this case, just close the popup and let the polling handle it
+        setTimeout(() => {
+          window.close()
+        }, 2000)
+      }
+    }
+  }, [])
 
   // Poll for credits update from backend PostgreSQL (source of truth)
   const pollForCredits = useCallback(async () => {
@@ -163,6 +197,27 @@ export default function PaymentResult() {
 
   const content = getStatusContent()
   const currentCredits = (user?.publicMetadata?.credits as number) || 0
+
+  // If we're in a popup, show a brief message while redirecting
+  if (isPopup) {
+    return (
+      <DefaultLayout className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+        <div className="max-w-md w-full mx-4 p-8 rounded-2xl border border-gray-200 bg-white shadow-xl">
+          <div className="flex flex-col items-center text-center space-y-6">
+            <div className="p-5 rounded-full bg-purple-100">
+              <Loader2 className="w-16 h-16 text-purple-600 animate-spin" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">
+              Redirecting...
+            </h1>
+            <p className="text-gray-600 leading-relaxed">
+              Payment completed! Returning to your browser...
+            </p>
+          </div>
+        </div>
+      </DefaultLayout>
+    )
+  }
 
   return (
     <DefaultLayout className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">

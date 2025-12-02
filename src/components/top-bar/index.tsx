@@ -120,11 +120,14 @@ const TopBar: React.FC = () => {
             {user ? (
               <div className="hidden md:flex items-center gap-3">
                 {/* Credits Display - Desktop */}
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 border border-purple-200 rounded-full">
+                <Link 
+                  to="/credits"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-50 border border-purple-200 rounded-full hover:bg-purple-100 hover:border-purple-300 transition-colors"
+                >
                   <Coins className="w-4 h-4 text-purple-600" />
                   <span className="text-sm font-semibold text-purple-700">{userCredits}</span>
                   <span className="text-xs text-purple-500 hidden lg:inline">credits</span>
-                </div>
+                </Link>
                 {/* User name and avatar */}
                 <div className="flex items-center gap-2 pl-2 border-l border-gray-200">
                   <span className="text-sm font-medium text-gray-700">
@@ -207,11 +210,16 @@ const TopBar: React.FC = () => {
                 </div>
               </div>
               {/* Credits Display - Mobile */}
-              <div className="mt-4 flex items-center gap-2 px-4 py-3 bg-purple-50 border border-purple-200 rounded-xl">
+              <Link
+                to="/credits"
+                onClick={closeMobileMenu}
+                className="mt-4 flex items-center gap-2 px-4 py-3 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 hover:border-purple-300 transition-colors"
+                tabIndex={isMobileMenuOpen ? 0 : -1}
+              >
                 <Coins className="w-5 h-5 text-purple-600" />
                 <span className="text-base font-semibold text-purple-700">{userCredits}</span>
                 <span className="text-sm text-purple-500">credits available</span>
-              </div>
+              </Link>
             </div>
           )}
 
