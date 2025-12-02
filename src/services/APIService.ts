@@ -81,15 +81,28 @@ export interface DashboardStats {
 export interface InterviewSummary {
     id: string;
     retellCallId: string;
-    position: string;
-    company: string;
+    jobTitle: string;      // Backend field name
+    companyName: string;   // Backend field name
     createdAt: string;
-    duration: number; // in minutes
-    overallScore: number | null;
-    status: 'completed' | 'in_progress' | 'cancelled';
+    callDuration: number | null; // in milliseconds from backend
+    score: number | null;  // Backend field name
+    status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+    // Aliases for backward compatibility
+    position?: string;
+    company?: string;
+    duration?: number;
+    overallScore?: number | null;
 }
 
 export interface InterviewDetail extends InterviewSummary {
+    jobDescription?: string;
+    resumeData?: string | null;
+    resumeFileName?: string | null;
+    resumeMimeType?: string | null;
+    feedbackPdf?: string | null;
+    feedbackText?: string | null;
+    startedAt?: string | null;
+    endedAt?: string | null;
     feedback: {
         overallScore: number;
         contentScore: number;
@@ -129,6 +142,24 @@ export interface SpendingDataPoint {
     amount: number;
 }
 
+export interface CreateInterviewData {
+    jobTitle: string;
+    companyName: string;
+    jobDescription: string;
+    resumeData?: string;
+    resumeFileName?: string;
+    resumeMimeType?: string;
+}
+
+export interface CreatedInterview {
+    id: string;
+    userId: string;
+    jobTitle: string;
+    companyName: string;
+    status: string;
+    createdAt: string;
+}
+
 class APIService {
     private retellWebClient: RetellWebClient;
 
@@ -142,7 +173,112 @@ class APIService {
         });
     }
 
-    async registerCall(body: MainInterface): Promise<RegisterCallResponse> {
+    /**
+     * Create an interview record in the database
+     */
+    async createInterview(userId: string, data: CreateInterviewData): Promise<CreatedInterview> {
+        console.log('📝 Creating interview record:', {
+            position: data.jobTitle,
+            company: data.companyName,
+            userId: userId ? '✅ Present' : '❌ Missing'
+        });
+        
+        const response = await fetch(`${BACKEND_URL}/api/interviews`, {
+            method: "POST",
+            headers: getHeaders(userId),
+            body: JSON.stringify(data),
+        });
+        
+        if (!response.ok) {
+            console.error('❌ Interview creation failed:', response.status);
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || `Error creating interview: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log('✅ Interview created:', {
+            interview_id: result.data?.id,
+            status: result.status
+        });
+        
+        return result.data;
+    }
+
+    /**
+     * Link Retell call ID to existing interview
+     */
+    async linkRetellCallToInterview(interviewId: string, retellCallId: string, userId: string): Promise<void> {
+        console.log('🔗 Linking Retell call to interview:', { interviewId, retellCallId });
+        
+        const response = await fetch(`${BACKEND_URL}/api/interviews/${interviewId}`, {
+            method: "PATCH",
+            headers: getHeaders(userId),
+            body: JSON.stringify({
+                retellCallId,
+                status: 'IN_PROGRESS',
+                startedAt: new Date().toISOString()
+            }),
+        });
+        
+        if (!response.ok) {
+            console.error('❌ Failed to link Retell call:', response.status);
+            // Don't throw - interview can still proceed
+        } else {
+            console.log('✅ Retell call linked to interview');
+        }
+    }
+
+    /**
+     * Complete interview with results
+     */
+    async completeInterview(interviewId: string, userId: string, results: {
+        score?: number;
+        feedbackText?: string;
+        callDuration?: number;
+    }): Promise<void> {
+        console.log('✅ Completing interview:', { interviewId });
+        
+        const response = await fetch(`${BACKEND_URL}/api/interviews/${interviewId}`, {
+            method: "PATCH",
+            headers: getHeaders(userId),
+            body: JSON.stringify({
+                status: 'COMPLETED',
+                endedAt: new Date().toISOString(),
+                ...results
+            }),
+        });
+        
+        if (!response.ok) {
+            console.error('❌ Failed to complete interview:', response.status);
+        } else {
+            console.log('✅ Interview marked as completed');
+        }
+    }
+
+    /**
+     * Cancel interview (early termination)
+     */
+    async cancelInterview(interviewId: string, userId: string, callDuration?: number): Promise<void> {
+        console.log('🚫 Cancelling interview:', { interviewId, callDuration });
+        
+        const response = await fetch(`${BACKEND_URL}/api/interviews/${interviewId}`, {
+            method: "PATCH",
+            headers: getHeaders(userId),
+            body: JSON.stringify({
+                status: 'CANCELLED',
+                endedAt: new Date().toISOString(),
+                callDuration
+            }),
+        });
+        
+        if (!response.ok) {
+            console.error('❌ Failed to cancel interview:', response.status);
+        } else {
+            console.log('✅ Interview marked as cancelled');
+        }
+    }
+
+    async registerCall(body: MainInterface): Promise<RegisterCallResponse & { interviewId?: string }> {
         // Backend endpoint required for Retell API integration
         console.log('📞 Registering call with backend:', {
             candidate: body.metadata.first_name,
@@ -151,6 +287,25 @@ class APIService {
             userId: body.userId ? '✅ Present' : '❌ Missing'
         });
         
+        // Step 1: Create interview record in database
+        let interviewId: string | undefined;
+        if (body.userId) {
+            try {
+                const interview = await this.createInterview(body.userId, {
+                    jobTitle: body.metadata.job_title,
+                    companyName: body.metadata.company_name,
+                    jobDescription: body.metadata.job_description,
+                    resumeData: body.metadata.interviewee_cv,
+                });
+                interviewId = interview.id;
+                console.log('✅ Interview record created:', interviewId);
+            } catch (err) {
+                console.error('⚠️ Failed to create interview record, continuing with call:', err);
+                // Don't fail the call if interview creation fails
+            }
+        }
+        
+        // Step 2: Register Retell call
         const response = await fetch(`${BACKEND_URL}/register-call`, {
             method: "POST",
             headers: getHeaders(body.userId),
@@ -168,34 +323,28 @@ class APIService {
             status: result.status
         });
         
-        return result;
-    }
-
-    async getUserInfo(userId: string): Promise<UserInfoResponse> {
-        // Note: This method may be deprecated - user info should come from Clerk
-        console.log('🌐 APIService: Making request to getUserInfo for user:', userId);
-        console.log('⚠️ Consider using Clerk user data instead of backend API');
-        
-        const url = `${BACKEND_URL}/get-user-info/${userId}`;
-        console.log('🌐 APIService: Full URL:', url);
-        
-        const response = await fetch(url, {
-            method: "GET",
-            headers: getHeaders(),
-        });
-        
-        console.log('🌐 APIService: Response status:', response.status);
-        console.log('🌐 APIService: Response ok:', response.ok);
-        
-        if (!response.ok) {
-            console.error('🌐 APIService: Error response:', response.status, response.statusText);
-            throw new Error(`Error: ${response.status}`);
+        // Step 3: Link Retell call ID to interview record
+        if (interviewId && result.call_id && body.userId) {
+            try {
+                await this.linkRetellCallToInterview(interviewId, result.call_id, body.userId);
+            } catch (err) {
+                console.error('⚠️ Failed to link Retell call to interview:', err);
+                // Don't fail - interview can still proceed
+            }
         }
         
-        const data = await response.json();
-        console.log('🌐 APIService: Response data:', data);
-        
-        return data;
+        return { ...result, interviewId };
+    }
+
+    /**
+     * @deprecated Use Clerk user data instead - this endpoint no longer exists
+     * User information should be retrieved from:
+     * - useUser() hook from @clerk/clerk-react
+     * - getCurrentUser() method below for backend-synced data
+     */
+    async getUserInfo(_userId: string): Promise<UserInfoResponse> {
+        console.warn('⚠️ getUserInfo is deprecated. Use Clerk user data or getCurrentUser() instead.');
+        throw new Error('getUserInfo is deprecated. Use Clerk user data or getCurrentUser() instead.');
     }
 
     async getCall(call_id: string): Promise<Response> {

@@ -9,10 +9,10 @@ export default function About() {
   const navigate = useNavigate()
 
   const features = [
-    { icon: MessageSquare, title: "Realistic AI Interviews", desc: "Natural conversation flow" },
-    { icon: BarChart3, title: "Performance Analytics", desc: "Track your progress" },
+    { icon: MessageSquare, title: "Realistic", desc: "Natural flow" },
+    { icon: BarChart3, title: "Analytics", desc: "Track your progress" },
     { icon: Clock, title: "Practice 24/7", desc: "No scheduling needed" },
-    { icon: Target, title: "Personalized Feedback", desc: "Actionable insights" },
+    { icon: Target, title: "Feedback", desc: "Actionable insights" },
     { icon: Briefcase, title: "Role-Specific", desc: "Tailored questions" },
     { icon: Coins, title: "Pay Per Use", desc: "No subscriptions" },
   ]
@@ -60,9 +60,9 @@ export default function About() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
             {features.map((feature, index) => (
-              <div key={index} className="voxly-card p-3 sm:p-4 text-center">
-                <div className="inline-flex p-2 bg-purple-100 rounded-lg mb-2">
-                  <feature.icon className="w-5 h-5 text-purple-600" />
+              <div key={index} className="voxly-card p-3 sm:p-4 flex flex-col items-center text-center">
+                <div className="inline-flex p-2 sm:p-3 bg-purple-100 rounded-xl mb-2 sm:mb-3">
+                  <feature.icon className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
                 </div>
                 <h3 className="font-medium text-gray-900 text-xs sm:text-sm mb-1">{feature.title}</h3>
                 <p className="text-xs text-gray-500">{feature.desc}</p>

@@ -5,43 +5,62 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useUser } from '@clerk/clerk-react'
 import { DefaultLayout } from 'components/default-layout'
 import Loading from 'components/loading'
+import ContactButton from 'components/contact-button'
+import PurpleButton from 'components/ui/purple-button'
+import StatsCard from 'components/ui/stats-card'
 import apiService, { InterviewDetail } from 'services/APIService'
-import { ArrowLeft } from 'lucide-react'
+import { 
+  ArrowLeft, 
+  Briefcase, 
+  Building2, 
+  Calendar, 
+  Clock, 
+  CheckCircle, 
+  AlertTriangle, 
+  Lightbulb, 
+  BarChart3, 
+  MessageSquare,
+  FileText,
+  Target,
+  Mic,
+  Award,
+  TrendingUp,
+  Hash,
+  Plus,
+  ChevronRight,
+  Download
+} from 'lucide-react'
 
-// Score badge component
-const ScoreBadge: React.FC<{ score: number | null; size?: 'sm' | 'lg' }> = ({ score, size = 'sm' }) => {
-  if (score === null) {
-    return <span className={`score-badge bg-gray-100 text-gray-600 ${size === 'lg' ? 'text-lg px-4 py-2' : ''}`}>N/A</span>
-  }
-
-  let badgeClass = 'score-badge-needs-improvement'
-  if (score >= 80) badgeClass = 'score-badge-excellent'
-  else if (score >= 60) badgeClass = 'score-badge-good'
-  else if (score >= 40) badgeClass = 'score-badge-average'
-
-  return (
-    <span className={`score-badge ${badgeClass} ${size === 'lg' ? 'text-lg px-4 py-2' : ''}`}>
-      {score}%
-    </span>
-  )
+// Format duration from milliseconds to mm:ss
+const formatDuration = (ms: number | null | undefined): string => {
+  if (!ms || ms <= 0) return '0:00'
+  const totalSeconds = Math.floor(ms / 1000)
+  const mins = Math.floor(totalSeconds / 60)
+  const secs = totalSeconds % 60
+  return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
-// Score progress bar component
-const ScoreBar: React.FC<{ label: string; score: number }> = ({ label, score }) => {
-  let color = 'bg-red-500'
-  if (score >= 80) color = 'bg-green-500'
-  else if (score >= 60) color = 'bg-blue-500'
-  else if (score >= 40) color = 'bg-yellow-500'
+// Score progress bar with purple theme
+const ScoreBar: React.FC<{ label: string; score: number; icon: React.ReactNode }> = ({ label, score, icon }) => {
+  let barColor = 'bg-red-500'
+  if (score >= 80) barColor = 'bg-green-500'
+  else if (score >= 60) barColor = 'bg-purple-500'
+  else if (score >= 40) barColor = 'bg-yellow-500'
 
   return (
-    <div className="mb-4">
-      <div className="flex justify-between mb-1">
-        <span className="text-sm font-medium text-gray-700">{label}</span>
-        <span className="text-sm font-medium text-gray-700">{score}%</span>
+    <div className="mb-5 last:mb-0">
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          <div className="p-1.5 bg-purple-100 rounded-lg">
+            {icon}
+          </div>
+          <span className="text-sm font-medium text-gray-700">{label}</span>
+        </div>
+        <span className="text-sm font-bold text-gray-900">{score}%</span>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2">
+      <div className="w-full bg-gray-200 rounded-full h-2.5">
         <div
-          className={`h-2 rounded-full transition-all duration-500 ${color}`}
+          className={`h-2.5 rounded-full transition-all duration-500 ${barColor}`}
           style={{ width: `${score}%` }}
         />
       </div>
@@ -49,33 +68,12 @@ const ScoreBar: React.FC<{ label: string; score: number }> = ({ label, score }) 
   )
 }
 
-// Feedback section component
-const FeedbackSection: React.FC<{ 
-  title: string; 
-  items: string[]; 
-  icon: React.ReactNode;
-  colorClass: string 
-}> = ({ title, items, icon, colorClass }) => (
-  <div className="voxly-card">
-    <div className="flex items-center gap-2 mb-4">
-      <div className={`p-2 rounded-lg ${colorClass}`}>
-        {icon}
-      </div>
-      <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-    </div>
-    {items.length === 0 ? (
-      <p className="text-gray-500 italic">No {title.toLowerCase()} recorded</p>
-    ) : (
-      <ul className="space-y-2">
-        {items.map((item, index) => (
-          <li key={index} className="flex items-start gap-2">
-            <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${colorClass.replace('bg-opacity-10', '').replace('text-', 'bg-')}`} />
-            <span className="text-gray-700">{item}</span>
-          </li>
-        ))}
-      </ul>
-    )}
-  </div>
+// Feedback list item
+const FeedbackItem: React.FC<{ text: string; colorClass: string }> = ({ text, colorClass }) => (
+  <li className="flex items-start gap-3 py-2 first:pt-0 last:pb-0">
+    <span className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 ${colorClass}`} />
+    <span className="text-gray-700 text-sm sm:text-base">{text}</span>
+  </li>
 )
 
 export default function InterviewDetails() {
@@ -115,212 +113,400 @@ export default function InterviewDetails() {
     }
   }, [isLoaded, isSignedIn, user?.id, id, navigate, fetchInterviewDetails])
 
-  // Format date for display
+  // Format date for display (includes year)
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+      year: 'numeric'
     })
   }
 
+  // Get performance label
+  const getPerformanceLabel = (score: number) => {
+    if (score >= 80) return { text: 'Excellent Performance!', color: 'text-green-600' }
+    if (score >= 60) return { text: 'Good Performance', color: 'text-blue-600' }
+    if (score >= 40) return { text: 'Average Performance', color: 'text-yellow-600' }
+    return { text: 'Needs Improvement', color: 'text-red-600' }
+  }
+
+  // Download resume
+  const handleDownloadResume = () => {
+    if (!interview?.resumeData || !interview?.resumeFileName) return
+    
+    try {
+      // Decode base64 and create blob
+      const byteCharacters = atob(interview.resumeData)
+      const byteNumbers = new Array(byteCharacters.length)
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i)
+      }
+      const byteArray = new Uint8Array(byteNumbers)
+      const blob = new Blob([byteArray], { type: interview.resumeMimeType || 'application/pdf' })
+      
+      // Create download link
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = interview.resumeFileName
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error('Failed to download resume:', err)
+    }
+  }
+
+  // Download feedback PDF
+  const handleDownloadFeedback = () => {
+    if (!interview?.feedbackPdf) return
+    
+    try {
+      // Decode base64 and create blob
+      const byteCharacters = atob(interview.feedbackPdf)
+      const byteNumbers = new Array(byteCharacters.length)
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i)
+      }
+      const byteArray = new Uint8Array(byteNumbers)
+      const blob = new Blob([byteArray], { type: 'application/pdf' })
+      
+      // Create download link
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `Interview_Feedback_${interview.jobTitle || 'Report'}.pdf`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error('Failed to download feedback:', err)
+    }
+  }
+
   if (!isLoaded || isLoading) {
-    return <Loading />
+    return (
+      <DefaultLayout className="flex flex-col overflow-hidden bg-gray-50">
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Loading />
+        </div>
+      </DefaultLayout>
+    )
   }
 
   if (error || !interview) {
     return (
-      <DefaultLayout className="bg-gray-50">
+      <DefaultLayout className="flex flex-col overflow-hidden bg-gray-50">
         <div className="page-container py-6 sm:py-8">
-          <div className="text-center py-12">
-            <div className="text-red-500 mb-4">
-              <svg className="w-16 h-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-            </div>
+          <div className="voxly-card text-center py-12">
+            <AlertTriangle className="w-16 h-16 text-red-400 mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
               {error || 'Interview not found'}
             </h2>
             <p className="text-gray-600 mb-6">
               We couldn't find the interview you're looking for.
             </p>
-            <button
+            <PurpleButton
+              variant="primary"
+              size="lg"
               onClick={() => navigate('/')}
-              className="btn-voxly"
             >
+              <ArrowLeft className="w-5 h-5" />
               Back to Dashboard
-            </button>
+            </PurpleButton>
           </div>
         </div>
+        <ContactButton />
       </DefaultLayout>
     )
   }
 
+  const performance = interview.feedback ? getPerformanceLabel(interview.feedback.overallScore) : 
+                       interview.score ? getPerformanceLabel(interview.score) : null
+
+  // Get display values (use correct backend field names)
+  const displayPosition = interview.jobTitle || interview.position || 'N/A'
+  const displayCompany = interview.companyName || interview.company || 'N/A'
+  const displayDuration = formatDuration(interview.callDuration)
+  const displayScore = interview.score ?? interview.feedback?.overallScore ?? null
+
   return (
-    <DefaultLayout className="bg-gray-50">
+    <DefaultLayout className="flex flex-col overflow-hidden bg-gray-50">
       <div className="page-container py-6 sm:py-8">
         {/* Header */}
-        <div className="mb-6 sm:mb-8">
-          <button
-            onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-4"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span>Back to Dashboard</span>
-          </button>
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6 sm:mb-8">
+          <div className="flex-1">
+            
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              Interview <span className="text-voxly-purple">Details</span>
+            </h1>
+            <p className="text-gray-600 mt-1">
+              Review your interview performance and feedback
+            </p>
+          </div>
           
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-                Interview <span className="text-voxly-purple">Details</span>
-              </h1>
-              <p className="text-gray-600">
-                {interview.position} at {interview.company}
-              </p>
-              <p className="text-sm text-gray-500 mt-1">
-                {formatDate(interview.createdAt)} • {interview.duration} minutes
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              <ScoreBadge score={interview.overallScore} size="lg" />
-              <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                interview.status === 'completed' ? 'bg-green-100 text-green-800' :
-                interview.status === 'in_progress' ? 'bg-yellow-100 text-yellow-800' :
-                'bg-gray-100 text-gray-800'
-              }`}>
-                {interview.status.replace('_', ' ')}
-              </span>
-            </div>
+          {/* Status Badge and Download Buttons */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            {/* Download Resume Button */}
+            {interview.resumeData && (
+              <button
+                onClick={handleDownloadResume}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors"
+              >
+                <Download className="w-4 h-4" />
+                Resume
+              </button>
+            )}
+            
+            {/* Download Feedback Button */}
+            {interview.feedbackPdf && (
+              <button
+                onClick={handleDownloadFeedback}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-full text-sm font-medium transition-colors"
+              >
+                <Download className="w-4 h-4" />
+                Feedback
+              </button>
+            )}
+            
           </div>
         </div>
 
-        {/* Overall Score and Breakdown */}
+        {/* Interview Info Stats */}
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-6 sm:mb-8">
+          <StatsCard 
+            title="Position" 
+            value={displayPosition} 
+            icon={<Briefcase />}
+            size="small"
+          />
+          <StatsCard 
+            title="Company" 
+            value={displayCompany} 
+            icon={<Building2 />}
+            size="small"
+          />
+          <StatsCard 
+            title="Date" 
+            value={formatDate(interview.createdAt)} 
+            icon={<Calendar />}
+            size="small"
+          />
+          <StatsCard 
+            title="Duration" 
+            value={displayDuration} 
+            icon={<Clock />} 
+          />
+          <StatsCard 
+            title="Score" 
+            value={displayScore !== null ? displayScore : 'N/A'} 
+            icon={<Award />} 
+          />
+        </div>
+
+        {/* Score and Breakdown Section */}
         {interview.feedback && (
           <>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-              {/* Overall Score Card */}
-              <div className="voxly-card lg:col-span-1 flex flex-col items-center justify-center text-center py-8">
-                <p className="text-sm text-gray-500 uppercase tracking-wide mb-2">Overall Score</p>
-                <div className="relative w-32 h-32 mb-4">
-                  <svg className="w-full h-full transform -rotate-90">
-                    <circle
-                      cx="64"
-                      cy="64"
-                      r="56"
-                      fill="none"
-                      stroke="#e5e7eb"
-                      strokeWidth="12"
-                    />
-                    <circle
-                      cx="64"
-                      cy="64"
-                      r="56"
-                      fill="none"
-                      stroke="#5417C9"
-                      strokeWidth="12"
-                      strokeLinecap="round"
-                      strokeDasharray={`${(interview.feedback.overallScore / 100) * 352} 352`}
-                    />
-                  </svg>
-                  <span className="absolute inset-0 flex items-center justify-center text-3xl font-bold text-gray-900">
-                    {interview.feedback.overallScore}%
-                  </span>
+            {/* Overall Score Section */}
+            <div className="mb-6 sm:mb-8">
+              <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                <Award className="w-5 h-5 text-voxly-purple" />
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Performance Score</h2>
+              </div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+                {/* Overall Score Card */}
+                <div className="voxly-card flex flex-col items-center justify-center text-center py-8">
+                  <div className="relative w-36 h-36 mb-4">
+                    <svg className="w-full h-full transform -rotate-90" viewBox="0 0 128 128">
+                      <circle
+                        cx="64"
+                        cy="64"
+                        r="56"
+                        fill="none"
+                        stroke="#e5e7eb"
+                        strokeWidth="12"
+                      />
+                      <circle
+                        cx="64"
+                        cy="64"
+                        r="56"
+                        fill="none"
+                        stroke="#5417C9"
+                        strokeWidth="12"
+                        strokeLinecap="round"
+                        strokeDasharray={`${(interview.feedback.overallScore / 100) * 352} 352`}
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className="text-4xl font-bold text-gray-900">{interview.feedback.overallScore}</span>
+                      <span className="text-sm text-gray-500">out of 100</span>
+                    </div>
+                  </div>
+                  <p className={`font-semibold ${performance?.color}`}>
+                    {performance?.text}
+                  </p>
                 </div>
-                <p className="text-gray-600">
-                  {interview.feedback.overallScore >= 80 ? 'Excellent Performance!' :
-                   interview.feedback.overallScore >= 60 ? 'Good Performance' :
-                   interview.feedback.overallScore >= 40 ? 'Average Performance' :
-                   'Needs Improvement'}
-                </p>
-              </div>
 
-              {/* Score Breakdown Card */}
-              <div className="voxly-card lg:col-span-2">
-                <h3 className="text-lg font-semibold text-gray-900 mb-6">Score Breakdown</h3>
-                <ScoreBar label="Content Quality" score={interview.feedback.contentScore} />
-                <ScoreBar label="Communication" score={interview.feedback.communicationScore} />
-                <ScoreBar label="Confidence" score={interview.feedback.confidenceScore} />
-                <ScoreBar label="Technical Knowledge" score={interview.feedback.technicalScore} />
+                {/* Score Breakdown Card */}
+                <div className="voxly-card lg:col-span-2">
+                  <div className="flex items-center gap-2 mb-5">
+                    <BarChart3 className="w-5 h-5 text-purple-600" />
+                    <h3 className="text-lg font-semibold text-gray-900">Score Breakdown</h3>
+                  </div>
+                  <ScoreBar 
+                    label="Content Quality" 
+                    score={interview.feedback.contentScore} 
+                    icon={<FileText className="w-4 h-4 text-purple-600" />}
+                  />
+                  <ScoreBar 
+                    label="Communication" 
+                    score={interview.feedback.communicationScore} 
+                    icon={<MessageSquare className="w-4 h-4 text-purple-600" />}
+                  />
+                  <ScoreBar 
+                    label="Confidence" 
+                    score={interview.feedback.confidenceScore} 
+                    icon={<TrendingUp className="w-4 h-4 text-purple-600" />}
+                  />
+                  <ScoreBar 
+                    label="Technical Knowledge" 
+                    score={interview.feedback.technicalScore} 
+                    icon={<Target className="w-4 h-4 text-purple-600" />}
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Summary */}
-            <div className="voxly-card mb-6 sm:mb-8">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Summary</h3>
-              <p className="text-gray-700 leading-relaxed">{interview.feedback.summary}</p>
+            {/* Summary Section */}
+            <div className="mb-6 sm:mb-8">
+              <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                <Mic className="w-5 h-5 text-voxly-purple" />
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Interview Summary</h2>
+              </div>
+              <div className="voxly-card">
+                <p className="text-gray-700 leading-relaxed">{interview.feedback.summary}</p>
+              </div>
             </div>
 
-            {/* Feedback Sections */}
+            {/* Feedback Sections Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-              <FeedbackSection
-                title="Strengths"
-                items={interview.feedback.strengths}
-                colorClass="bg-green-100 text-green-600"
-                icon={
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                }
-              />
-              <FeedbackSection
-                title="Areas for Improvement"
-                items={interview.feedback.improvements}
-                colorClass="bg-yellow-100 text-yellow-600"
-                icon={
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                  </svg>
-                }
-              />
-              <FeedbackSection
-                title="Recommendations"
-                items={interview.feedback.recommendations}
-                colorClass="bg-purple-100 text-purple-600"
-                icon={
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                }
-              />
+              {/* Strengths */}
+              <div>
+                <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Strengths</h2>
+                </div>
+                <div className="voxly-card h-full">
+                  {interview.feedback.strengths.length === 0 ? (
+                    <div className="text-center py-6">
+                      <CheckCircle className="w-10 h-10 text-gray-300 mx-auto mb-2" />
+                      <p className="text-gray-500 text-sm">No strengths recorded</p>
+                    </div>
+                  ) : (
+                    <ul className="divide-y divide-gray-100">
+                      {interview.feedback.strengths.map((item, index) => (
+                        <FeedbackItem key={index} text={item} colorClass="bg-green-500" />
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+
+              {/* Areas for Improvement */}
+              <div>
+                <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                  <AlertTriangle className="w-5 h-5 text-yellow-600" />
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Improvements</h2>
+                </div>
+                <div className="voxly-card h-full">
+                  {interview.feedback.improvements.length === 0 ? (
+                    <div className="text-center py-6">
+                      <AlertTriangle className="w-10 h-10 text-gray-300 mx-auto mb-2" />
+                      <p className="text-gray-500 text-sm">No improvements needed</p>
+                    </div>
+                  ) : (
+                    <ul className="divide-y divide-gray-100">
+                      {interview.feedback.improvements.map((item, index) => (
+                        <FeedbackItem key={index} text={item} colorClass="bg-yellow-500" />
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+
+              {/* Recommendations */}
+              <div>
+                <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                  <Lightbulb className="w-5 h-5 text-purple-600" />
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Recommendations</h2>
+                </div>
+                <div className="voxly-card h-full">
+                  {interview.feedback.recommendations.length === 0 ? (
+                    <div className="text-center py-6">
+                      <Lightbulb className="w-10 h-10 text-gray-300 mx-auto mb-2" />
+                      <p className="text-gray-500 text-sm">No recommendations</p>
+                    </div>
+                  ) : (
+                    <ul className="divide-y divide-gray-100">
+                      {interview.feedback.recommendations.map((item, index) => (
+                        <FeedbackItem key={index} text={item} colorClass="bg-purple-500" />
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
             </div>
           </>
         )}
 
-        {/* No feedback message */}
+        {/* No Feedback Message */}
         {!interview.feedback && (
-          <div className="voxly-card text-center py-12 mb-6 sm:mb-8">
-            <div className="text-gray-400 mb-4">
-              <svg className="w-16 h-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
+          <div className="mb-6 sm:mb-8">
+            <div className="flex items-center gap-2 mb-3 sm:mb-4">
+              <BarChart3 className="w-5 h-5 text-voxly-purple" />
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Performance Feedback</h2>
             </div>
-            <p className="text-gray-600">
-              {interview.status === 'in_progress' 
-                ? 'Feedback will be available once the interview is completed.'
-                : 'No feedback available for this interview.'}
-            </p>
+            <div className="voxly-card text-center py-12">
+              <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <p className="text-gray-600 mb-2">
+                {interview.status === 'IN_PROGRESS' 
+                  ? 'Feedback will be available once the interview is completed.'
+                  : 'No feedback available for this interview.'}
+              </p>
+              <p className="text-sm text-gray-400">
+                {interview.status === 'IN_PROGRESS' 
+                  ? 'Please complete your interview session to receive AI-generated feedback.'
+                  : 'This interview may have ended early or encountered an issue.'}
+              </p>
+            </div>
           </div>
         )}
 
-        {/* Interview Reference */}
-        <div className="voxly-card">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Interview Reference</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-            <div>
-              <p className="text-gray-500">Interview ID</p>
-              <p className="font-mono text-gray-700">{interview.id}</p>
+        {/* CTA Section */}
+        <div className="voxly-card bg-voxly-gradient text-white">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="text-center sm:text-left">
+              <h3 className="text-xl font-semibold">Ready for more practice?</h3>
+              <p className="text-purple-100 mt-1">Continue improving your interview skills with another session.</p>
             </div>
-            <div>
-              <p className="text-gray-500">Retell Call ID</p>
-              <p className="font-mono text-gray-700">{interview.retellCallId}</p>
-            </div>
+            <PurpleButton
+              variant="secondary"
+              size="lg"
+              onClick={() => navigate('/interview-setup')}
+              className="bg-white text-voxly-purple hover:bg-gray-100 border-0 whitespace-nowrap"
+            >
+              <Plus className="w-5 h-5" />
+              Start New Interview                 <ChevronRight className="w-4 h-4" />
+            </PurpleButton>
           </div>
         </div>
       </div>
+      
+      <ContactButton />
     </DefaultLayout>
   )
 }

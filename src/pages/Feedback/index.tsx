@@ -3,6 +3,7 @@ import jsPDF from "jspdf";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DefaultLayout } from 'components/default-layout'
 import { useEffect, useState, useCallback, useRef } from 'react';
+import { useUser } from '@clerk/clerk-react';
 import APIService from "services/APIService";
 import StarRating from 'components/star-rate/StarRating';
 import { Card } from "components/ui/card";
@@ -19,14 +20,15 @@ import PurpleButton from 'components/ui/purple-button';
 const Feedback = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useUser();
   const state = location.state;
   const { setStage, resetFlow } = useInterviewFlow();
-  
+
   // Set stage to feedback on mount
   useEffect(() => {
     setStage('feedback');
   }, [setStage]);
-  
+
   // State management
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +41,7 @@ const Feedback = () => {
   const [retryCount, setRetryCount] = useState(0);
   const MAX_RETRIES = 5;
   const RETRY_DELAY = 3000; // 3 seconds
-  
+
   // Prevent double fetching
   const hasFetched = useRef(false);
 
@@ -60,22 +62,22 @@ const Feedback = () => {
       setIsLoading(true);
       setError(null);
       setRetryCount(retry);
-      
+
       const response = await APIService.getFeedback(state.call_id);
-      
+
       // Check content type to avoid parsing HTML as JSON
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
         console.error('Received non-JSON response:', contentType);
         throw new Error('Server returned an invalid response. The backend may not be running or accessible.');
       }
-      
+
       const json = await response.json();
 
       // Handle transcript not ready - retry with delay
       if (!response.ok) {
         if (json.message?.includes('transcript not available') && retry < MAX_RETRIES) {
-          console.log(`⏳ Transcript not ready, retrying in ${RETRY_DELAY/1000}s... (attempt ${retry + 1}/${MAX_RETRIES})`);
+          console.log(`⏳ Transcript not ready, retrying in ${RETRY_DELAY / 1000}s... (attempt ${retry + 1}/${MAX_RETRIES})`);
           setTimeout(() => fetchFeedback(retry + 1), RETRY_DELAY);
           return;
         }
@@ -85,12 +87,12 @@ const Feedback = () => {
       // Set metadata from state
       setCandidateName(state?.metadata?.first_name || 'Candidate');
       setJobDescription(state?.metadata?.job_description || 'No job description available');
-      
+
       // Set feedback data - handle different response structures
       if (json.feedback) {
         setSummary(json.feedback.detailed_feedback || json.summary || '');
         setScore(String(json.feedback.overall_rating || 3));
-        
+
         // Format feedback from structured data
         const feedbackParts = [];
         if (json.feedback.strengths?.length) {
@@ -103,12 +105,40 @@ const Feedback = () => {
           feedbackParts.push('## Recommendations\n' + json.feedback.recommendations.map(r => `- ${r}`).join('\n'));
         }
         setFeedback(feedbackParts.join('\n\n') || json.feedback.detailed_feedback || '');
+        
+        // Save score to interview record if interview_id is available
+        const overallScore = json.feedback.overall_rating ? json.feedback.overall_rating * 20 : null; // Convert 1-5 to 0-100
+        if (state?.interview_id && user?.id && overallScore !== null) {
+          try {
+            await APIService.completeInterview(state.interview_id, user.id, {
+              score: overallScore,
+              feedbackText: feedbackParts.join('\n\n') || json.feedback.detailed_feedback || ''
+            });
+            console.log('✅ Interview score saved:', overallScore);
+          } catch (saveError) {
+            console.error('⚠️ Failed to save interview score:', saveError);
+          }
+        }
       } else {
         setSummary(json.summary || 'No summary available');
         setFeedback(json.feedback_text || 'No detailed feedback available');
         setScore(String(json.score || 3));
+        
+        // Save score for legacy response format
+        const legacyScore = json.score ? json.score * 20 : null; // Convert 1-5 to 0-100
+        if (state?.interview_id && user?.id && legacyScore !== null) {
+          try {
+            await APIService.completeInterview(state.interview_id, user.id, {
+              score: legacyScore,
+              feedbackText: json.feedback_text || ''
+            });
+            console.log('✅ Interview score saved (legacy):', legacyScore);
+          } catch (saveError) {
+            console.error('⚠️ Failed to save interview score:', saveError);
+          }
+        }
       }
-      
+
       setRetryCount(0); // Reset on success
     } catch (err: any) {
       console.error("Failed to fetch feedback:", err);
@@ -116,11 +146,11 @@ const Feedback = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [state]);
+  }, [state, user]);
 
   useEffect(() => {
     fetchFeedback();
-    
+
     // Cleanup function
     return () => {
       hasFetched.current = false;
@@ -133,13 +163,13 @@ const Feedback = () => {
     const pageHeight = 280;
     const margin = 15;
     const maxWidth = doc.internal.pageSize.getWidth() - (margin * 2);
-  
+
     const initializePage = () => {
       doc.setFillColor(255, 255, 255);
       doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), "F");
       doc.setTextColor(55, 65, 81); // gray-700
     };
-  
+
     const addText = (text: string, yPos: number, fontSize: number, isBold: boolean = false, color: number[] = [55, 65, 81]) => {
       doc.setFont("helvetica", isBold ? "bold" : "normal");
       doc.setFontSize(fontSize);
@@ -156,39 +186,39 @@ const Feedback = () => {
       });
       return y;
     };
-  
+
     initializePage();
-  
+
     // Title
     doc.setTextColor(88, 28, 135); // purple-800
     doc.setFontSize(22);
     doc.setFont("helvetica", "bold");
     doc.text("Interview Feedback Report", margin, y);
     y += 15;
-  
+
     // Candidate info
     addText(`Candidate: ${candidateName}`, y, 14, true, [31, 41, 55]);
     y += 10;
     addText(`Rating: ${rating}/5 stars`, y, 12, false, [107, 114, 128]);
     y += 15;
-  
+
     // Summary section
     addText("Summary", y, 16, true, [88, 28, 135]);
     y += 8;
     addText(summary.replace(/[#*]/g, ''), y, 11);
     y += 10;
-  
+
     // Feedback section
     addText("Detailed Feedback", y, 16, true, [88, 28, 135]);
     y += 8;
     addText(feedback.replace(/[#*-]/g, ''), y, 11);
     y += 10;
-  
+
     // Job Description
     addText("Job Description", y, 16, true, [88, 28, 135]);
     y += 8;
     addText(jobDescription, y, 11);
-  
+
     doc.save(`${candidateName.replace(/\s+/g, '_')}_feedback_report.pdf`);
   }, [candidateName, rating, summary, feedback, jobDescription]);
 
@@ -227,7 +257,7 @@ const Feedback = () => {
           </div>
           <h2 className="text-xl font-bold text-gray-900 mb-2">Generating Feedback</h2>
           <p className="text-gray-600 mb-2">
-            {retryCount > 0 
+            {retryCount > 0
               ? `Waiting for transcript... (attempt ${retryCount + 1}/${MAX_RETRIES})`
               : 'Analyzing your interview performance...'}
           </p>
@@ -247,7 +277,7 @@ const Feedback = () => {
           </div>
           <h2 className="text-xl font-bold text-gray-900 mb-2">Unable to Load Feedback</h2>
           <p className="text-gray-600 mb-6">{error}</p>
-          <Button 
+          <Button
             onClick={handleRetryInterview}
             className="bg-purple-600 hover:bg-purple-700 text-white"
           >
@@ -262,8 +292,8 @@ const Feedback = () => {
     <DefaultLayout className="flex flex-col overflow-hidden items-center bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen py-6 sm:py-10">
       {/* Breadcrumbs */}
       <div className="w-full max-w-5xl px-4 sm:px-6 lg:px-8 mb-6">
-        <InterviewBreadcrumbs 
-          currentStage="feedback" 
+        <InterviewBreadcrumbs
+          currentStage="feedback"
           showBackArrow={true}
         />
       </div>
@@ -273,24 +303,24 @@ const Feedback = () => {
         <h1 className='text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mt-4 sm:mt-6 mb-2'>
           Interview Feedback
         </h1>
-        
+
         {/* Candidate Name */}
         <p className='text-lg sm:text-xl font-medium text-purple-600 mb-2'>
           {candidateName}
         </p>
-        
+
         {/* Result Message */}
         <p className='text-base sm:text-lg text-gray-600 mb-4'>
           {getResultText()}
         </p>
-        
+
         {/* Star Rating */}
         <div className="flex justify-center items-center w-full mb-6">
           <StarRating score={score} onRatingChange={handleRatingChange} />
         </div>
-        
+
         <Separator className="bg-gray-200 mb-6" />
-        
+
         {/* Content Sections */}
         <div className="flex flex-col items-center space-y-6 w-full">
           {/* Summary Section */}
@@ -300,8 +330,8 @@ const Feedback = () => {
               Summary
             </h2>
             <TextBox>
-              <Markdown 
-                remarkPlugins={[remarkGfm]} 
+              <Markdown
+                remarkPlugins={[remarkGfm]}
                 className="prose prose-gray prose-sm sm:prose-base max-w-none
                   prose-headings:text-gray-800 prose-headings:font-semibold
                   prose-p:text-gray-600 prose-p:leading-relaxed
@@ -320,8 +350,8 @@ const Feedback = () => {
               Detailed Feedback
             </h2>
             <TextBox>
-              <Markdown 
-                remarkPlugins={[remarkGfm]} 
+              <Markdown
+                remarkPlugins={[remarkGfm]}
                 className="prose prose-gray prose-sm sm:prose-base max-w-none
                   prose-headings:text-gray-800 prose-headings:font-semibold
                   prose-p:text-gray-600 prose-p:leading-relaxed
@@ -334,7 +364,7 @@ const Feedback = () => {
           </div>
 
           <Separator className="bg-gray-200" />
-          
+
           {/* Job Description Section */}
           <div className="w-full">
             <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-3 flex items-center">
@@ -345,38 +375,39 @@ const Feedback = () => {
               <p className="text-gray-600 whitespace-pre-wrap">{jobDescription}</p>
             </TextBox>
           </div>
-          
+
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row justify-center w-full items-center gap-3 sm:gap-4 pt-4">
-            <Button 
-              className="w-full sm:w-auto px-6 py-3 flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-medium shadow-md hover:shadow-lg transition-all" 
+            <Button
+              className="w-full sm:w-auto px-6 py-3 flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-medium shadow-md hover:shadow-lg transition-all"
               onClick={handleDownloadTranscript}
               aria-label="Download transcript as PDF"
             >
               <Download className="w-4 h-4" />
               Download PDF Report
             </Button>
-            <Button 
-              className="w-full sm:w-auto px-6 py-3 flex items-center justify-center gap-2 font-medium border-gray-300 text-gray-700 hover:bg-gray-100" 
-              variant="outline" 
+            <Button
+              className="w-full sm:w-auto px-6 py-3 flex items-center justify-center gap-2 font-medium border-gray-300 text-gray-700 hover:bg-gray-100"
+              variant="outline"
               onClick={handleRetryInterview}
               aria-label="Start new interview"
             >
               <RotateCcw className="w-4 h-4" />
               New Interview
             </Button>
-            <PurpleButton
-              variant="outline"
-              size="md"
-              onClick={handleBackToDashboard}
-              className="w-full sm:w-auto"
-            >
-              <Home className="w-4 h-4" />
-              Back to Dashboard
-            </PurpleButton>
+
           </div>
         </div>
       </Card>
+      <PurpleButton
+        variant="outline"
+        size="md"
+        onClick={handleBackToDashboard}
+        className="w-full sm:w-auto"
+      >
+        <Home className="w-4 h-4" />
+        Back to Dashboard
+      </PurpleButton>
     </DefaultLayout>
   );
 }

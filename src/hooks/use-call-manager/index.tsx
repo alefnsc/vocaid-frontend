@@ -13,11 +13,13 @@ const CREDIT_RESTORATION_THRESHOLD_MS = 15000;
 export const useCallManager = (body, navigate) => {
     const { user } = useUser();
     const [callId, setCallId] = useState('');
+    const [interviewId, setInterviewId] = useState('');
     const [isCalling, setIsCalling] = useState(false);
     const [isAgentTalking, setIsAgentTalking] = useState(false);
     const [isConnecting, setIsConnecting] = useState(true); // Track initial connection - agent hasn't spoken yet
     const [audioSamples, setAudioSamples] = useState(null);
     const callIdRef = useRef(''); // Store call_id in ref for immediate access
+    const interviewIdRef = useRef(''); // Store interview_id in ref for immediate access
     const incompatibilityDetectedRef = useRef(false); // Track if interview ended due to incompatibility
     const callStartTimeRef = useRef<number | null>(null); // Track when call actually started
 
@@ -33,9 +35,16 @@ export const useCallManager = (body, navigate) => {
             const registerCallResponse = await APIService.registerCall(body);
 
             if ((registerCallResponse.status === "created" || registerCallResponse.status === "success") && registerCallResponse.call_id) {
-                // Store in both state and ref
+                // Store call_id in both state and ref
                 setCallId(registerCallResponse.call_id);
                 callIdRef.current = registerCallResponse.call_id;
+                
+                // Store interview_id if available
+                if (registerCallResponse.interviewId) {
+                    setInterviewId(registerCallResponse.interviewId);
+                    interviewIdRef.current = registerCallResponse.interviewId;
+                    console.log('📝 Interview ID stored:', registerCallResponse.interviewId);
+                }
 
                 // Consume credit when call is registered successfully
                 if (user?.id) {
@@ -52,6 +61,7 @@ export const useCallManager = (body, navigate) => {
                 if (registerCallResponse.access_token) {
                     console.log('🔑 Starting call with access token');
                     console.log('   • Call ID:', registerCallResponse.call_id);
+                    console.log('   • Interview ID:', registerCallResponse.interviewId || 'N/A');
                     console.log('   • Backend URL:', config.backendUrl);
                     console.log('   • Environment:', config.env);
                     
@@ -92,6 +102,16 @@ export const useCallManager = (body, navigate) => {
         if (incompatibilityDetectedRef.current) {
             console.log('🚫 Interview ended due to incompatibility - restoring credit and redirecting to home');
             
+            // Mark interview as cancelled in database
+            if (interviewIdRef.current && user?.id) {
+                try {
+                    await APIService.cancelInterview(interviewIdRef.current, user.id, callDuration);
+                    console.log('✅ Interview marked as cancelled (incompatibility)');
+                } catch (error) {
+                    console.error('⚠️ Failed to cancel interview record:', error);
+                }
+            }
+            
             // Restore credit
             if (user?.id) {
                 try {
@@ -128,6 +148,16 @@ export const useCallManager = (body, navigate) => {
                     console.error('❌ Failed to restore credit:', error);
                 }
             }
+            
+            // Mark interview as cancelled in database
+            if (interviewIdRef.current && user?.id) {
+                try {
+                    await APIService.cancelInterview(interviewIdRef.current, user.id, callDuration);
+                    console.log('✅ Interview marked as cancelled (early termination)');
+                } catch (error) {
+                    console.error('⚠️ Failed to cancel interview record:', error);
+                }
+            }
 
             // Redirect to home with appropriate message
             const message = shouldRestoreCredit
@@ -144,9 +174,22 @@ export const useCallManager = (body, navigate) => {
             return;
         }
 
+        // Complete interview record in database
+        if (interviewIdRef.current && user?.id) {
+            try {
+                await APIService.completeInterview(interviewIdRef.current, user.id, {
+                    callDuration: callDuration // in milliseconds
+                });
+                console.log('✅ Interview record completed in database');
+            } catch (error) {
+                console.error('⚠️ Failed to complete interview record:', error);
+            }
+        }
+
         // Normal flow - go to feedback
         const feedbackState = {
             call_id: callIdRef.current, // Use ref for immediate access
+            interview_id: interviewIdRef.current, // Include interview ID for feedback
             metadata: body?.metadata
         };
 

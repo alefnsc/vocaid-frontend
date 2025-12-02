@@ -16,7 +16,7 @@ interface NavItem {
 // Dashboard is now integrated into Home page for logged-in users
 const navItems: NavItem[] = [
   { label: 'Home', path: '/' },
-  { label: 'Credits', path: '/credits', requiresAuth: true },
+  { label: 'Credits', path: '/credits' },
   { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' },
 ];
@@ -99,7 +99,7 @@ const TopBar: React.FC = () => {
 
           {/* User Section & Mobile Menu Button */}
           <div className="flex items-center gap-3">
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button - Always visible on mobile */}
             <button
               onClick={toggleMobileMenu}
               className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
@@ -117,7 +117,7 @@ const TopBar: React.FC = () => {
               )}
             </button>
 
-            {/* User Button / Sign In */}
+            {/* Desktop User Button / Sign In - Hidden on mobile */}
             {user ? (
               <div className="hidden md:flex items-center gap-3">
                 {/* Credits Display - Desktop */}
@@ -143,12 +143,13 @@ const TopBar: React.FC = () => {
                 </div>
               </div>
             ) : (
+              /* Desktop Sign In Button - Hidden on mobile, sign in available in mobile menu */
               <SignInButton 
                 mode='modal'
                 forceRedirectUrl='/'
               >
                 <button 
-                  className="px-4 py-2 text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-md transition-colors shadow-sm"
+                  className="hidden md:block px-4 py-2 text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-md transition-colors shadow-sm"
                   aria-label="Sign in to Voxly"
                 >
                   Sign In
@@ -190,7 +191,7 @@ const TopBar: React.FC = () => {
           </div>
 
           {/* User Profile Section - Mobile */}
-          {user && (
+          {user ? (
             <div className="border-b border-gray-200 p-5">
               <div className="flex items-center gap-4">
                 <UserButton 
@@ -213,6 +214,23 @@ const TopBar: React.FC = () => {
                 <span className="text-base font-semibold text-gray-700">{userCredits}</span>
                 <span className="text-sm text-gray-500">credits available</span>
               </div>
+            </div>
+          ) : (
+            /* Sign In Section for Mobile - Unauthenticated Users */
+            <div className="border-b border-gray-200 p-5">
+              <p className="text-sm text-gray-600 mb-3">Sign in to access all features</p>
+              <SignInButton 
+                mode='modal'
+                forceRedirectUrl='/'
+              >
+                <button 
+                  className="w-full px-4 py-3 text-base font-medium text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-xl transition-colors shadow-sm"
+                  aria-label="Sign in to Voxly"
+                  onClick={closeMobileMenu}
+                >
+                  Sign In
+                </button>
+              </SignInButton>
             </div>
           )}
 

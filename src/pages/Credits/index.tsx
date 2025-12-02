@@ -6,6 +6,7 @@ import { useUser } from '@clerk/clerk-react'
 import { DefaultLayout } from 'components/default-layout'
 import Loading from 'components/loading'
 import PurpleButton from 'components/ui/purple-button'
+import StatsCard from 'components/ui/stats-card'
 import { Coins, Receipt, CreditCard, ArrowLeft, Calendar, Package, CheckCircle, Clock, XCircle, Sparkles, ChevronDown, Mic } from 'lucide-react'
 import { useAuthCheck } from 'hooks/use-auth-check'
 import apiService, { PaymentHistoryItem, InterviewSummary } from 'services/APIService'
@@ -164,14 +165,7 @@ export default function Credits() {
     }
   }, [isSignedIn, user?.id, fetchPaymentHistory, fetchConsumptionHistory])
 
-  // Redirect if not signed in
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      navigate('/')
-    }
-  }, [isLoaded, isSignedIn, navigate])
-
-  if (!isLoaded || authLoading) {
+  if (!isLoaded) {
     return (
       <DefaultLayout>
         <div className="flex items-center justify-center min-h-[60vh]">
@@ -181,8 +175,72 @@ export default function Credits() {
     )
   }
 
+  // ==========================================
+  // NOT LOGGED IN: SHOW CREDITS INFO + PACKAGES
+  // ==========================================
   if (!isSignedIn) {
-    return null
+    return (
+      <DefaultLayout className="flex flex-col overflow-hidden bg-gray-50">
+        <div className="page-container py-6 sm:py-8">
+          {/* Header */}
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6 sm:mb-8">
+            <div className="flex-1">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+                Interview <span className="text-voxly-purple">Credits</span>
+              </h1>
+              <p className="text-gray-600 mt-1">
+                Pay-per-use pricing for AI-powered interview practice
+              </p>
+            </div>
+          </div>
+
+          {/* Hero Section - How Credits Work */}
+          <div className="voxly-card mb-6 sm:mb-8">
+            <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
+              <div className="p-4 sm:p-6 bg-purple-100 rounded-2xl flex-shrink-0">
+                <Coins className="w-12 h-12 sm:w-16 sm:h-16 text-purple-600" />
+              </div>
+              <div className="text-center sm:text-left">
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">
+                  Simple, Transparent Pricing
+                </h2>
+                <p className="text-gray-600 text-sm sm:text-base">
+                  No subscriptions, no hidden fees. Purchase credits and use them whenever you're ready. 
+                  Each credit gives you one complete AI interview session with detailed feedback.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Credit Packages */}
+          <div>
+            <div className="flex items-center gap-2 mb-3 sm:mb-4">
+              <Package className="w-5 h-5 text-voxly-purple" />
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Choose Your Package</h2>
+            </div>
+            <Suspense fallback={<Loading />}>
+              <CreditPackages />
+            </Suspense>
+          </div>
+        </div>
+        
+        {/* Contact Button */}
+        <ContactButton />
+      </DefaultLayout>
+    )
+  }
+
+  // ==========================================
+  // LOGGED IN: SHOW FULL CREDITS DASHBOARD
+  // ==========================================
+  if (authLoading) {
+    return (
+      <DefaultLayout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <Loading />
+        </div>
+      </DefaultLayout>
+    )
   }
 
   return (
@@ -214,45 +272,29 @@ export default function Credits() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
-          <div className="voxly-card flex items-center gap-3 sm:gap-4 p-3 sm:p-4">
-            <div className="p-2 sm:p-3 bg-purple-100 rounded-xl flex-shrink-0">
-              <Coins className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-500 truncate">Balance</p>
-              <p className="text-lg sm:text-2xl font-bold text-gray-900">{userCredits}</p>
-            </div>
-          </div>
+          <StatsCard
+            title="Balance"
+            value={userCredits}
+            icon={<Coins />}
+          />
 
-          <div className="voxly-card flex items-center gap-3 sm:gap-4 p-3 sm:p-4">
-            <div className="p-2 sm:p-3 bg-purple-100 rounded-xl flex-shrink-0">
-              <Package className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-500 truncate">Purchased</p>
-              <p className="text-lg sm:text-2xl font-bold text-gray-900">{totalCreditsPurchased}</p>
-            </div>
-          </div>
+          <StatsCard
+            title="Purchased"
+            value={totalCreditsPurchased}
+            icon={<Package />}
+          />
 
-          <div className="voxly-card flex items-center gap-3 sm:gap-4 p-3 sm:p-4">
-            <div className="p-2 sm:p-3 bg-purple-100 rounded-xl flex-shrink-0">
-              <Mic className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-500 truncate">Used</p>
-              <p className="text-lg sm:text-2xl font-bold text-gray-900">{totalCreditsUsed}</p>
-            </div>
-          </div>
+          <StatsCard
+            title="Used"
+            value={totalCreditsUsed}
+            icon={<Mic />}
+          />
 
-          <div className="voxly-card flex items-center gap-3 sm:gap-4 p-3 sm:p-4">
-            <div className="p-2 sm:p-3 bg-purple-100 rounded-xl flex-shrink-0">
-              <CreditCard className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
-            </div>
-            <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-500 truncate">Spent</p>
-              <p className="text-lg sm:text-2xl font-bold text-gray-900">${totalSpent.toFixed(0)}</p>
-            </div>
-          </div>
+          <StatsCard
+            title="Spent"
+            value={`$${totalSpent.toFixed(0)}`}
+            icon={<CreditCard />}
+          />
         </div>
 
         {/* History Sections - Two Column Layout */}

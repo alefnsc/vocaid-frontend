@@ -525,13 +525,13 @@ ul[data-type="taskList"] li[data-checked="true"] > div > p {
 
   /* Navigation link styling */
   .nav-link {
-    @apply text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200 px-3 py-2 rounded-lg;
+    @apply text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors duration-200 px-3 py-2 rounded-xl;
   }
   .nav-link:hover {
     @apply bg-gray-100;
   }
   .nav-link-active {
-    @apply text-sm font-medium px-3 py-2 rounded-lg;
+    @apply text-sm font-medium px-3 py-2 rounded-xl;
     color: hsl(var(--voxly-purple));
     background-color: hsl(var(--voxly-purple) / 0.1);
   }

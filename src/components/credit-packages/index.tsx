@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useUser, useClerk } from '@clerk/clerk-react';
+import { useMediaQuery } from '@mantine/hooks';
 import { Check, Sparkles, Crown, Star, Loader2, CreditCard, Shield } from 'lucide-react';
 import mercadoPagoService, { CREDIT_PACKAGES, CreditPackage } from '../../services/MercadoPagoService';
 import apiService from '../../services/APIService';
@@ -98,18 +99,6 @@ const PackageCard: React.FC<PackageCardProps> = ({
         <p className="text-xs text-purple-600 font-medium mt-1">
           ≈ R$ {pkg.priceBRL.toFixed(2)} BRL
         </p>
-      </div>
-
-      {/* Features */}
-      <div className="flex-grow mb-6">
-        <ul className="space-y-2">
-          {pkg.features.map((feature, index) => (
-            <li key={index} className="flex items-start gap-2">
-              <Check className="w-4 h-4 text-purple-500 flex-shrink-0 mt-0.5" />
-              <span className="text-gray-600 text-sm">{feature}</span>
-            </li>
-          ))}
-        </ul>
       </div>
 
       {/* Purchase Button */}
@@ -418,9 +407,11 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
       console.log('🔐 User not authenticated, saving package and prompting sign-in...');
       savePendingPackage(pkg);
       setError(null);
+      // Always redirect to /credits page after sign-in to ensure CreditPackages component is mounted
+      const creditsPageUrl = `${window.location.origin}/credits`;
       openSignIn({
-        afterSignInUrl: window.location.href,
-        afterSignUpUrl: window.location.href,
+        afterSignInUrl: creditsPageUrl,
+        afterSignUpUrl: creditsPageUrl,
       });
       return;
     }
@@ -429,9 +420,16 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
     handlePurchaseAfterAuth(pkg);
   };
 
-  // Sort packages: Starter first, then Intermediate, then Professional
+  // Detect mobile for ordering
+  const isMobile = useMediaQuery('(max-width: 768px)');
+
+  // Sort packages: Mobile = Professional first (top), Desktop = Starter first (left)
+  // Default to mobile order (Professional first) when isMobile is undefined (SSR/initial render)
   const sortedPackages = [...CREDIT_PACKAGES].sort((a, b) => {
-    const order: Record<string, number> = { starter: 0, intermediate: 1, professional: 2 };
+    const mobileOrder: Record<string, number> = { professional: 0, intermediate: 1, starter: 2 };
+    const desktopOrder: Record<string, number> = { starter: 0, intermediate: 1, professional: 2 };
+    // Use mobile order by default (isMobile can be undefined on first render)
+    const order = isMobile === false ? desktopOrder : mobileOrder;
     return (order[a.id] || 99) - (order[b.id] || 99);
   });
 

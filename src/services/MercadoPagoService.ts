@@ -26,10 +26,8 @@ export const CREDIT_PACKAGES: CreditPackage[] = [
     priceBRL: 47.94,      // ~7.99 * 6.0 BRL for MercadoPago
     description: 'Ideal for regular practice',
     features: [
-      '15 interview sessions',
-      'Detailed feedback',
-      'Performance analysis',
-      'Resume upload',
+      '15 interviews',
+      'AI feedback',
       'Priority support',
     ],
     popular: true,
@@ -43,10 +41,8 @@ export const CREDIT_PACKAGES: CreditPackage[] = [
     priceBRL: 35.94,      // ~5.99 * 6.0 BRL for MercadoPago
     description: 'Great for focused preparation',
     features: [
-      '10 interview sessions',
-      'Detailed feedback',
-      'Performance analysis',
-      'Resume upload',
+      '10 interviews',
+      'AI feedback',
     ],
     savings: 'Save 10%'
   },
@@ -58,10 +54,8 @@ export const CREDIT_PACKAGES: CreditPackage[] = [
     priceBRL: 23.94,      // ~3.99 * 6.0 BRL for MercadoPago
     description: 'Perfect to get started',
     features: [
-      '5 interview sessions',
-      'Detailed feedback',
-      'Performance analysis',
-      'Resume upload',
+      '5 interviews',
+      'AI feedback',
     ],
   },
 ];
@@ -121,7 +115,8 @@ class MercadoPagoService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true'
+          'ngrok-skip-browser-warning': 'true',
+          'x-user-id': userId
         },
         body: JSON.stringify({
           packageId,
@@ -165,7 +160,8 @@ class MercadoPagoService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true'
+          'ngrok-skip-browser-warning': 'true',
+          'x-user-id': userId
         },
         body: JSON.stringify({
           packageId,

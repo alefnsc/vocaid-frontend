@@ -11,7 +11,17 @@ const FORMSPREE_FORM_ID = 'mqaregzo';
 const MESSAGE_MIN_LENGTH = 50;
 const MESSAGE_MAX_LENGTH = 250;
 
-const ContactButton: React.FC = () => {
+interface ContactButtonProps {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+}
+
+const ContactButton: React.FC<ContactButtonProps> = ({ 
+  firstName: propFirstName, 
+  lastName: propLastName, 
+  email: propEmail 
+}) => {
   const location = useLocation();
   const { user, isSignedIn } = useUser();
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -25,13 +35,40 @@ const ContactButton: React.FC = () => {
   const [subject, setSubject] = useState('feedback');
   const [message, setMessage] = useState('');
   const [touched, setTouched] = useState(false);
+  
+  // Form inputs for unlogged users
+  const [inputFirstName, setInputFirstName] = useState(propFirstName || '');
+  const [inputLastName, setInputLastName] = useState(propLastName || '');
+  const [inputEmail, setInputEmail] = useState(propEmail || '');
 
-  // Only show on specific pages (home, feedback, about, credits)
-  const allowedPaths = ['/', '/feedback', '/about', '/credits'];
-  const shouldShow = allowedPaths.includes(location.pathname);
+  // Pages where contact button should show
+  // Exclude interview flow pages: interview-setup, interview, feedback
+  const allowedPaths = ['/', '/about', '/credits'];
+  const interviewFlowPaths = ['/interview-setup', '/interview', '/feedback'];
+  const isInterviewFlow = interviewFlowPaths.some(path => location.pathname.startsWith(path));
+  const shouldShow = (allowedPaths.includes(location.pathname) || isSignedIn) && !isInterviewFlow;
 
-  const userName = user?.fullName || user?.firstName || 'User';
-  const userEmail = user?.primaryEmailAddress?.emailAddress || '';
+  // Determine user info - prefer props, then Clerk user, then input fields
+  const userName = useMemo(() => {
+    if (propFirstName || propLastName) {
+      return `${propFirstName || ''} ${propLastName || ''}`.trim() || 'User';
+    }
+    if (isSignedIn && user) {
+      return user.fullName || user.firstName || 'User';
+    }
+    return `${inputFirstName} ${inputLastName}`.trim() || 'User';
+  }, [propFirstName, propLastName, isSignedIn, user, inputFirstName, inputLastName]);
+
+  const userEmail = useMemo(() => {
+    if (propEmail) return propEmail;
+    if (isSignedIn && user) {
+      return user.primaryEmailAddress?.emailAddress || '';
+    }
+    return inputEmail;
+  }, [propEmail, isSignedIn, user, inputEmail]);
+
+  // Check if we need to show editable name/email fields
+  const showEditableFields = !isSignedIn && !propFirstName && !propLastName && !propEmail;
 
   // Validation - must be called before any conditional returns
   const messageLength = message.trim().length;
@@ -40,6 +77,12 @@ const ContactButton: React.FC = () => {
     
     if (!userEmail) {
       errors.push('Email is required');
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+      errors.push('Please enter a valid email address');
+    }
+    
+    if (showEditableFields && !inputFirstName.trim()) {
+      errors.push('First name is required');
     }
     
     if (messageLength === 0) {
@@ -50,11 +93,14 @@ const ContactButton: React.FC = () => {
       errors.push(`Message must be less than ${MESSAGE_MAX_LENGTH} characters (${messageLength - MESSAGE_MAX_LENGTH} over limit)`);
     }
     
+    const isValidEmail = !!userEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail);
+    const isValidName = !showEditableFields || !!inputFirstName.trim();
+    
     return {
-      isValid: errors.length === 0 && messageLength >= MESSAGE_MIN_LENGTH && messageLength <= MESSAGE_MAX_LENGTH && !!userEmail,
+      isValid: errors.length === 0 && messageLength >= MESSAGE_MIN_LENGTH && messageLength <= MESSAGE_MAX_LENGTH && isValidEmail && isValidName,
       errors,
     };
-  }, [messageLength, userEmail]);
+  }, [messageLength, userEmail, showEditableFields, inputFirstName]);
 
   // Redirect to thank you page on successful submission
   useEffect(() => {
@@ -66,9 +112,9 @@ const ContactButton: React.FC = () => {
     }
   }, [state.succeeded]);
 
-  // Don't render if not on allowed pages or user not signed in
+  // Don't render if not on allowed pages
   // This check must come AFTER all hooks are called
-  if (!shouldShow || !isSignedIn) {
+  if (!shouldShow) {
     return null;
   }
 
@@ -92,6 +138,10 @@ const ContactButton: React.FC = () => {
     setSubject('feedback');
     setMessage('');
     setTouched(false);
+    // Reset input fields only if they're not from props
+    if (!propFirstName) setInputFirstName('');
+    if (!propLastName) setInputLastName('');
+    if (!propEmail) setInputEmail('');
   };
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -171,37 +221,108 @@ const ContactButton: React.FC = () => {
               <input type="hidden" name="name" value={userName} />
               <input type="hidden" name="email" value={userEmail} />
               
-              {/* User Info (Display only - actual values sent via hidden fields above) */}
+              {/* User Info Fields */}
               <div className="space-y-3">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                  <input
-                    type="text"
-                    value={userName}
-                    disabled
-                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-600 cursor-not-allowed"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="email"
-                    value={userEmail}
-                    disabled
-                    className={`w-full px-4 py-2.5 bg-gray-50 border rounded-xl text-gray-600 cursor-not-allowed ${
-                      !userEmail && touched ? 'border-red-300' : 'border-gray-200'
-                    }`}
-                  />
-                  <ValidationError prefix="Email" field="email" errors={state.errors} />
-                  {!userEmail && touched && (
-                    <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" />
-                      Email is required
-                    </p>
-                  )}
-                </div>
+                {showEditableFields ? (
+                  /* Editable fields for unlogged users */
+                  <>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          First Name <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          value={inputFirstName}
+                          onChange={(e) => setInputFirstName(e.target.value)}
+                          onBlur={() => setTouched(true)}
+                          placeholder="John"
+                          className={`w-full px-4 py-2.5 border rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                            touched && !inputFirstName.trim() ? 'border-red-300' : 'border-gray-200'
+                          }`}
+                        />
+                        {touched && !inputFirstName.trim() && (
+                          <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+                            <AlertCircle className="w-3 h-3" />
+                            First name is required
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Last Name
+                        </label>
+                        <input
+                          type="text"
+                          value={inputLastName}
+                          onChange={(e) => setInputLastName(e.target.value)}
+                          placeholder="Doe"
+                          className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Email <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        value={inputEmail}
+                        onChange={(e) => setInputEmail(e.target.value)}
+                        onBlur={() => setTouched(true)}
+                        placeholder="john@example.com"
+                        className={`w-full px-4 py-2.5 border rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                          touched && (!inputEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputEmail)) ? 'border-red-300' : 'border-gray-200'
+                        }`}
+                      />
+                      {touched && !inputEmail && (
+                        <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" />
+                          Email is required
+                        </p>
+                      )}
+                      {touched && inputEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputEmail) && (
+                        <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" />
+                          Please enter a valid email address
+                        </p>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  /* Display-only fields for logged users or when props provided */
+                  <>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                      <input
+                        type="text"
+                        value={userName}
+                        disabled
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-600 cursor-not-allowed"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Email <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        value={userEmail}
+                        disabled
+                        className={`w-full px-4 py-2.5 bg-gray-50 border rounded-xl text-gray-600 cursor-not-allowed ${
+                          !userEmail && touched ? 'border-red-300' : 'border-gray-200'
+                        }`}
+                      />
+                      <ValidationError prefix="Email" field="email" errors={state.errors} />
+                      {!userEmail && touched && (
+                        <p className="mt-1 text-xs text-red-500 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3" />
+                          Email is required
+                        </p>
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* Subject Dropdown */}
@@ -325,9 +446,12 @@ const ContactButton: React.FC = () => {
             </form>
 
             {/* Footer */}
-            <div className="px-4 sm:px-6 pb-4 sm:pb-6">
-              <p className="text-xs text-center text-gray-400">
-                Your feedback helps us improve Voxly
+            <div className="px-4 sm:px-6 pb-4 sm:pb-6 space-y-2">
+              <p className="text-xs text-gray-400 text-center">
+                Protected by reCAPTCHA.{' '}
+                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-600">Privacy</a>
+                {' & '}
+                <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-600">Terms</a>
               </p>
             </div>
           </div>
