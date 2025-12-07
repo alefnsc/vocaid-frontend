@@ -399,7 +399,7 @@ export default function InterviewDetails() {
               {/* Strengths */}
               <div>
                 <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <CheckCircle className="w-5 h-5 text-voxly-purple" />
                   <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Strengths</h2>
                 </div>
                 <div className="voxly-card h-full">
@@ -411,7 +411,7 @@ export default function InterviewDetails() {
                   ) : (
                     <ul className="divide-y divide-gray-100">
                       {interview.feedback.strengths.map((item, index) => (
-                        <FeedbackItem key={index} text={item} colorClass="bg-green-500" />
+                        <FeedbackItem key={index} text={item} colorClass="bg-voxly-purple" />
                       ))}
                     </ul>
                   )}
@@ -421,7 +421,7 @@ export default function InterviewDetails() {
               {/* Areas for Improvement */}
               <div>
                 <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                  <AlertTriangle className="w-5 h-5 text-yellow-600" />
+                  <AlertTriangle className="w-5 h-5 text-voxly-purple" />
                   <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Improvements</h2>
                 </div>
                 <div className="voxly-card h-full">
@@ -433,7 +433,7 @@ export default function InterviewDetails() {
                   ) : (
                     <ul className="divide-y divide-gray-100">
                       {interview.feedback.improvements.map((item, index) => (
-                        <FeedbackItem key={index} text={item} colorClass="bg-yellow-500" />
+                        <FeedbackItem key={index} text={item} colorClass="bg-voxly-purple" />
                       ))}
                     </ul>
                   )}
@@ -443,7 +443,7 @@ export default function InterviewDetails() {
               {/* Recommendations */}
               <div>
                 <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                  <Lightbulb className="w-5 h-5 text-purple-600" />
+                  <Lightbulb className="w-5 h-5 text-voxly-purple" />
                   <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Recommendations</h2>
                 </div>
                 <div className="voxly-card h-full">
@@ -455,7 +455,7 @@ export default function InterviewDetails() {
                   ) : (
                     <ul className="divide-y divide-gray-100">
                       {interview.feedback.recommendations.map((item, index) => (
-                        <FeedbackItem key={index} text={item} colorClass="bg-purple-500" />
+                        <FeedbackItem key={index} text={item} colorClass="bg-voxly-purple" />
                       ))}
                     </ul>
                   )}
@@ -489,7 +489,7 @@ export default function InterviewDetails() {
         )}
 
         {/* CTA Section */}
-        <div className="voxly-card bg-voxly-gradient text-white">
+        <div className="voxly-card bg-voxly-gradient text-white mt-8 sm:mt-12">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-center sm:text-left">
               <h3 className="text-xl font-semibold">Ready for more practice?</h3>

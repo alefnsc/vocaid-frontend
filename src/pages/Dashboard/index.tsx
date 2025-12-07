@@ -1,16 +1,11 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '@clerk/clerk-react'
 import { DefaultLayout } from 'components/default-layout'
 import Loading from 'components/loading'
-import apiService, {
-  DashboardStats,
-  InterviewSummary,
-  ScoreDataPoint,
-  SpendingDataPoint
-} from 'services/APIService'
+import { useDashboardData } from 'hooks/use-dashboard-data'
 
 // Simple Chart Components (Can be replaced with recharts later)
 // Install: npm install recharts
@@ -177,58 +172,16 @@ export default function Dashboard() {
   const { user, isLoaded, isSignedIn } = useUser()
   const navigate = useNavigate()
   
-  const [isLoading, setIsLoading] = useState(true)
-  const [stats, setStats] = useState<DashboardStats | null>(null)
-  const [interviews, setInterviews] = useState<InterviewSummary[]>([])
-  const [scoreData, setScoreData] = useState<ScoreDataPoint[]>([])
-  const [spendingData, setSpendingData] = useState<SpendingDataPoint[]>([])
-  const [error, setError] = useState<string | null>(null)
-
-  const fetchDashboardData = useCallback(async () => {
-    if (!user?.id) return
-
-    setIsLoading(true)
-    setError(null)
-
-    try {
-      // Fetch all dashboard data in parallel
-      const [statsResult, interviewsResult, scoreResult, spendingResult] = await Promise.allSettled([
-        apiService.getDashboardStats(user.id),
-        apiService.getUserInterviews(user.id, 1, 5),
-        apiService.getScoreEvolution(user.id, 6),
-        apiService.getSpendingHistory(user.id, 6)
-      ])
-
-      if (statsResult.status === 'fulfilled') {
-        setStats(statsResult.value)
-      }
-      if (interviewsResult.status === 'fulfilled') {
-        setInterviews(interviewsResult.value.interviews)
-      }
-      if (scoreResult.status === 'fulfilled') {
-        setScoreData(scoreResult.value)
-      }
-      if (spendingResult.status === 'fulfilled') {
-        setSpendingData(spendingResult.value)
-      }
-    } catch (err) {
-      console.error('Failed to fetch dashboard data:', err)
-      setError('Failed to load dashboard data. Please try again.')
-    } finally {
-      setIsLoading(false)
-    }
-  }, [user?.id])
+  // Use shared dashboard data hook (with caching)
+  const { data, isLoading, error, refresh } = useDashboardData(5)
+  const { stats, interviews, scoreData, spendingData } = data
 
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
       navigate('/')
       return
     }
-
-    if (isLoaded && isSignedIn && user?.id) {
-      fetchDashboardData()
-    }
-  }, [isLoaded, isSignedIn, user?.id, navigate, fetchDashboardData])
+  }, [isLoaded, isSignedIn, navigate])
 
   // Format date for display
   const formatDate = (dateString: string) => {
@@ -269,7 +222,7 @@ export default function Dashboard() {
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
             {error}
             <button
-              onClick={fetchDashboardData}
+              onClick={() => refresh(true)}
               className="ml-2 underline hover:no-underline"
             >
               Retry

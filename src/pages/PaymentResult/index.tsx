@@ -86,6 +86,8 @@ export default function PaymentResult() {
       if (currentCredits > 0) {
         setCreditsVerified(true)
         console.log('✅ Credits verified from PostgreSQL:', currentCredits)
+        // Invalidate payment-related caches so dashboard shows updated data
+        apiService.invalidatePaymentCaches(user.id)
       }
       
       setPollAttempts(prev => prev + 1)

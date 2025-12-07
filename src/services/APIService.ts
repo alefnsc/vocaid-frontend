@@ -8,6 +8,105 @@ import { config } from "../lib/config";
 // Backend URL from environment config
 const BACKEND_URL = config.backendUrl;
 
+// ==========================================
+// CACHING LAYER
+// ==========================================
+
+interface CacheEntry<T> {
+    data: T;
+    expiry: number;
+}
+
+// Cache TTL configurations (in milliseconds)
+const CACHE_TTL = {
+    DASHBOARD_STATS: 60000,      // 1 minute - stats change after interviews
+    INTERVIEWS_LIST: 30000,      // 30 seconds - list updates frequently
+    INTERVIEW_DETAILS: 300000,   // 5 minutes - details rarely change
+    SCORE_EVOLUTION: 300000,     // 5 minutes - historical data
+    SPENDING_HISTORY: 300000,    // 5 minutes - historical data
+    PAYMENT_HISTORY: 60000,      // 1 minute - payments update after purchase
+};
+
+// Cache storage keys
+const CACHE_KEYS = {
+    DASHBOARD_STATS: (userId: string) => `voxly_stats_${userId}`,
+    INTERVIEWS_LIST: (userId: string, page: number, limit: number) => `voxly_interviews_${userId}_${page}_${limit}`,
+    INTERVIEW_DETAILS: (interviewId: string) => `voxly_interview_${interviewId}`,
+    SCORE_EVOLUTION: (userId: string, months: number) => `voxly_scores_${userId}_${months}`,
+    SPENDING_HISTORY: (userId: string, months: number) => `voxly_spending_${userId}_${months}`,
+    PAYMENT_HISTORY: (userId: string) => `voxly_payments_${userId}`,
+};
+
+/**
+ * Get cached data from sessionStorage or fetch fresh data
+ * @param key Cache key
+ * @param fetcher Function to fetch fresh data
+ * @param ttlMs Time-to-live in milliseconds
+ * @param forceRefresh Skip cache and fetch fresh data
+ */
+async function getCachedOrFetch<T>(
+    key: string,
+    fetcher: () => Promise<T>,
+    ttlMs: number,
+    forceRefresh = false
+): Promise<T> {
+    // Check cache first (unless force refresh)
+    if (!forceRefresh) {
+        try {
+            const cached = sessionStorage.getItem(key);
+            if (cached) {
+                const entry: CacheEntry<T> = JSON.parse(cached);
+                if (Date.now() < entry.expiry) {
+                    return entry.data;
+                }
+                // Cache expired, remove it
+                sessionStorage.removeItem(key);
+            }
+        } catch (e) {
+            // Cache read failed, continue to fetch
+            console.warn('Cache read failed:', e);
+        }
+    }
+
+    // Fetch fresh data
+    const data = await fetcher();
+
+    // Store in cache
+    try {
+        const entry: CacheEntry<T> = {
+            data,
+            expiry: Date.now() + ttlMs
+        };
+        sessionStorage.setItem(key, JSON.stringify(entry));
+    } catch (e) {
+        // Cache write failed (e.g., quota exceeded), continue without caching
+        console.warn('Cache write failed:', e);
+    }
+
+    return data;
+}
+
+/**
+ * Invalidate specific cache entries
+ */
+function invalidateCache(pattern: string): void {
+    const keysToRemove: string[] = [];
+    for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        if (key && key.startsWith(pattern)) {
+            keysToRemove.push(key);
+        }
+    }
+    keysToRemove.forEach(key => sessionStorage.removeItem(key));
+}
+
+/**
+ * Clear all Voxly cache entries
+ */
+function clearAllCache(): void {
+    invalidateCache('voxly_');
+}
+
 // Get headers with optional user authentication
 const getHeaders = (userId?: string): Record<string, string> => {
     const headers: Record<string, string> = {
@@ -485,138 +584,197 @@ class APIService {
     }
 
     // ==========================================
-    // DASHBOARD API METHODS
+    // DASHBOARD API METHODS (WITH CACHING)
     // ==========================================
 
     /**
-     * Get dashboard statistics for a user
+     * Get dashboard statistics for a user (cached for 1 minute)
      */
-    async getDashboardStats(userId: string): Promise<DashboardStats> {
-        console.log('📊 Fetching dashboard stats for user:', userId);
+    async getDashboardStats(userId: string, forceRefresh = false): Promise<DashboardStats> {
+        const cacheKey = CACHE_KEYS.DASHBOARD_STATS(userId);
         
-        const response = await fetch(`${BACKEND_URL}/api/users/${userId}/stats`, {
-            method: 'GET',
-            headers: getHeaders(userId),
-        });
-        
-        if (!response.ok) {
-            console.error('❌ Failed to fetch dashboard stats:', response.status);
-            throw new Error(`Error fetching dashboard stats: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        console.log('✅ Dashboard stats received:', result);
-        return result.data;
+        return getCachedOrFetch(
+            cacheKey,
+            async () => {
+                const response = await fetch(`${BACKEND_URL}/api/users/${userId}/stats`, {
+                    method: 'GET',
+                    headers: getHeaders(userId),
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Error fetching dashboard stats: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                return result.data;
+            },
+            CACHE_TTL.DASHBOARD_STATS,
+            forceRefresh
+        );
     }
 
     /**
-     * Get list of user's interviews
+     * Get list of user's interviews (cached for 30 seconds)
      */
-    async getUserInterviews(userId: string, page = 1, limit = 10): Promise<{ interviews: InterviewSummary[]; total: number; page: number; totalPages: number }> {
-        console.log('📋 Fetching interviews for user:', userId);
+    async getUserInterviews(userId: string, page = 1, limit = 10, forceRefresh = false): Promise<{ interviews: InterviewSummary[]; total: number; page: number; totalPages: number }> {
+        const cacheKey = CACHE_KEYS.INTERVIEWS_LIST(userId, page, limit);
         
-        const response = await fetch(`${BACKEND_URL}/api/users/${userId}/interviews?page=${page}&limit=${limit}`, {
-            method: 'GET',
-            headers: getHeaders(userId),
-        });
-        
-        if (!response.ok) {
-            console.error('❌ Failed to fetch interviews:', response.status);
-            throw new Error(`Error fetching interviews: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        console.log('✅ Interviews received:', result.data?.length || 0);
-        return {
-            interviews: result.data || [],
-            total: result.pagination?.total || 0,
-            page: result.pagination?.page || 1,
-            totalPages: result.pagination?.totalPages || 1
-        };
+        return getCachedOrFetch(
+            cacheKey,
+            async () => {
+                const response = await fetch(`${BACKEND_URL}/api/users/${userId}/interviews?page=${page}&limit=${limit}`, {
+                    method: 'GET',
+                    headers: getHeaders(userId),
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Error fetching interviews: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                return {
+                    interviews: result.data || [],
+                    total: result.pagination?.total || 0,
+                    page: result.pagination?.page || 1,
+                    totalPages: result.pagination?.totalPages || 1
+                };
+            },
+            CACHE_TTL.INTERVIEWS_LIST,
+            forceRefresh
+        );
     }
 
     /**
-     * Get detailed interview information by ID
+     * Get detailed interview information by ID (cached for 5 minutes)
      */
-    async getInterviewDetails(interviewId: string, userId: string): Promise<InterviewDetail> {
-        console.log('🔍 Fetching interview details:', interviewId);
+    async getInterviewDetails(interviewId: string, userId: string, forceRefresh = false): Promise<InterviewDetail> {
+        const cacheKey = CACHE_KEYS.INTERVIEW_DETAILS(interviewId);
         
-        const response = await fetch(`${BACKEND_URL}/api/interviews/${interviewId}`, {
-            method: 'GET',
-            headers: getHeaders(userId),
-        });
-        
-        if (!response.ok) {
-            console.error('❌ Failed to fetch interview details:', response.status);
-            throw new Error(`Error fetching interview details: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        console.log('✅ Interview details received');
-        return result.data;
+        return getCachedOrFetch(
+            cacheKey,
+            async () => {
+                const response = await fetch(`${BACKEND_URL}/api/interviews/${interviewId}`, {
+                    method: 'GET',
+                    headers: getHeaders(userId),
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Error fetching interview details: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                return result.data;
+            },
+            CACHE_TTL.INTERVIEW_DETAILS,
+            forceRefresh
+        );
     }
 
     /**
-     * Get user's payment history
+     * Get user's payment history (cached for 1 minute)
      */
-    async getPaymentHistory(userId: string): Promise<PaymentHistoryItem[]> {
-        console.log('💰 Fetching payment history for user:', userId);
+    async getPaymentHistory(userId: string, forceRefresh = false): Promise<PaymentHistoryItem[]> {
+        const cacheKey = CACHE_KEYS.PAYMENT_HISTORY(userId);
         
-        const response = await fetch(`${BACKEND_URL}/api/users/${userId}/payments`, {
-            method: 'GET',
-            headers: getHeaders(userId),
-        });
-        
-        if (!response.ok) {
-            console.error('❌ Failed to fetch payment history:', response.status);
-            throw new Error(`Error fetching payment history: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        console.log('✅ Payment history received:', result.data?.length || 0);
-        return result.data || [];
+        return getCachedOrFetch(
+            cacheKey,
+            async () => {
+                const response = await fetch(`${BACKEND_URL}/api/users/${userId}/payments`, {
+                    method: 'GET',
+                    headers: getHeaders(userId),
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Error fetching payment history: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                return result.data || [];
+            },
+            CACHE_TTL.PAYMENT_HISTORY,
+            forceRefresh
+        );
     }
 
     /**
-     * Get score evolution data for charts
+     * Get score evolution data for charts (cached for 5 minutes)
      */
-    async getScoreEvolution(userId: string, months = 6): Promise<ScoreDataPoint[]> {
-        console.log('📈 Fetching score evolution for user:', userId);
+    async getScoreEvolution(userId: string, months = 6, forceRefresh = false): Promise<ScoreDataPoint[]> {
+        const cacheKey = CACHE_KEYS.SCORE_EVOLUTION(userId, months);
         
-        const response = await fetch(`${BACKEND_URL}/api/users/${userId}/score-evolution?months=${months}`, {
-            method: 'GET',
-            headers: getHeaders(userId),
-        });
-        
-        if (!response.ok) {
-            console.error('❌ Failed to fetch score evolution:', response.status);
-            throw new Error(`Error fetching score evolution: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        console.log('✅ Score evolution received:', result.data?.length || 0);
-        return result.data || [];
+        return getCachedOrFetch(
+            cacheKey,
+            async () => {
+                const response = await fetch(`${BACKEND_URL}/api/users/${userId}/score-evolution?months=${months}`, {
+                    method: 'GET',
+                    headers: getHeaders(userId),
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Error fetching score evolution: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                return result.data || [];
+            },
+            CACHE_TTL.SCORE_EVOLUTION,
+            forceRefresh
+        );
     }
 
     /**
-     * Get spending data for charts
+     * Get spending data for charts (cached for 5 minutes)
      */
-    async getSpendingHistory(userId: string, months = 6): Promise<SpendingDataPoint[]> {
-        console.log('💵 Fetching spending history for user:', userId);
+    async getSpendingHistory(userId: string, months = 6, forceRefresh = false): Promise<SpendingDataPoint[]> {
+        const cacheKey = CACHE_KEYS.SPENDING_HISTORY(userId, months);
         
-        const response = await fetch(`${BACKEND_URL}/api/users/${userId}/spending?months=${months}`, {
-            method: 'GET',
-            headers: getHeaders(userId),
-        });
-        
-        if (!response.ok) {
-            console.error('❌ Failed to fetch spending history:', response.status);
-            throw new Error(`Error fetching spending history: ${response.status}`);
-        }
-        
-        const result = await response.json();
-        console.log('✅ Spending history received:', result.data?.length || 0);
-        return result.data || [];
+        return getCachedOrFetch(
+            cacheKey,
+            async () => {
+                const response = await fetch(`${BACKEND_URL}/api/users/${userId}/spending?months=${months}`, {
+                    method: 'GET',
+                    headers: getHeaders(userId),
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Error fetching spending history: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                return result.data || [];
+            },
+            CACHE_TTL.SPENDING_HISTORY,
+            forceRefresh
+        );
+    }
+
+    // ==========================================
+    // CACHE MANAGEMENT
+    // ==========================================
+
+    /**
+     * Invalidate all interview-related caches (call after interview completion)
+     */
+    invalidateInterviewCaches(userId: string): void {
+        invalidateCache(`voxly_stats_${userId}`);
+        invalidateCache(`voxly_interviews_${userId}`);
+        invalidateCache(`voxly_scores_${userId}`);
+    }
+
+    /**
+     * Invalidate payment caches (call after successful payment)
+     */
+    invalidatePaymentCaches(userId: string): void {
+        invalidateCache(`voxly_stats_${userId}`);
+        invalidateCache(`voxly_payments_${userId}`);
+        invalidateCache(`voxly_spending_${userId}`);
+    }
+
+    /**
+     * Clear all cached data (call on logout)
+     */
+    clearCache(): void {
+        clearAllCache();
     }
 
     // ========================================

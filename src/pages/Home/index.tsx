@@ -1,21 +1,16 @@
 'use client'
 
-import { lazy, Suspense, useEffect, useState, useCallback } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { DefaultLayout } from 'components/default-layout'
 import { useMediaQuery } from '@mantine/hooks'
 import { useAuthCheck } from 'hooks/use-auth-check'
+import { useDashboardData } from 'hooks/use-dashboard-data'
 import { useUser } from '@clerk/clerk-react'
 import Loading from 'components/loading'
 import PurpleButton from 'components/ui/purple-button'
 import StatsCard from 'components/ui/stats-card'
 import { Plus, Coins, TrendingUp, DollarSign, MessageSquare, ChevronRight } from 'lucide-react'
-import apiService, {
-  DashboardStats,
-  InterviewSummary,
-  ScoreDataPoint,
-  SpendingDataPoint
-} from 'services/APIService'
 
 // Lazy load components for better initial load performance
 const BodyCopy = lazy(() => import('components/body-copy'))
@@ -137,47 +132,11 @@ export default function Home() {
   const { user, isSignedIn } = useUser()
   const [notification, setNotification] = useState<{ message: string; type: string } | null>(null)
 
-  // Dashboard state
-  const [dashboardLoading, setDashboardLoading] = useState(false)
-  const [stats, setStats] = useState<DashboardStats | null>(null)
-  const [interviews, setInterviews] = useState<InterviewSummary[]>([])
-  const [scoreData, setScoreData] = useState<ScoreDataPoint[]>([])
-  const [spendingData, setSpendingData] = useState<SpendingDataPoint[]>([])
-  const [dashboardError, setDashboardError] = useState<string | null>(null)
+  // Use shared dashboard data hook (with caching)
+  const { data: dashboardData, isLoading: dashboardLoading, error: dashboardError, refresh: refreshDashboard } = useDashboardData(5)
+  const { stats, interviews, scoreData, spendingData } = dashboardData
 
   const { isLoading, userCredits } = useAuthCheck()
-
-  // Fetch dashboard data for logged-in users
-  const fetchDashboardData = useCallback(async () => {
-    if (!user?.id) return
-    setDashboardLoading(true)
-    setDashboardError(null)
-
-    try {
-      const [statsResult, interviewsResult, scoreResult, spendingResult] = await Promise.allSettled([
-        apiService.getDashboardStats(user.id),
-        apiService.getUserInterviews(user.id, 1, 5),
-        apiService.getScoreEvolution(user.id, 6),
-        apiService.getSpendingHistory(user.id, 6)
-      ])
-
-      if (statsResult.status === 'fulfilled') setStats(statsResult.value)
-      if (interviewsResult.status === 'fulfilled') setInterviews(interviewsResult.value.interviews)
-      if (scoreResult.status === 'fulfilled') setScoreData(scoreResult.value)
-      if (spendingResult.status === 'fulfilled') setSpendingData(spendingResult.value)
-    } catch (err) {
-      console.error('Failed to fetch dashboard data:', err)
-      setDashboardError('Failed to load dashboard data.')
-    } finally {
-      setDashboardLoading(false)
-    }
-  }, [user?.id])
-
-  useEffect(() => {
-    if (isSignedIn && user?.id) {
-      fetchDashboardData()
-    }
-  }, [isSignedIn, user?.id, fetchDashboardData])
 
   // Check for navigation state (e.g., from incompatibility redirect)
   useEffect(() => {
@@ -259,7 +218,7 @@ export default function Home() {
           {dashboardError && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
               {dashboardError}
-              <button onClick={fetchDashboardData} className="ml-2 underline hover:no-underline">Retry</button>
+              <button onClick={() => refreshDashboard(true)} className="ml-2 underline hover:no-underline">Retry</button>
             </div>
           )}
 
@@ -400,7 +359,7 @@ export default function Home() {
           ) : (
             <div id="credit-packages" className="mt-6 sm:mt-8">
               <Suspense fallback={<div className="h-96 flex items-center justify-center"><Loading /></div>}>
-                <CreditPackages onPurchaseComplete={fetchDashboardData} />
+                <CreditPackages onPurchaseComplete={() => refreshDashboard(true)} />
               </Suspense>
             </div>
           )}

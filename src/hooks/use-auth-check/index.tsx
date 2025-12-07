@@ -90,13 +90,15 @@ export const useAuthCheck = () => {
     validateAndSyncUser();
   }, [isLoaded, isSignedIn, user?.id]);
 
-  // Reset sync flag when user signs out
+  // Reset sync flag when user signs out and clear cache
   useEffect(() => {
     if (!isSignedIn) {
       syncAttemptedRef.current = false;
       setIsSynced(false);
       setDbUser(null);
       setUserCredits(0);
+      // Clear all cached data on logout
+      apiService.clearCache();
     }
   }, [isSignedIn]);
 

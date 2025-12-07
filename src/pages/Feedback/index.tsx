@@ -24,10 +24,14 @@ const Feedback = () => {
   const state = location.state;
   const { setStage, resetFlow } = useInterviewFlow();
 
-  // Set stage to feedback on mount
+  // Set stage to feedback on mount and invalidate dashboard cache
   useEffect(() => {
     setStage('feedback');
-  }, [setStage]);
+    // Invalidate interview caches so dashboard shows updated data
+    if (user?.id) {
+      APIService.invalidateInterviewCaches(user.id);
+    }
+  }, [setStage, user?.id]);
 
   // State management
   const [isLoading, setIsLoading] = useState(true);
