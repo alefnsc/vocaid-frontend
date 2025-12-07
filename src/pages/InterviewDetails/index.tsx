@@ -40,13 +40,8 @@ const formatDuration = (ms: number | null | undefined): string => {
   return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
-// Score progress bar with purple theme
+// Score progress bar with dark purple theme
 const ScoreBar: React.FC<{ label: string; score: number; icon: React.ReactNode }> = ({ label, score, icon }) => {
-  let barColor = 'bg-red-500'
-  if (score >= 80) barColor = 'bg-green-500'
-  else if (score >= 60) barColor = 'bg-purple-500'
-  else if (score >= 40) barColor = 'bg-yellow-500'
-
   return (
     <div className="mb-5 last:mb-0">
       <div className="flex items-center justify-between mb-2">
@@ -56,12 +51,12 @@ const ScoreBar: React.FC<{ label: string; score: number; icon: React.ReactNode }
           </div>
           <span className="text-sm font-medium text-gray-700">{label}</span>
         </div>
-        <span className="text-sm font-bold text-gray-900">{score}%</span>
+        <span className="text-sm font-bold text-purple-700">{Math.round(score)}%</span>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2.5">
+      <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
         <div
-          className={`h-2.5 rounded-full transition-all duration-500 ${barColor}`}
-          style={{ width: `${score}%` }}
+          className="h-2.5 rounded-full transition-all duration-700 ease-out bg-gradient-to-r from-purple-700 to-purple-500"
+          style={{ width: `${Math.min(score, 100)}%` }}
         />
       </div>
     </div>
@@ -377,6 +372,13 @@ export default function InterviewDetails() {
                     score={interview.feedback.technicalScore} 
                     icon={<Target className="w-4 h-4 text-purple-600" />}
                   />
+                  
+                  {/* Score Explanation */}
+                  <div className="mt-6 pt-4 border-t border-gray-100">
+                    <p className="text-xs text-gray-500 leading-relaxed">
+                      <span className="font-medium text-gray-600">How we calculate your score:</span> Our AI analyzes your interview responses across four key dimensions—content quality, communication skills, confidence level, and technical knowledge. Each category is rated on a 0–100% scale based on industry standards and best practices. The overall score is a weighted average reflecting your comprehensive interview performance.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -393,7 +395,7 @@ export default function InterviewDetails() {
             </div>
 
             {/* Feedback Sections Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12">
               {/* Strengths */}
               <div>
                 <div className="flex items-center gap-2 mb-3 sm:mb-4">

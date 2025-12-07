@@ -162,32 +162,55 @@ const Feedback = () => {
 
   const handleDownloadTranscript = useCallback(() => {
     const doc = new jsPDF();
-    let y = 10;
+    let y = 20;
     const pageHeight = 280;
     const margin = 15;
     const maxWidth = doc.internal.pageSize.getWidth() - (margin * 2);
+    const lineHeight = 6;
 
     const initializePage = () => {
       doc.setFillColor(255, 255, 255);
       doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), "F");
-      doc.setTextColor(55, 65, 81); // gray-700
     };
 
-    const addText = (text: string, yPos: number, fontSize: number, isBold: boolean = false, color: number[] = [55, 65, 81]) => {
+    const checkPageBreak = (neededHeight: number) => {
+      if (y + neededHeight > pageHeight) {
+        doc.addPage();
+        initializePage();
+        y = 20;
+      }
+    };
+
+    const addText = (text: string, fontSize: number, isBold: boolean = false, color: number[] = [55, 65, 81]) => {
       doc.setFont("helvetica", isBold ? "bold" : "normal");
       doc.setFontSize(fontSize);
       doc.setTextColor(color[0], color[1], color[2]);
       const lines = doc.splitTextToSize(text, maxWidth);
       lines.forEach((line: string) => {
-        if (y + 10 > pageHeight) {
-          doc.addPage();
-          initializePage();
-          y = 10;
-        }
+        checkPageBreak(lineHeight);
         doc.text(line, margin, y);
-        y += fontSize * 0.5;
+        y += lineHeight;
       });
-      return y;
+    };
+
+    const addSection = (title: string, content: string) => {
+      checkPageBreak(20);
+      // Section title
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+      doc.setTextColor(88, 28, 135); // purple-800
+      doc.text(title, margin, y);
+      y += 8;
+      
+      // Section content - clean up markdown but preserve readability
+      const cleanContent = content
+        .replace(/^##?\s*/gm, '') // Remove markdown headers
+        .replace(/^\*\*(.+?)\*\*/gm, '$1') // Remove bold markers
+        .replace(/^\*(.+?)\*/gm, '$1') // Remove italic markers
+        .trim();
+      
+      addText(cleanContent, 11, false, [55, 65, 81]);
+      y += 6;
     };
 
     initializePage();
@@ -197,30 +220,35 @@ const Feedback = () => {
     doc.setFontSize(22);
     doc.setFont("helvetica", "bold");
     doc.text("Interview Feedback Report", margin, y);
-    y += 15;
+    y += 12;
 
     // Candidate info
-    addText(`Candidate: ${candidateName}`, y, 14, true, [31, 41, 55]);
-    y += 10;
-    addText(`Score: ${score}%`, y, 12, false, [107, 114, 128]);
-    y += 15;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(14);
+    doc.setTextColor(31, 41, 55);
+    doc.text(`Candidate: ${candidateName}`, margin, y);
+    y += 8;
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(12);
+    doc.setTextColor(107, 114, 128);
+    doc.text(`Score: ${score}%`, margin, y);
+    y += 12;
 
     // Summary section
-    addText("Summary", y, 16, true, [88, 28, 135]);
-    y += 8;
-    addText(summary.replace(/[#*]/g, ''), y, 11);
-    y += 10;
+    if (summary) {
+      addSection("Summary", summary);
+    }
 
     // Feedback section
-    addText("Detailed Feedback", y, 16, true, [88, 28, 135]);
-    y += 8;
-    addText(feedback.replace(/[#*-]/g, ''), y, 11);
-    y += 10;
+    if (feedback) {
+      addSection("Detailed Feedback", feedback);
+    }
 
-    // Job Description
-    addText("Job Description", y, 16, true, [88, 28, 135]);
-    y += 8;
-    addText(jobDescription, y, 11);
+    // Job Description section
+    if (jobDescription) {
+      addSection("Job Description", jobDescription);
+    }
 
     doc.save(`${candidateName.replace(/\s+/g, '_')}_feedback_report.pdf`);
   }, [candidateName, score, summary, feedback, jobDescription]);
