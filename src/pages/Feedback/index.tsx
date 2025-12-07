@@ -5,7 +5,7 @@ import { DefaultLayout } from 'components/default-layout'
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useUser } from '@clerk/clerk-react';
 import APIService from "services/APIService";
-import StarRating from 'components/star-rate/StarRating';
+import ScoreDisplay from 'components/score-display';
 import { Card } from "components/ui/card";
 import { Button } from "components/ui/button";
 import { Separator } from "components/ui/separator";
@@ -36,8 +36,7 @@ const Feedback = () => {
   const [candidateName, setCandidateName] = useState('');
   const [summary, setSummary] = useState('');
   const [feedback, setFeedback] = useState('');
-  const [score, setScore] = useState('3');
-  const [rating, setRating] = useState(0);
+  const [score, setScore] = useState(0); // 0-100 percentage
   const [retryCount, setRetryCount] = useState(0);
   const MAX_RETRIES = 5;
   const RETRY_DELAY = 3000; // 3 seconds
@@ -91,7 +90,9 @@ const Feedback = () => {
       // Set feedback data - handle different response structures
       if (json.feedback) {
         setSummary(json.feedback.detailed_feedback || json.summary || '');
-        setScore(String(json.feedback.overall_rating || 3));
+        // Convert 1-5 rating to 0-100 percentage for display
+        const percentageScore = json.feedback.overall_rating ? json.feedback.overall_rating * 20 : 0;
+        setScore(percentageScore);
 
         // Format feedback from structured data
         const feedbackParts = [];
@@ -107,7 +108,7 @@ const Feedback = () => {
         setFeedback(feedbackParts.join('\n\n') || json.feedback.detailed_feedback || '');
         
         // Save score to interview record if interview_id is available
-        const overallScore = json.feedback.overall_rating ? json.feedback.overall_rating * 20 : null; // Convert 1-5 to 0-100
+        const overallScore = percentageScore > 0 ? percentageScore : null;
         if (state?.interview_id && user?.id && overallScore !== null) {
           try {
             await APIService.completeInterview(state.interview_id, user.id, {
@@ -122,10 +123,12 @@ const Feedback = () => {
       } else {
         setSummary(json.summary || 'No summary available');
         setFeedback(json.feedback_text || 'No detailed feedback available');
-        setScore(String(json.score || 3));
+        // Convert 1-5 rating to 0-100 percentage for display
+        const percentageScore = json.score ? json.score * 20 : 0;
+        setScore(percentageScore);
         
         // Save score for legacy response format
-        const legacyScore = json.score ? json.score * 20 : null; // Convert 1-5 to 0-100
+        const legacyScore = percentageScore > 0 ? percentageScore : null;
         if (state?.interview_id && user?.id && legacyScore !== null) {
           try {
             await APIService.completeInterview(state.interview_id, user.id, {
@@ -199,7 +202,7 @@ const Feedback = () => {
     // Candidate info
     addText(`Candidate: ${candidateName}`, y, 14, true, [31, 41, 55]);
     y += 10;
-    addText(`Rating: ${rating}/5 stars`, y, 12, false, [107, 114, 128]);
+    addText(`Score: ${score}%`, y, 12, false, [107, 114, 128]);
     y += 15;
 
     // Summary section
@@ -220,7 +223,7 @@ const Feedback = () => {
     addText(jobDescription, y, 11);
 
     doc.save(`${candidateName.replace(/\s+/g, '_')}_feedback_report.pdf`);
-  }, [candidateName, rating, summary, feedback, jobDescription]);
+  }, [candidateName, score, summary, feedback, jobDescription]);
 
   const handleRetryInterview = useCallback(() => {
     resetFlow();
@@ -232,20 +235,18 @@ const Feedback = () => {
     navigate('/');
   }, [navigate, resetFlow]);
 
-  const handleRatingChange = useCallback((newRating: number) => {
-    setRating(newRating);
+  const handleScoreChange = useCallback((newScore: number) => {
+    // Score change handler for ScoreDisplay component
+    console.log('Score updated:', newScore);
   }, []);
 
   const getResultText = useCallback(() => {
-    const messages: Record<number, string> = {
-      5: 'Outstanding Performance!',
-      4: 'Great Job!',
-      3: 'Good Effort, Keep Improving!',
-      2: 'Room for Growth',
-      1: 'Keep Practicing!'
-    };
-    return messages[rating] || 'Your Interview Results';
-  }, [rating]);
+    if (score >= 80) return 'Outstanding Performance!';
+    if (score >= 60) return 'Great Job!';
+    if (score >= 40) return 'Good Effort, Keep Improving!';
+    if (score >= 20) return 'Room for Growth';
+    return 'Keep Practicing!';
+  }, [score]);
 
   // Loading state
   if (isLoading) {
@@ -314,9 +315,9 @@ const Feedback = () => {
           {getResultText()}
         </p>
 
-        {/* Star Rating */}
-        <div className="flex justify-center items-center w-full mb-6">
-          <StarRating score={score} onRatingChange={handleRatingChange} />
+        {/* Score Display - 0-100% with progress bar */}
+        <div className="w-full max-w-md mb-6 px-4">
+          <ScoreDisplay score={score} onScoreChange={handleScoreChange} size="lg" />
         </div>
 
         <Separator className="bg-gray-200 mb-6" />

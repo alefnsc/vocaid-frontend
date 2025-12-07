@@ -62,7 +62,7 @@ export const config = {
   recaptchaSiteKey: process.env.REACT_APP_RECAPTCHA_SITE_KEY || '',
 
   // Interview duration thresholds (in milliseconds)
-  minInterviewDurationMs: parseInt(process.env.REACT_APP_MIN_INTERVIEW_DURATION_MS || '45000', 10),
+  minInterviewDurationMs: parseInt(process.env.REACT_APP_MIN_INTERVIEW_DURATION_MS || '30000', 10),
   creditRestorationThresholdMs: parseInt(process.env.REACT_APP_CREDIT_RESTORATION_THRESHOLD_MS || '15000', 10),
 } as const;
 
