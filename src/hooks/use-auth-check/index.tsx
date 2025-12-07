@@ -2,21 +2,47 @@ import { useUser } from '@clerk/clerk-react';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import apiService from '../../services/APIService';
 
+// Helper function for retry with exponential backoff
+const retryWithBackoff = async <T,>(
+  fn: () => Promise<T>,
+  maxRetries: number = 3,
+  baseDelay: number = 1000
+): Promise<T> => {
+  let lastError: Error | undefined;
+  
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      lastError = error as Error;
+      if (attempt < maxRetries - 1) {
+        const delay = baseDelay * Math.pow(2, attempt);
+        console.log(`🔄 Retry attempt ${attempt + 1}/${maxRetries} in ${delay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+  }
+  
+  throw lastError;
+};
+
 export const useAuthCheck = () => {
   const { isLoaded, isSignedIn, user } = useUser();
   const [isLoading, setIsLoading] = useState(true);
-  const [userCredits, setUserCredits] = useState<number>(0);
+  const [userCredits, setUserCredits] = useState<number | null>(null); // null = not loaded yet
   const [showCreditsModal, setShowCreditsModal] = useState(false);
   const [isSynced, setIsSynced] = useState(false);
   const [dbUser, setDbUser] = useState<any>(null);
   const syncAttemptedRef = useRef(false);
+  const syncInProgressRef = useRef(false);
 
   // Validate and sync user to backend on login
   // This ensures user exists in local database even if Clerk webhook wasn't received
   // PostgreSQL is the source of truth for credits
   useEffect(() => {
     const validateAndSyncUser = async () => {
-      if (!isLoaded || !isSignedIn || !user?.id || syncAttemptedRef.current) {
+      // Prevent duplicate calls and race conditions
+      if (!isLoaded || !isSignedIn || !user?.id || syncAttemptedRef.current || syncInProgressRef.current) {
         if (isLoaded && !isSignedIn) {
           setIsLoading(false);
           setUserCredits(0);
@@ -24,14 +50,15 @@ export const useAuthCheck = () => {
         return;
       }
 
-      // Mark sync as attempted to prevent duplicate calls
+      // Mark sync as in progress and attempted to prevent duplicate calls
+      syncInProgressRef.current = true;
       syncAttemptedRef.current = true;
       setIsLoading(true);
 
       try {
         console.log('🔐 Validating and syncing user to backend on login...');
-        // Use validateUser to get user data from PostgreSQL
-        const result = await apiService.validateUser(user.id);
+        // Use validateUser with retry logic for resilience
+        const result = await retryWithBackoff(() => apiService.validateUser(user.id), 3, 500);
         console.log('✅ User validation result:', result.message);
         setIsSynced(true);
         setDbUser(result.user);
@@ -49,12 +76,14 @@ export const useAuthCheck = () => {
           console.log('🎉 Free trial credit granted to new user!');
         }
       } catch (error) {
-        console.error('⚠️ Failed to validate/sync user to backend:', error);
-        // Don't block the app if sync fails
+        console.error('⚠️ Failed to validate/sync user to backend after retries:', error);
+        // Don't block the app if sync fails - allow retry on next mount
         setIsSynced(false);
-        setUserCredits(0);
+        syncAttemptedRef.current = false; // Allow retry on error
+        // Keep userCredits as null to indicate unknown state
       } finally {
         setIsLoading(false);
+        syncInProgressRef.current = false;
       }
     };
 

@@ -17,7 +17,15 @@ import { Upload, User, Briefcase, FileText, Building2, ArrowLeft } from 'lucide-
 
 type FieldName = 'companyName' | 'jobTitle' | 'jobDescription' | 'resume' | 'policy';
 type FormErrors = Record<FieldName, string>;
-type FormValues = Omit<FormErrors, 'policy'>;
+
+interface FormValues {
+  companyName: string;
+  jobTitle: string;
+  jobDescription: string;
+  resume: string; // Base64 encoded resume content
+  resumeFileName?: string;
+  resumeMimeType?: string;
+}
 
 const InterviewSetup: React.FC = () => {
   const navigate = useNavigate();
@@ -29,9 +37,12 @@ const InterviewSetup: React.FC = () => {
     companyName: '',
     jobTitle: '',
     jobDescription: '',
-    resume: ''
+    resume: '',
+    resumeFileName: '',
+    resumeMimeType: ''
   });
   const [fileName, setFileName] = useState('');
+  const [isProcessingFile, setIsProcessingFile] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({
     companyName: '',
     jobTitle: '',
@@ -79,15 +90,51 @@ const InterviewSetup: React.FC = () => {
     }
   }, [errors]);
 
-  // Handle file change
+  // Handle file change - reads file and converts to Base64
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFileName(file.name);
-      setFormValues(prev => ({ ...prev, resume: file.name }));
-      if (errors.resume) {
-        setErrors(prev => ({ ...prev, resume: '' }));
+      // Validate file type
+      const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      if (!validTypes.includes(file.type)) {
+        setErrors(prev => ({ ...prev, resume: 'Please upload a PDF or Word document' }));
+        return;
       }
+
+      // Validate file size (max 5MB)
+      const maxSize = 5 * 1024 * 1024;
+      if (file.size > maxSize) {
+        setErrors(prev => ({ ...prev, resume: 'File size must be less than 5MB' }));
+        return;
+      }
+
+      setFileName(file.name);
+      setIsProcessingFile(true);
+
+      // Read file as Base64
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const result = reader.result as string;
+        // Remove the data URL prefix (e.g., "data:application/pdf;base64,")
+        const base64Data = result.split(',')[1];
+        
+        setFormValues(prev => ({
+          ...prev,
+          resume: base64Data,
+          resumeFileName: file.name,
+          resumeMimeType: file.type
+        }));
+        setIsProcessingFile(false);
+        
+        if (errors.resume) {
+          setErrors(prev => ({ ...prev, resume: '' }));
+        }
+      };
+      reader.onerror = () => {
+        setErrors(prev => ({ ...prev, resume: 'Failed to read file. Please try again.' }));
+        setIsProcessingFile(false);
+      };
+      reader.readAsDataURL(file);
     }
   }, [errors.resume]);
 
@@ -135,7 +182,13 @@ const InterviewSetup: React.FC = () => {
 
     if (!validateForm()) return;
 
-    if ((userCredits ?? 0) <= 0) {
+    // Check if credits are still loading or zero
+    if (userCredits === null) {
+      setErrors(prev => ({ ...prev, policy: 'Please wait while credits are loading...' }));
+      return;
+    }
+
+    if (userCredits <= 0) {
       setShowCreditsModal(true);
       return;
     }
@@ -161,7 +214,9 @@ const InterviewSetup: React.FC = () => {
               company_name: formValues.companyName,
               job_title: formValues.jobTitle,
               job_description: formValues.jobDescription,
-              interviewee_cv: formValues.resume,
+              interviewee_cv: formValues.resume, // Now contains Base64 encoded content
+              resume_file_name: formValues.resumeFileName,
+              resume_mime_type: formValues.resumeMimeType,
               interview_id: interviewId
             }
           }
@@ -351,13 +406,18 @@ const InterviewSetup: React.FC = () => {
                   type="submit"
                   variant="primary"
                   size="lg"
-                  disabled={isSubmitting || (userCredits ?? 0) <= 0}
+                  disabled={isSubmitting || userCredits === null || userCredits <= 0}
                   className="w-full py-4 text-lg font-semibold"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center gap-2">
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                       Processing...
+                    </span>
+                  ) : userCredits === null ? (
+                    <span className="flex items-center gap-2">
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Loading credits...
                     </span>
                   ) : (
                     'Start Interview'

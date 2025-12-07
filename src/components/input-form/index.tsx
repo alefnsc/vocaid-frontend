@@ -17,7 +17,15 @@ type InputFormProps = {
 
 type FieldName = 'companyName' | 'jobTitle' | 'jobDescription' | 'resume' | 'policy';
 type FormErrors = Record<FieldName, string>;
-type FormValues = Omit<FormErrors, 'policy'>;
+
+interface FormValues {
+    companyName: string;
+    jobTitle: string;
+    jobDescription: string;
+    resume: string; // Base64 encoded resume content
+    resumeFileName?: string;
+    resumeMimeType?: string;
+}
 
 const InputForm: React.FC<InputFormProps> = ({ isMobile, credits }) => {
     const navigate = useNavigate();
@@ -27,9 +35,12 @@ const InputForm: React.FC<InputFormProps> = ({ isMobile, credits }) => {
         companyName: '',
         jobTitle: '',
         jobDescription: '',
-        resume: ''
+        resume: '',
+        resumeFileName: '',
+        resumeMimeType: ''
     });
     const [fileName, setFileName] = useState('Upload your resume');
+    const [isProcessingFile, setIsProcessingFile] = useState(false);
     const [errors, setErrors] = useState<FormErrors>({
         companyName: '',
         jobTitle: '', jobDescription: '', resume: '', policy: ''
@@ -66,15 +77,51 @@ const InputForm: React.FC<InputFormProps> = ({ isMobile, credits }) => {
         }
     }, [errors]);
 
-    // Handle file change
+    // Handle file change - reads file and converts to Base64
     const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            setFileName(file.name);
-            setFormValues(prev => ({ ...prev, resume: file.name }));
-            if (errors.resume) {
-                setErrors(prev => ({ ...prev, resume: '' }));
+            // Validate file type
+            const validTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+            if (!validTypes.includes(file.type)) {
+                setErrors(prev => ({ ...prev, resume: 'Please upload a PDF or Word document' }));
+                return;
             }
+
+            // Validate file size (max 5MB)
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                setErrors(prev => ({ ...prev, resume: 'File size must be less than 5MB' }));
+                return;
+            }
+
+            setFileName(file.name);
+            setIsProcessingFile(true);
+
+            // Read file as Base64
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const result = reader.result as string;
+                // Remove the data URL prefix (e.g., "data:application/pdf;base64,")
+                const base64Data = result.split(',')[1];
+                
+                setFormValues(prev => ({
+                    ...prev,
+                    resume: base64Data,
+                    resumeFileName: file.name,
+                    resumeMimeType: file.type
+                }));
+                setIsProcessingFile(false);
+                
+                if (errors.resume) {
+                    setErrors(prev => ({ ...prev, resume: '' }));
+                }
+            };
+            reader.onerror = () => {
+                setErrors(prev => ({ ...prev, resume: 'Failed to read file. Please try again.' }));
+                setIsProcessingFile(false);
+            };
+            reader.readAsDataURL(file);
         }
     }, [errors.resume]);
 
@@ -163,7 +210,9 @@ const InputForm: React.FC<InputFormProps> = ({ isMobile, credits }) => {
                             company_name: formValues.companyName,
                             job_title: formValues.jobTitle,
                             job_description: formValues.jobDescription,
-                            interviewee_cv: formValues.resume,
+                            interviewee_cv: formValues.resume, // Now contains Base64 encoded content
+                            resume_file_name: formValues.resumeFileName,
+                            resume_mime_type: formValues.resumeMimeType,
                             interview_id: interviewId
                         }
                     }

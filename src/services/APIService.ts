@@ -31,10 +31,14 @@ interface RegisterCallResponse {
 
 interface Metadata {
     first_name: string;
+    last_name?: string;
     job_title: string;
     company_name: string;
     job_description: string;
-    interviewee_cv: string;
+    interviewee_cv: string; // Base64 encoded resume content
+    resume_file_name?: string;
+    resume_mime_type?: string;
+    interview_id?: string;
 }
 
 interface MainInterface {
@@ -295,7 +299,9 @@ class APIService {
                     jobTitle: body.metadata.job_title,
                     companyName: body.metadata.company_name,
                     jobDescription: body.metadata.job_description,
-                    resumeData: body.metadata.interviewee_cv,
+                    resumeData: body.metadata.interviewee_cv, // Now Base64 encoded
+                    resumeFileName: body.metadata.resume_file_name,
+                    resumeMimeType: body.metadata.resume_mime_type,
                 });
                 interviewId = interview.id;
                 console.log('✅ Interview record created:', interviewId);
