@@ -7,6 +7,7 @@ import { DefaultLayout } from 'components/default-layout'
 import { Button } from 'components/ui/button'
 import { Check, X, Clock, Loader2, RefreshCw, Sparkles } from 'lucide-react'
 import apiService from 'services/APIService'
+import { useUserContext } from 'contexts/UserContext'
 
 type PaymentStatus = 'success' | 'failure' | 'pending' | 'loading'
 
@@ -29,6 +30,7 @@ export default function PaymentResult() {
   const navigate = useNavigate()
   const location = useLocation()
   const { user, isLoaded } = useUser()
+  const { onCreditsPurchased, invalidateCache } = useUserContext()
   const [status, setStatus] = useState<PaymentStatus>('loading')
   const [paymentDetails, setPaymentDetails] = useState<PaymentDetails>({})
   const [creditsVerified, setCreditsVerified] = useState(false)
@@ -86,8 +88,11 @@ export default function PaymentResult() {
       if (currentCredits > 0) {
         setCreditsVerified(true)
         console.log('✅ Credits verified from PostgreSQL:', currentCredits)
-        // Invalidate payment-related caches so dashboard shows updated data
+        // Invalidate caches so the app shows updated data
+        invalidateCache()
         apiService.invalidatePaymentCaches(user.id)
+        // Trigger the context to refresh
+        await onCreditsPurchased()
       }
       
       setPollAttempts(prev => prev + 1)
@@ -96,7 +101,7 @@ export default function PaymentResult() {
     } finally {
       setIsRefreshing(false)
     }
-  }, [user, creditsVerified, pollAttempts])
+  }, [user, creditsVerified, pollAttempts, invalidateCache, onCreditsPurchased])
 
   // Auto-poll on success page
   useEffect(() => {

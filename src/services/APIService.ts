@@ -1,5 +1,6 @@
 import { RetellWebClient } from "retell-client-js-sdk";
 import { config } from "../lib/config";
+import { getDeviceFingerprint } from "./deviceFingerprint";
 
 // Note: This service still requires backend API for Retell interview functionality
 // Backend is NOT needed for: Authentication (Clerk), Credits (Clerk metadata), Payments (MercadoPago)
@@ -810,13 +811,26 @@ class APIService {
     /**
      * Validate user session and ensure user exists in database
      * Called on interview page load and critical actions
+     * Includes device fingerprint for signup abuse detection
      */
-    async validateUser(userId: string): Promise<{ status: string; user: any; message: string; freeTrialGranted?: boolean }> {
+    async validateUser(userId: string): Promise<{ status: string; user: any; message: string; freeTrialGranted?: boolean; freeCreditBlocked?: boolean }> {
         console.log('🔐 Validating user session:', userId);
+        
+        // Get device fingerprint for abuse detection
+        let deviceFingerprint: string | undefined;
+        try {
+            deviceFingerprint = await getDeviceFingerprint();
+        } catch (e) {
+            console.warn('⚠️ Could not get device fingerprint');
+        }
         
         const response = await fetch(`${BACKEND_URL}/api/users/validate`, {
             method: 'POST',
-            headers: getHeaders(userId),
+            headers: {
+                ...getHeaders(userId),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ deviceFingerprint }),
         });
         
         if (!response.ok) {
@@ -830,7 +844,8 @@ class APIService {
             message: result.message,
             userId: result.user?.id,
             credits: result.user?.credits,
-            freeTrialGranted: result.freeTrialGranted
+            freeTrialGranted: result.freeTrialGranted,
+            freeCreditBlocked: result.freeCreditBlocked
         });
         return result;
     }

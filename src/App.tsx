@@ -19,6 +19,7 @@ import TermsOfUse from './pages/TermsOfUse';
 import { ProtectedInterviewRoute } from './components/protected-interview-route';
 import ErrorBoundary from './components/error-boundary';
 import { InterviewFlowProvider } from './hooks/use-interview-flow';
+import { UserProvider } from './contexts/UserContext';
 
 const CLERK_PUBLISHABLE_KEY = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY || '';
 const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY || '';
@@ -35,39 +36,41 @@ const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} afterSignOutUrl="/">
-        <GoogleReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
-          <InterviewFlowProvider>
-            <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-            <Routes>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<Home />} />
-                <Route path="interview-setup" element={<InterviewSetup />} />
-                <Route path="interview" element={
-                  <ProtectedInterviewRoute>
-                    <Interview />
-                  </ProtectedInterviewRoute>
-                } />
-                <Route path="feedback" element={<Feedback />} />
-                {/* Dashboard and Interview Details */}
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="interview/:id" element={<InterviewDetails />} />
-                {/* Static Pages */}
-                <Route path="about" element={<About />} />
-                <Route path="contact" element={<Contact />} />
-                <Route path="credits" element={<Credits />} />
-                <Route path="privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="terms-of-use" element={<TermsOfUse />} />
-                {/* Payment result routes */}
-                <Route path="payment/success" element={<PaymentResult />} />
-                <Route path="payment/failure" element={<PaymentResult />} />
-                <Route path="payment/pending" element={<PaymentResult />} />
-                {/* Contact thank you page */}
-                <Route path="contact/thank-you" element={<ContactThankYou />} />
-              </Route>
-            </Routes>
-          </Router>
-          </InterviewFlowProvider>
-        </GoogleReCaptchaProvider>
+        <UserProvider>
+          <GoogleReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
+            <InterviewFlowProvider>
+              <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+              <Routes>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<Home />} />
+                  <Route path="interview-setup" element={<InterviewSetup />} />
+                  <Route path="interview" element={
+                    <ProtectedInterviewRoute>
+                      <Interview />
+                    </ProtectedInterviewRoute>
+                  } />
+                  <Route path="feedback" element={<Feedback />} />
+                  {/* Dashboard and Interview Details */}
+                  <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="interview/:id" element={<InterviewDetails />} />
+                  {/* Static Pages */}
+                  <Route path="about" element={<About />} />
+                  <Route path="contact" element={<Contact />} />
+                  <Route path="credits" element={<Credits />} />
+                  <Route path="privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="terms-of-use" element={<TermsOfUse />} />
+                  {/* Payment result routes */}
+                  <Route path="payment/success" element={<PaymentResult />} />
+                  <Route path="payment/failure" element={<PaymentResult />} />
+                  <Route path="payment/pending" element={<PaymentResult />} />
+                  {/* Contact thank you page */}
+                  <Route path="contact/thank-you" element={<ContactThankYou />} />
+                </Route>
+              </Routes>
+            </Router>
+            </InterviewFlowProvider>
+          </GoogleReCaptchaProvider>
+        </UserProvider>
       </ClerkProvider>
     </ErrorBoundary>
   );
