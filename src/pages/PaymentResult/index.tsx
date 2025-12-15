@@ -38,6 +38,8 @@ const MAX_POLL_DELAY = 30000 // 30 seconds max
 const MAX_POLL_ATTEMPTS = 8 // Will wait up to ~2 minutes total
 
 export default function PaymentResult() {
+    // Track if we've polled at least once to avoid flicker
+    const [hasPolledOnce, setHasPolledOnce] = useState(false)
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const location = useLocation()
@@ -122,6 +124,7 @@ export default function PaymentResult() {
 
     try {
       setIsRefreshing(true)
+      if (!hasPolledOnce) setHasPolledOnce(true)
       
       const result = await apiService.getCurrentUser(user.id)
       const fetchedCredits = result.user?.credits || 0
@@ -337,20 +340,16 @@ export default function PaymentResult() {
             </div>
           </div>
 
-          {/* Credits Breakdown (Success only) */}
-          {status === 'success' && (
+          {/* Credits Breakdown (Success only, after first poll) */}
+          {status === 'success' && hasPolledOnce ? (
             <>
               <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <Coins className="w-5 h-5 text-voxly-purple" />
                 Credits Summary
               </h2>
-              
               <div className="voxly-card mb-6">
-                {/* Always show the credits breakdown - use purchasedCredits from URL */}
                 <div className="space-y-4">
-                  {/* Credits Flow */}
                   <div className="flex items-center justify-between gap-2 p-4 bg-gray-50 rounded-xl">
-                    {/* Previous Balance */}
                     <div className="flex-1 text-center">
                       <div className="flex items-center justify-center gap-1 mb-1">
                         <Wallet className="w-4 h-4 text-gray-400" />
@@ -360,15 +359,11 @@ export default function PaymentResult() {
                         {previousCredits !== null ? previousCredits : (currentCredits > 0 ? Math.max(0, currentCredits - purchasedCredits) : '—')}
                       </p>
                     </div>
-                    
-                    {/* Plus Sign */}
                     <div className="flex-shrink-0">
                       <div className="p-2 bg-green-100 rounded-full">
                         <Plus className="w-4 h-4 text-green-600" />
                       </div>
                     </div>
-                    
-                    {/* Purchased */}
                     <div className="flex-1 text-center">
                       <div className="flex items-center justify-center gap-1 mb-1">
                         <Coins className="w-4 h-4 text-green-500" />
@@ -378,13 +373,9 @@ export default function PaymentResult() {
                         +{purchasedCredits || '—'}
                       </p>
                     </div>
-                    
-                    {/* Equals Sign */}
                     <div className="flex-shrink-0">
                       <ArrowRight className="w-5 h-5 text-gray-400" />
                     </div>
-                    
-                    {/* Total Balance */}
                     <div className="flex-1 text-center">
                       <div className="flex items-center justify-center gap-1 mb-1">
                         <Coins className="w-4 h-4 text-voxly-purple" />
@@ -395,16 +386,12 @@ export default function PaymentResult() {
                       </p>
                     </div>
                   </div>
-                  
-                  {/* Status indicator */}
                   {!creditsVerified && pollAttempts < MAX_POLL_ATTEMPTS && (
                     <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
                       <Loader2 className="w-4 h-4 animate-spin" />
                       <span>Confirming credits...</span>
                     </div>
                   )}
-                  
-                  {/* Manual refresh after max attempts */}
                   {!creditsVerified && pollAttempts >= MAX_POLL_ATTEMPTS && (
                     <button
                       onClick={handleManualRefresh}
@@ -415,8 +402,6 @@ export default function PaymentResult() {
                       <span>Refresh credits</span>
                     </button>
                   )}
-                  
-                  {/* Auto-redirect countdown */}
                   <div className="flex items-center justify-center gap-2 pt-2 text-sm text-gray-500 border-t border-gray-100">
                     <Clock className="w-4 h-4" />
                     <span>Redirecting to home in {countdown} seconds...</span>
@@ -424,7 +409,12 @@ export default function PaymentResult() {
                 </div>
               </div>
             </>
-          )}
+          ) : status === 'success' && !hasPolledOnce ? (
+            <div className="voxly-card mb-6 flex items-center justify-center py-8">
+              <Loader2 className="w-6 h-6 animate-spin text-voxly-purple mr-2" />
+              <span className="text-gray-500">Verifying credits...</span>
+            </div>
+          ) : null}
 
           {/* Payment Reference */}
           {paymentDetails.payment_id && (
