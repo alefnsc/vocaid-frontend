@@ -58,7 +58,7 @@ export default function PaymentResult() {
   const hasVerifiedRef = useRef(false)
   
   // Auto-redirect countdown
-  const [countdown, setCountdown] = useState(10)
+  const [countdown, setCountdown] = useState(15)
   const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
   // Parse external_reference to get package info
@@ -108,8 +108,11 @@ export default function PaymentResult() {
 
   // Store initial credits when component mounts
   useEffect(() => {
-    if (userCredits !== null && initialCreditsRef.current === null) {
-      initialCreditsRef.current = userCredits
+    // Always update currentCredits from userCredits
+    if (userCredits !== null) {
+      if (initialCreditsRef.current === null) {
+        initialCreditsRef.current = userCredits
+      }
       setCurrentCredits(userCredits)
     }
   }, [userCredits])
@@ -137,9 +140,8 @@ export default function PaymentResult() {
         const calculatedPrevious = Math.max(0, fetchedCredits - pkg.credits)
         setPreviousCredits(calculatedPrevious)
         setPurchasedCredits(pkg.credits)
-        
         // Mark as verified - we have the data we need
-        if (!hasVerifiedRef.current) {
+        if (!hasVerifiedRef.current && fetchedCredits >= calculatedPrevious + pkg.credits) {
           hasVerifiedRef.current = true
           setCreditsVerified(true)
           console.log('✅ Credits verified:', {
