@@ -106,10 +106,9 @@ export default function PaymentResult() {
     }
   }, [])
 
-  // Store initial credits when component mounts
+  // Store initial credits when component mounts, but do NOT overwrite after credits are verified
   useEffect(() => {
-    // Always update currentCredits from userCredits
-    if (userCredits !== null) {
+    if (userCredits !== null && !hasVerifiedRef.current) {
       if (initialCreditsRef.current === null) {
         initialCreditsRef.current = userCredits
       }
