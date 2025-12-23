@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useUser, useClerk } from '@clerk/clerk-react';
 import { useMediaQuery } from '@mantine/hooks';
-import { Check, Sparkles, Crown, Star, Loader2, CreditCard, Shield } from 'lucide-react';
-import mercadoPagoService, { CREDIT_PACKAGES, CreditPackage } from '../../services/MercadoPagoService';
+import { Sparkles, Crown, Star, Loader2, CreditCard, Shield, Globe } from 'lucide-react';
+import { CREDIT_PACKAGES, CreditPackage } from '../../services/MercadoPagoService';
 import apiService from '../../services/APIService';
+
+// Payment provider types
+type PaymentProvider = 'mercadopago' | 'paypal';
 
 interface CreditPackagesProps {
   onPurchaseComplete?: () => void;
@@ -142,6 +145,11 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
   const [loadingPackageId, setLoadingPackageId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
+  
+  // Multi-provider payment state
+  const [detectedProvider, setDetectedProvider] = useState<PaymentProvider>('paypal');
+  const [providerName, setProviderName] = useState<string>('PayPal');
+  const [isLoadingProvider, setIsLoadingProvider] = useState(false);
 
   // Storage key for persisting package selection through auth flow
   const PENDING_PACKAGE_KEY = 'voxly_pending_package';
@@ -182,6 +190,35 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
     }
   };
 
+  // Detect preferred payment provider based on user's region
+  const detectPaymentProvider = useCallback(async () => {
+    if (!user?.id) return;
+    
+    setIsLoadingProvider(true);
+    try {
+      const result = await apiService.getPreferredPaymentProvider(user.id);
+      if (result.status === 'success' && result.data) {
+        setDetectedProvider(result.data.provider);
+        setProviderName(result.data.name);
+        console.log('💳 Detected payment provider:', result.data.provider, result.data.name);
+      }
+    } catch (err) {
+      console.warn('Could not detect payment provider, defaulting to PayPal:', err);
+      // Default to PayPal for global users
+      setDetectedProvider('paypal');
+      setProviderName('PayPal');
+    } finally {
+      setIsLoadingProvider(false);
+    }
+  }, [user?.id]);
+
+  // Detect provider on mount/user change
+  useEffect(() => {
+    if (isSignedIn && user) {
+      detectPaymentProvider();
+    }
+  }, [isSignedIn, user, detectPaymentProvider]);
+
   // Effect to handle purchase after sign-in (restored from localStorage)
   useEffect(() => {
     if (isSignedIn && user) {
@@ -208,30 +245,38 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
           try {
             console.log(`🛒 Resuming purchase for ${pendingPackage.name}...`);
             
-            const paymentUrl = await mercadoPagoService.getPaymentUrl(
-              pendingPackage.id,
-              user.id,
-              user.primaryEmailAddress?.emailAddress || ''
-            );
+            // Use multi-provider backend API
+            const paymentResult = await apiService.createGeoPayment(user.id, {
+              packageId: pendingPackage.id as 'starter' | 'intermediate' | 'professional',
+            });
+
+            if (paymentResult.status !== 'success' || !paymentResult.data.redirectUrl) {
+              throw new Error('Failed to create payment');
+            }
+
+            const { redirectUrl, provider, sandboxMode } = paymentResult.data;
+            console.log(`✅ Payment created via ${provider}${sandboxMode ? ' (sandbox)' : ''}`);
 
             const popupWidth = 600;
             const popupHeight = 700;
             const left = (window.screen.width - popupWidth) / 2;
             const top = (window.screen.height - popupHeight) / 2;
 
+            const popupName = provider === 'mercadopago' ? 'MercadoPago Checkout' : 'PayPal Checkout';
             const popup = window.open(
-              paymentUrl,
-              'MercadoPago Checkout',
+              redirectUrl,
+              popupName,
               `width=${popupWidth},height=${popupHeight},left=${left},top=${top},scrollbars=yes,resizable=yes`
             );
 
             if (!popup) {
               setPaymentStatus('Redirecting to payment...');
-              window.location.href = paymentUrl;
+              window.location.href = redirectUrl;
               return;
             }
 
-            setPaymentStatus('Complete payment in the popup window. This page will update automatically.');
+            const providerDisplayName = provider === 'mercadopago' ? 'Mercado Pago' : 'PayPal';
+            setPaymentStatus(`Complete payment in the ${providerDisplayName} popup. This page will update automatically.`);
 
             // Get current credits from backend PostgreSQL (source of truth)
             let currentCredits = 0;
@@ -282,13 +327,13 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
           setPaymentStatus('Payment window closed. Checking for credit update...');
         }
 
-        // Fetch credits from backend PostgreSQL (source of truth)
+        // Fetch credits from backend PostgreSQL (source of truth) - skip cache for payment verification
         if (!user?.id) {
           console.error('No user ID available for credit check');
           return;
         }
 
-        const result = await apiService.getCurrentUser(user.id);
+        const result = await apiService.getCurrentUser(user.id, true); // skipCache = true for payment polling
         const currentCredits = result.user?.credits || 0;
 
         console.log(`Checking credits from backend: initial=${initialCredits}, current=${currentCredits}, expected=${expectedCredits}`);
@@ -341,31 +386,35 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
     setIsLoading(true);
     setLoadingPackageId(pkg.id);
     setError(null);
-    setPaymentStatus('Opening payment window...');
+    setPaymentStatus('Creating payment...');
 
     try {
       console.log(`🛒 Initiating purchase for ${pkg.name}...`);
       console.log(`   Display: $${pkg.priceUSD} USD`);
-      console.log(`   Payment: R$ ${pkg.priceBRL} BRL`);
+      console.log(`   Provider: ${detectedProvider}`);
 
-      // Get the MercadoPago checkout URL
-      const paymentUrl = await mercadoPagoService.getPaymentUrl(
-        pkg.id,
-        user.id,
-        user.primaryEmailAddress?.emailAddress || ''
-      );
+      // Use multi-provider backend API
+      const paymentResult = await apiService.createGeoPayment(user.id, {
+        packageId: pkg.id as 'starter' | 'intermediate' | 'professional',
+      });
 
-      console.log('✅ Opening MercadoPago checkout in popup...');
+      if (paymentResult.status !== 'success' || !paymentResult.data.redirectUrl) {
+        throw new Error('Failed to create payment');
+      }
 
-      // Open MercadoPago in a popup window
+      const { redirectUrl, provider, sandboxMode } = paymentResult.data;
+      console.log(`✅ Payment created via ${provider}${sandboxMode ? ' (sandbox)' : ''}`);
+
+      // Open payment in a popup window
       const popupWidth = 600;
       const popupHeight = 700;
       const left = (window.screen.width - popupWidth) / 2;
       const top = (window.screen.height - popupHeight) / 2;
 
+      const popupName = provider === 'mercadopago' ? 'MercadoPago Checkout' : 'PayPal Checkout';
       const popup = window.open(
-        paymentUrl,
-        'MercadoPago Checkout',
+        redirectUrl,
+        popupName,
         `width=${popupWidth},height=${popupHeight},left=${left},top=${top},scrollbars=yes,resizable=yes`
       );
 
@@ -373,11 +422,12 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
         // Popup was blocked, fallback to redirect
         console.log('Popup blocked, redirecting instead...');
         setPaymentStatus('Redirecting to payment...');
-        window.location.href = paymentUrl;
+        window.location.href = redirectUrl;
         return;
       }
 
-      setPaymentStatus('Complete payment in the popup window. This page will update automatically.');
+      const providerDisplayName = provider === 'mercadopago' ? 'Mercado Pago' : 'PayPal';
+      setPaymentStatus(`Complete payment in the ${providerDisplayName} popup. This page will update automatically.`);
 
       // Get current credits from backend PostgreSQL (source of truth)
       let currentCredits = 0;
@@ -478,12 +528,19 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-full border border-gray-200">
           <Shield className="w-4 h-4 text-green-600" />
           <span className="text-gray-600 text-sm font-medium">
-            Secure payment via MercadoPago
+            Secure payment via {providerName}
           </span>
+          {isLoadingProvider && <Loader2 className="w-3 h-3 animate-spin text-gray-400" />}
         </div>
-        <p className="text-xs text-gray-400 mt-2">
-          Prices in USD • Payment processed in BRL
-        </p>
+        <div className="flex items-center justify-center gap-1 mt-2">
+          <Globe className="w-3 h-3 text-gray-400" />
+          <p className="text-xs text-gray-400">
+            {detectedProvider === 'mercadopago' 
+              ? 'Prices in USD • Payment processed in BRL (LATAM)' 
+              : 'Prices in USD • Global payment processing'
+            }
+          </p>
+        </div>
       </div>
     </div>
   );

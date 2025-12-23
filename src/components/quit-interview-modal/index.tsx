@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Modal } from 'components/ui/modal';
 import { Button } from 'components/ui/button';
 import { AlertTriangle, Info, XCircle, CheckCircle, ArrowLeft, LogOut } from 'lucide-react';
@@ -19,11 +20,14 @@ const QuitInterviewModal: React.FC<QuitInterviewModalProps> = ({
     isOpen,
     onClose,
     onQuit,
-    message = "Your interview will end and you'll be redirected."
+    message
 }) => {
+    const { t } = useTranslation();
+    const defaultMessage = t('interview.quitModal.message');
+    
     return (
         <Modal 
-            title="Are you sure you want to quit?" 
+            title={t('interview.quitModal.title')} 
             isOpen={isOpen} 
             onClose={onClose}
             className="max-w-md sm:max-w-lg"
@@ -36,38 +40,38 @@ const QuitInterviewModal: React.FC<QuitInterviewModalProps> = ({
 
                 {/* Main Message */}
                 <p className="text-gray-600 mb-4 sm:mb-6 text-center text-sm sm:text-base px-2">
-                    {message}
+                    {message || defaultMessage}
                 </p>
 
                 {/* Info Box */}
                 <div className="bg-gray-50 border border-gray-200 p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 w-full">
                     <h3 className="text-sm sm:text-base font-medium text-gray-800 mb-2 sm:mb-3 flex items-center">
                         <Info className="mr-2 w-4 h-4 sm:w-5 sm:h-5 text-purple-500" /> 
-                        What happens if you quit
+                        {t('interview.quitModal.whatHappens')}
                     </h3>
                     <ul className="text-gray-600 space-y-2 text-sm">
                         <li className="flex items-start">
                             <CheckCircle className="mr-2 mt-0.5 text-green-500 flex-shrink-0 w-4 h-4" />
-                            <span>If under {creditRestorationSeconds} seconds, your credit will be restored</span>
+                            <span>{t('interview.quitModal.creditRestored', { seconds: creditRestorationSeconds })}</span>
                         </li>
                         <li className="flex items-start">
                             <XCircle className="mr-2 mt-0.5 text-red-500 flex-shrink-0 w-4 h-4" />
-                            <span>If over {creditRestorationSeconds} seconds, your credit will be consumed</span>
+                            <span>{t('interview.quitModal.creditConsumed', { seconds: creditRestorationSeconds })}</span>
                         </li>
                         <li className="flex items-start">
                             <XCircle className="mr-2 mt-0.5 text-red-500 flex-shrink-0 w-4 h-4" />
-                            <span>If under {minInterviewSeconds} seconds, no feedback will be generated</span>
+                            <span>{t('interview.quitModal.noFeedback', { seconds: minInterviewSeconds })}</span>
                         </li>
                         <li className="flex items-start">
                             <XCircle className="mr-2 mt-0.5 text-red-500 flex-shrink-0 w-4 h-4" />
-                            <span>Your current progress will not be saved</span>
+                            <span>{t('interview.quitModal.progressNotSaved')}</span>
                         </li>
                     </ul>
                 </div>
 
                 {/* Confirmation Text */}
                 <p className="text-gray-700 mb-4 sm:mb-6 text-center text-sm sm:text-base font-medium">
-                    Are you sure you want to proceed?
+                    {t('interview.quitModal.confirmQuestion')}
                 </p>
 
                 {/* Action Buttons */}
@@ -79,7 +83,7 @@ const QuitInterviewModal: React.FC<QuitInterviewModalProps> = ({
                         className="w-full sm:w-auto flex items-center justify-center border-gray-300 text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                     >
                         <ArrowLeft className="mr-2 w-4 h-4" />
-                        Return to Interview
+                        {t('interview.quitModal.returnButton')}
                     </Button>
 
                     <Button
@@ -89,7 +93,7 @@ const QuitInterviewModal: React.FC<QuitInterviewModalProps> = ({
                         className="w-full sm:w-auto flex items-center justify-center bg-purple-600 hover:bg-purple-700 text-white"
                     >
                         <LogOut className="mr-2 w-4 h-4" />
-                        Quit Anyway
+                        {t('interview.quitModal.quitButton')}
                     </Button>
                 </div>
             </div>

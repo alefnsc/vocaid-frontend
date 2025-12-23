@@ -28,8 +28,9 @@ module.exports = {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))'
+          DEFAULT: '#7c3aed', // purple-600
+          hover: '#8b5cf6',   // purple-500
+          foreground: '#ffffff'
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
@@ -55,7 +56,14 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
         },
-        'voxly': '#5417C9',
+        // Vocaid brand colors
+        'vocaid': {
+          purple: '#7c3aed',      // purple-600 - primary
+          'purple-hover': '#8b5cf6', // purple-500 - hover
+          'purple-dark': '#6d28d9',  // purple-700 - active
+        },
+        // Legacy alias
+        'voxly': '#7c3aed',
         'bgreen': '#2deab1'
       },
       borderRadius: {

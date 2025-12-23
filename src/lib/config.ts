@@ -41,6 +41,19 @@ function getMercadoPagoPublicKey(): string {
 }
 
 /**
+ * Get the appropriate PayPal client ID based on environment
+ */
+function getPayPalClientId(): string {
+  if (isProduction) {
+    return process.env.REACT_APP_PAYPAL_CLIENT_ID || '';
+  }
+  // Development: prefer SANDBOX key, fallback to main key
+  return process.env.REACT_APP_PAYPAL_SANDBOX_CLIENT_ID || 
+         process.env.REACT_APP_PAYPAL_CLIENT_ID || 
+         '';
+}
+
+/**
  * Application configuration object
  */
 export const config = {
@@ -54,6 +67,9 @@ export const config = {
 
   // MercadoPago
   mercadoPagoPublicKey: getMercadoPagoPublicKey(),
+
+  // PayPal
+  paypalClientId: getPayPalClientId(),
 
   // Clerk
   clerkPublishableKey: process.env.REACT_APP_CLERK_PUBLISHABLE_KEY || '',
@@ -73,6 +89,7 @@ if (!isProduction) {
     isProduction: config.isProduction,
     backendUrl: config.backendUrl,
     mercadoPagoKey: config.mercadoPagoPublicKey ? `${config.mercadoPagoPublicKey.slice(0, 20)}...` : 'NOT SET',
+    paypalClientId: config.paypalClientId ? `${config.paypalClientId.slice(0, 20)}...` : 'NOT SET',
   });
 }
 

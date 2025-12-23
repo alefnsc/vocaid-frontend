@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useTranslation } from 'react-i18next';
 import { Modal } from "components/ui/modal";
 import { Button } from "components/ui/button";
 import { Mic, Settings, AlertCircle, ArrowLeft, RefreshCw } from "lucide-react";
@@ -10,6 +11,7 @@ interface MicPermissionCheckProps {
 }
 
 const MicPermissionCheck: React.FC<MicPermissionCheckProps> = ({ onPermissionGranted }) => {
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [permissionStatus, setPermissionStatus] = useState<"checking" | "granted" | "denied" | "unsupported" | "error">("checking");
   const [showTroubleshooting, setShowTroubleshooting] = useState(false);
@@ -100,33 +102,33 @@ const MicPermissionCheck: React.FC<MicPermissionCheckProps> = ({ onPermissionGra
       case "Chrome":
         return (
           <ol className={`list-decimal list-inside text-left space-y-2 ${instructionClass}`}>
-            <li>Click the lock/info icon in the address bar</li>
-            <li>Set "Microphone" to "Allow"</li>
-            <li>Refresh the page and try again</li>
+            <li>{t('interview.micModal.instructions.chrome.step1')}</li>
+            <li>{t('interview.micModal.instructions.chrome.step2')}</li>
+            <li>{t('interview.micModal.instructions.chrome.step3')}</li>
           </ol>
         );
       case "Firefox":
         return (
           <ol className={`list-decimal list-inside text-left space-y-2 ${instructionClass}`}>
-            <li>Click the lock icon in the address bar</li>
-            <li>Under Microphone, remove the block</li>
-            <li>Refresh the page and try again</li>
+            <li>{t('interview.micModal.instructions.firefox.step1')}</li>
+            <li>{t('interview.micModal.instructions.firefox.step2')}</li>
+            <li>{t('interview.micModal.instructions.firefox.step3')}</li>
           </ol>
         );
       case "Safari":
         return (
           <ol className={`list-decimal list-inside text-left space-y-2 ${instructionClass}`}>
-            <li>Go to Safari → Preferences → Websites → Microphone</li>
-            <li>Set permission to "Allow" for this website</li>
-            <li>Refresh the page and try again</li>
+            <li>{t('interview.micModal.instructions.safari.step1')}</li>
+            <li>{t('interview.micModal.instructions.safari.step2')}</li>
+            <li>{t('interview.micModal.instructions.safari.step3')}</li>
           </ol>
         );
       default:
         return (
           <ol className={`list-decimal list-inside text-left space-y-2 ${instructionClass}`}>
-            <li>Check your browser settings for microphone permissions</li>
-            <li>Ensure this site is allowed access</li>
-            <li>Refresh the page after making changes</li>
+            <li>{t('interview.micModal.instructions.default.step1')}</li>
+            <li>{t('interview.micModal.instructions.default.step2')}</li>
+            <li>{t('interview.micModal.instructions.default.step3')}</li>
           </ol>
         );
     }
@@ -136,10 +138,10 @@ const MicPermissionCheck: React.FC<MicPermissionCheckProps> = ({ onPermissionGra
     <Modal
       title={
         permissionStatus === "unsupported"
-          ? "Microphone Not Supported"
+          ? t('interview.micModal.titles.unsupported')
           : showTroubleshooting
-            ? "Microphone Troubleshooting"
-            : "Microphone Access Required"
+            ? t('interview.micModal.titles.troubleshooting')
+            : t('interview.micModal.titles.required')
       }
       isOpen={isModalOpen}
       onClose={handleCancelInterview}
@@ -152,13 +154,13 @@ const MicPermissionCheck: React.FC<MicPermissionCheckProps> = ({ onPermissionGra
               <AlertCircle className="w-8 h-8 sm:w-10 sm:h-10 text-amber-600" />
             </div>
             <p className="text-gray-600 mb-4 text-center text-sm sm:text-base">
-              We're unable to access your microphone. This interview requires microphone access.
+              {t('interview.micModal.troubleshootingMessage')}
             </p>
 
             <div className="w-full bg-gray-50 border border-gray-200 p-3 sm:p-4 rounded-lg mb-4">
               <h3 className="text-sm sm:text-base font-medium text-gray-800 mb-3 flex items-center">
                 <Settings className="mr-2 w-4 h-4 text-purple-500" /> 
-                Enable microphone in {getBrowserName()}
+                {t('interview.micModal.enableMicIn', { browser: getBrowserName() })}
               </h3>
               {getBrowserInstructions()}
             </div>
@@ -166,7 +168,7 @@ const MicPermissionCheck: React.FC<MicPermissionCheckProps> = ({ onPermissionGra
             {creditRestored && (
               <div className="bg-green-50 border border-green-200 p-3 rounded-lg mb-4 w-full">
                 <p className="text-green-700 text-sm">
-                  ✓ Your interview credit has been restored successfully!
+                  {t('interview.micModal.creditRestored')}
                 </p>
               </div>
             )}
@@ -177,7 +179,7 @@ const MicPermissionCheck: React.FC<MicPermissionCheckProps> = ({ onPermissionGra
               <Mic className="w-8 h-8 sm:w-10 sm:h-10 text-red-600" />
             </div>
             <p className="text-gray-600 mb-4 text-center text-sm sm:text-base">
-              Your browser doesn't support microphone access. Please use Chrome, Firefox, Safari, or Edge.
+              {t('interview.micModal.unsupportedMessage')}
             </p>
           </>
         ) : (
@@ -186,7 +188,7 @@ const MicPermissionCheck: React.FC<MicPermissionCheckProps> = ({ onPermissionGra
               <Mic className="w-8 h-8 sm:w-10 sm:h-10 text-purple-600" />
             </div>
             <p className="text-gray-600 mb-4 text-center text-sm sm:text-base">
-              This interview requires microphone access. Please allow access when prompted.
+              {t('interview.micModal.requiredMessage')}
             </p>
           </>
         )}
@@ -199,7 +201,7 @@ const MicPermissionCheck: React.FC<MicPermissionCheckProps> = ({ onPermissionGra
             className="w-full sm:w-auto flex items-center justify-center border-gray-300 text-gray-700 hover:bg-gray-100"
           >
             <ArrowLeft className="mr-2 w-4 h-4" />
-            Return to Home
+            {t('interview.micModal.returnHome')}
           </Button>
 
           {!showTroubleshooting && permissionStatus !== "unsupported" && (
@@ -210,7 +212,7 @@ const MicPermissionCheck: React.FC<MicPermissionCheckProps> = ({ onPermissionGra
               onClick={requestPermission}
             >
               <Mic className="mr-2 w-4 h-4" />
-              Enable Microphone
+              {t('interview.micModal.enableButton')}
             </Button>
           )}
 
@@ -222,7 +224,7 @@ const MicPermissionCheck: React.FC<MicPermissionCheckProps> = ({ onPermissionGra
               onClick={() => window.location.reload()}
             >
               <RefreshCw className="mr-2 w-4 h-4" />
-              Refresh Page
+              {t('interview.micModal.refreshButton')}
             </Button>
           )}
         </div>

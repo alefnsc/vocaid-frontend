@@ -3,14 +3,16 @@
 import { lazy, Suspense, useEffect, useState, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '@clerk/clerk-react'
+import { useTranslation } from 'react-i18next'
 import { DefaultLayout } from 'components/default-layout'
 import Loading from 'components/loading'
 import PurpleButton from 'components/ui/purple-button'
 import StatsCard from 'components/ui/stats-card'
-import { Coins, Receipt, CreditCard, ArrowLeft, Calendar, Package, CheckCircle, Clock, XCircle, Sparkles, ChevronDown, Mic } from 'lucide-react'
+import { Coins, CreditCard, Calendar, Package, CheckCircle, Clock, XCircle, Sparkles, ChevronDown, Mic } from 'lucide-react'
 import { useAuthCheck } from 'hooks/use-auth-check'
 import apiService, { PaymentHistoryItem, InterviewSummary } from 'services/APIService'
 import ContactButton from 'components/contact-button'
+import { PaymentProviderSelector } from 'components/payment-provider-selector'
 
 // Lazy load credit packages
 const CreditPackages = lazy(() => import('components/credit-packages'))
@@ -86,6 +88,7 @@ const formatDateShort = (dateString: string) => {
 export default function Credits() {
   const navigate = useNavigate()
   const { user, isSignedIn, isLoaded } = useUser()
+  const { t } = useTranslation()
   const { userCredits, isLoading: authLoading } = useAuthCheck()
   const buyCreditsRef = useRef<HTMLDivElement>(null)
   
@@ -180,33 +183,29 @@ export default function Credits() {
   // ==========================================
   if (!isSignedIn) {
     return (
-      <DefaultLayout className="flex flex-col overflow-hidden bg-gray-50">
+      <DefaultLayout className="flex flex-col overflow-hidden bg-white">
         <div className="page-container py-6 sm:py-8">
           {/* Header */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6 sm:mb-8">
             <div className="flex-1">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                Interview <span className="text-voxly-purple">Credits</span>
+              <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900">
+                {t('creditsPage.title')} <span className="text-purple-600">{t('creditsPage.titleHighlight')}</span>
               </h1>
-              <p className="text-gray-600 mt-1">
-                Pay-per-use pricing for AI-powered interview practice
+              <p className="text-zinc-600 mt-1">
+                {t('creditsPage.subtitle')}
               </p>
             </div>
           </div>
 
           {/* Hero Section - How Credits Work */}
-          <div className="voxly-card mb-6 sm:mb-8">
+          <div className="p-6 bg-white border border-zinc-200 rounded-xl mb-6 sm:mb-8">
             <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
-              <div className="p-4 sm:p-6 bg-purple-100 rounded-2xl flex-shrink-0">
-                <Coins className="w-12 h-12 sm:w-16 sm:h-16 text-purple-600" />
-              </div>
               <div className="text-center sm:text-left">
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">
-                  Simple, Transparent Pricing
+                <h2 className="text-xl sm:text-2xl font-bold text-zinc-900 mb-2 tracking-tight">
+                  {t('creditsPage.pricing.title')}
                 </h2>
-                <p className="text-gray-600 text-sm sm:text-base">
-                  No subscriptions, no hidden fees. Purchase credits and use them whenever you're ready. 
-                  Each credit gives you one complete AI interview session with detailed feedback.
+                <p className="text-zinc-600 text-sm sm:text-base">
+                  {t('creditsPage.pricing.description')}
                 </p>
               </div>
             </div>
@@ -214,10 +213,7 @@ export default function Credits() {
 
           {/* Credit Packages */}
           <div>
-            <div className="flex items-center gap-2 mb-3 sm:mb-4">
-              <Package className="w-5 h-5 text-voxly-purple" />
-              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Choose Your Package</h2>
-            </div>
+            <h2 className="text-lg sm:text-xl font-semibold text-zinc-900 tracking-tight mb-3 sm:mb-4">{t('creditsPage.choosePackage')}</h2>
             <Suspense fallback={<Loading />}>
               <CreditPackages />
             </Suspense>
@@ -244,16 +240,16 @@ export default function Credits() {
   }
 
   return (
-    <DefaultLayout className="flex flex-col overflow-hidden bg-gray-50">
+    <DefaultLayout className="flex flex-col overflow-hidden bg-white">
       <div className="page-container py-6 sm:py-8">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6 sm:mb-8">
           <div className="flex-1">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-              Credits & <span className="text-voxly-purple">Billing</span>
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900">
+              {t('creditsPage.billing.title')} <span className="text-purple-600">{t('creditsPage.billing.titleHighlight')}</span>
             </h1>
-            <p className="text-gray-600 mt-1">
-              Manage your credits and view your payment history
+            <p className="text-zinc-600 mt-1">
+              {t('creditsPage.billing.subtitle')}
             </p>
           </div>
           
@@ -265,7 +261,7 @@ export default function Credits() {
             className="w-full sm:w-auto"
           >
             <Sparkles className="w-5 h-5" />
-            Buy More Credits
+            {t('creditsPage.buyMoreCredits')}
             <ChevronDown className="w-4 h-4" />
           </PurpleButton>
         </div>
@@ -273,25 +269,25 @@ export default function Credits() {
         {/* Stats Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
           <StatsCard
-            title="Balance"
+            title={t('creditsPage.stats.balance')}
             value={userCredits}
             icon={<Coins />}
           />
 
           <StatsCard
-            title="Purchased"
+            title={t('creditsPage.stats.purchased')}
             value={totalCreditsPurchased}
             icon={<Package />}
           />
 
           <StatsCard
-            title="Used"
+            title={t('creditsPage.stats.used')}
             value={totalCreditsUsed}
             icon={<Mic />}
           />
 
           <StatsCard
-            title="Spent"
+            title={t('creditsPage.stats.spent')}
             value={`$${totalSpent.toFixed(0)}`}
             icon={<CreditCard />}
           />
@@ -301,32 +297,28 @@ export default function Credits() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Payment History Section */}
           <div>
-            <div className="flex items-center gap-2 mb-3 sm:mb-4">
-              <Receipt className="w-5 h-5 text-voxly-purple" />
-              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Payment History</h2>
-            </div>
+            <h2 className="text-lg sm:text-xl font-semibold text-zinc-900 tracking-tight mb-3 sm:mb-4">{t('creditsPage.paymentHistory')}</h2>
             
-            <div className="voxly-card max-h-[300px] sm:max-h-[400px] overflow-y-auto">
+            <div className="p-6 bg-white border border-zinc-200 rounded-xl max-h-[300px] sm:max-h-[400px] overflow-y-auto">
               {isLoadingPayments ? (
                 <div className="flex items-center justify-center py-12">
                   <Loading />
                 </div>
               ) : payments.length === 0 ? (
                 <div className="text-center py-12">
-                  <Receipt className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500 mb-2">No payment history yet</p>
-                  <p className="text-sm text-gray-400">
-                    Purchase credits to see your transaction history
+                  <p className="text-lg font-semibold text-zinc-900 mb-2">{t('creditsPage.noPaymentHistory')}</p>
+                  <p className="text-sm text-zinc-500">
+                    {t('creditsPage.purchaseToSeeHistory')}
                   </p>
                 </div>
               ) : (
-                <div className="divide-y divide-gray-100">
+                <div className="divide-y divide-zinc-100">
                   {payments.map((payment) => (
                     <div key={payment.id} className="py-4 first:pt-0 last:pb-0">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="font-medium text-gray-900">
+                            <span className="font-medium text-zinc-900">
                               {payment.packageName}
                             </span>
                             {/* <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${getStatusColor(payment.status)}`}>
@@ -334,7 +326,7 @@ export default function Credits() {
                               {payment.status}
                             </span> */}
                           </div>
-                          <div className="flex items-center gap-3 text-sm text-gray-500">
+                          <div className="flex items-center gap-3 text-sm text-zinc-500">
                             <span className="flex items-center gap-1">
                               <Coins className="w-3.5 h-3.5" />
                               {payment.creditsAmount} credits
@@ -346,10 +338,10 @@ export default function Credits() {
                           </div>
                         </div>
                         <div className="text-right">
-                          <p className="font-semibold text-gray-900">
+                          <p className="font-semibold text-zinc-900">
                             ${payment.amountUSD.toFixed(2)}
                           </p>
-                          <p className="text-xs text-gray-400">
+                          <p className="text-xs text-zinc-400">
                             R$ {payment.amountBRL.toFixed(2)}
                           </p>
                         </div>
@@ -363,32 +355,28 @@ export default function Credits() {
 
           {/* Consumption History Section */}
           <div>
-            <div className="flex items-center gap-2 mb-3 sm:mb-4">
-              <Mic className="w-5 h-5 text-voxly-purple" />
-              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Credit Usage</h2>
-            </div>
+            <h2 className="text-lg sm:text-xl font-semibold text-zinc-900 tracking-tight mb-3 sm:mb-4">{t('creditsPage.creditUsage')}</h2>
             
-            <div className="voxly-card max-h-[300px] sm:max-h-[400px] overflow-y-auto">
+            <div className="p-6 bg-white border border-zinc-200 rounded-xl max-h-[300px] sm:max-h-[400px] overflow-y-auto">
               {isLoadingConsumption ? (
                 <div className="flex items-center justify-center py-12">
                   <Loading />
                 </div>
               ) : consumptionHistory.length === 0 ? (
                 <div className="text-center py-12">
-                  <Mic className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500 mb-2">No interviews yet</p>
-                  <p className="text-sm text-gray-400">
-                    Complete interviews to see your usage history
+                  <p className="text-lg font-semibold text-zinc-900 mb-2">{t('creditsPage.noInterviewsYet')}</p>
+                  <p className="text-sm text-zinc-500">
+                    {t('creditsPage.completeInterviewsToSee')}
                   </p>
                 </div>
               ) : (
                 <div className="space-y-4">
                   {consumptionHistory.map((day) => (
-                    <div key={day.date} className="border-b border-gray-100 last:border-0 pb-4 last:pb-0">
+                    <div key={day.date} className="border-b border-zinc-100 last:border-0 pb-4 last:pb-0">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <Calendar className="w-4 h-4 text-purple-500" />
-                          <span className="font-medium text-gray-900">{day.displayDate}</span>
+                          <Calendar className="w-4 h-4 text-purple-600" />
+                          <span className="font-medium text-zinc-900">{day.displayDate}</span>
                         </div>
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">
                           <Coins className="w-3 h-3" />
@@ -398,10 +386,10 @@ export default function Credits() {
                       <div className="pl-6 space-y-1">
                         {day.interviews.map((interview) => (
                           <div key={interview.id} className="flex items-center justify-between text-sm">
-                            <span className="text-gray-600 truncate max-w-[200px]">
+                            <span className="text-zinc-600 truncate max-w-[200px]">
                               {interview.position || 'Interview'}
                             </span>
-                            <span className="text-gray-400 text-xs">
+                            <span className="text-zinc-400 text-xs">
                               {new Date(interview.createdAt).toLocaleTimeString('en-US', { 
                                 hour: '2-digit', 
                                 minute: '2-digit' 
@@ -420,10 +408,13 @@ export default function Credits() {
 
         {/* Buy Credits Section */}
         <div ref={buyCreditsRef} className="scroll-mt-8">
-          <div className="flex items-center gap-2 mb-3 sm:mb-4">
-            <CreditCard className="w-5 h-5 text-voxly-purple" />
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Buy Credits</h2>
+          <h2 className="text-lg sm:text-xl font-semibold text-zinc-900 tracking-tight mb-3 sm:mb-4">{t('creditsPage.buyCredits')}</h2>
+          
+          {/* Payment Provider Selector */}
+          <div className="mb-6">
+            <PaymentProviderSelector showRegionInfo={true} />
           </div>
+          
           <Suspense fallback={<Loading />}>
             <CreditPackages onPurchaseComplete={fetchPaymentHistory} />
           </Suspense>

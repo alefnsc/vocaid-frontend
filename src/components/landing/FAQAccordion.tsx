@@ -1,0 +1,134 @@
+'use client'
+
+import React from 'react'
+import { useTranslation } from 'react-i18next'
+import { motion, useReducedMotion } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from 'components/ui/accordion'
+
+export const FAQAccordion: React.FC = () => {
+  const { t } = useTranslation()
+  const prefersReducedMotion = useReducedMotion()
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  })
+
+  const faqItems = [
+    {
+      question: t('landing.faq.items.multiTenancy.question'),
+      answer: t('landing.faq.items.multiTenancy.answer'),
+    },
+    {
+      question: t('landing.faq.items.whiteLabel.question'),
+      answer: t('landing.faq.items.whiteLabel.answer'),
+    },
+    {
+      question: t('landing.faq.items.billing.question'),
+      answer: t('landing.faq.items.billing.answer'),
+    },
+    {
+      question: t('landing.faq.items.compliance.question'),
+      answer: t('landing.faq.items.compliance.answer'),
+    },
+    {
+      question: t('landing.faq.items.atsIntegration.question'),
+      answer: t('landing.faq.items.atsIntegration.answer'),
+    },
+    {
+      question: t('landing.faq.items.multilingual.question'),
+      answer: t('landing.faq.items.multilingual.answer'),
+    },
+    {
+      question: t('landing.faq.items.security.question'),
+      answer: t('landing.faq.items.security.answer'),
+    },
+    {
+      question: t('landing.faq.items.support.question'),
+      answer: t('landing.faq.items.support.answer'),
+    },
+    {
+      question: t('landing.faq.items.rubrics.question'),
+      answer: t('landing.faq.items.rubrics.answer'),
+    },
+    {
+      question: t('landing.faq.items.trial.question'),
+      answer: t('landing.faq.items.trial.answer'),
+    },
+  ]
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: prefersReducedMotion ? 0 : 0.05,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: prefersReducedMotion ? 0.2 : 0.4, ease: 'easeOut' },
+    },
+  }
+
+  return (
+    <section id="faq" className="py-24 bg-white">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
+          ref={ref}
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? 'visible' : 'hidden'}
+        >
+          <div className="text-center mb-12">
+            <motion.span
+              variants={itemVariants}
+              className="inline-block px-3 py-1 text-xs font-semibold text-purple-700 bg-purple-100 rounded-full mb-4"
+            >
+              {t('landing.faq.badge')}
+            </motion.span>
+            <motion.h2
+              variants={itemVariants}
+              className="text-3xl sm:text-4xl font-bold text-zinc-900 mb-4"
+            >
+              {t('landing.faq.title')}
+            </motion.h2>
+            <motion.p
+              variants={itemVariants}
+              className="text-lg text-zinc-600"
+            >
+              {t('landing.faq.subtitle')}
+            </motion.p>
+          </div>
+
+          <motion.div variants={itemVariants}>
+            <Accordion type="single" collapsible className="w-full">
+              {faqItems.map((item, idx) => (
+                <AccordionItem key={idx} value={`item-${idx}`} className="border-zinc-200">
+                  <AccordionTrigger className="text-left text-base font-medium text-zinc-900 hover:text-purple-600">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-zinc-600 leading-relaxed">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
+export default FAQAccordion

@@ -1,0 +1,1596 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ha ocurrido un error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "submit": "Enviar",
+    "close": "Cerrar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "logout": "Cerrar sesión",
+    "login": "Iniciar sesión",
+    "signUp": "Registrarse",
+    "there": "ahí",
+    "and": "y",
+    "processing": "Procesando...",
+    "optional": "opcional",
+    "submitting": "Enviando...",
+    "gotIt": "Entendido",
+    "soon": "Pronto",
+    "goBack": "Volver"
+  },
+  "features": {
+    "underConstruction": {
+      "title": "En Construcción",
+      "message": "Esta función estará disponible en la próxima versión. ¡Mantente atento!",
+      "patience": "Estamos trabajando para traerte esta función. ¡Gracias por tu paciencia!"
+    },
+    "comingSoon": "Próximamente",
+    "nextRelease": "Próxima Versión",
+    "joinWaitlist": "Unirse a la Lista de Espera",
+    "notifyMe": "Notificarme",
+    "badge": "Por Qué Elegir Vocaid",
+    "heading": "Todo lo que necesitas para triunfar",
+    "subheading": "Nuestra plataforma con IA proporciona herramientas integrales para ayudarte a preparar, practicar y destacar en tus entrevistas.",
+    "learnMore": "Saber más",
+    "aiPractice": {
+      "title": "Práctica con IA",
+      "description": "Practica con nuestro entrevistador de IA inteligente que se adapta a tu industria y nivel de experiencia."
+    },
+    "personalized": {
+      "title": "Personalizado para Ti",
+      "description": "Obtén preguntas personalizadas basadas en tu currículum, puesto objetivo y metas profesionales."
+    },
+    "realtime": {
+      "title": "Retroalimentación en Tiempo Real",
+      "description": "Recibe análisis instantáneo sobre tus respuestas, tono y habilidades de comunicación."
+    },
+    "analytics": {
+      "title": "Análisis Detallados",
+      "description": "Sigue tu progreso con métricas de rendimiento e información comprehensiva."
+    },
+    "multilingual": {
+      "title": "Idiomas Globales",
+      "description": "Practica en más de 8 idiomas para prepararte para oportunidades internacionales."
+    },
+    "certification": {
+      "title": "Certificación de Habilidades",
+      "description": "Obtén certificados para mostrar tu preparación para entrevistas a los empleadores."
+    },
+    "available": {
+      "title": "Disponible 24/7",
+      "description": "Practica en cualquier momento y lugar. Nuestro coach de IA siempre está listo cuando tú lo estés."
+    },
+    "privacy": {
+      "title": "Privacidad Primero",
+      "description": "Tus datos están encriptados y nunca se comparten. Practica con total confianza."
+    },
+    "underConstruction": {
+      "title": "Under Construction",
+      "message": "This feature is coming in the next release. Stay tuned!",
+      "patience": "We're working hard to bring you this feature. Thank you for your patience!"
+    },
+    "comingSoon": "Coming Soon",
+    "nextRelease": "Next Release",
+    "joinWaitlist": "Join Waitlist",
+    "notifyMe": "Notify Me"
+  },
+  "pages": {
+    "underConstruction": {
+      "featureInfo": {
+        "recruiter": {
+          "title": "Plataforma de Entrevistas para Reclutadores",
+          "description": "Crea kits de entrevista, evalúa candidatos de forma consistente y toma decisiones de contratación basadas en datos."
+        },
+        "hr": {
+          "title": "Hub de Servicios para Empleados",
+          "description": "Reduce tickets de RRHH con respuestas basadas en políticas y simplifica la incorporación de empleados."
+        },
+        "default": {
+          "title": "Esta Función",
+          "description": "Estamos trabajando en algo emocionante para ti."
+        }
+      },
+      "goToDashboard": "Ir al Panel",
+      "backToHome": "Volver al Inicio",
+      "haveQuestions": "¿Tienes preguntas?",
+      "contactUs": "Contáctanos"
+    }
+  },
+  "nav": {
+    "home": "Inicio",
+    "dashboard": "Panel",
+    "about": "Acerca de",
+    "credits": "Créditos",
+    "contact": "Contacto",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Uso",
+    "interviews": "Entrevistas",
+    "newInterview": "Nueva Entrevista",
+    "resumes": "Currículums",
+    "insights": "Análisis",
+    "interviewKits": "Kits de Entrevista",
+    "candidates": "Candidatos",
+    "analytics": "Analíticas",
+    "developer": "Desarrollador",
+    "hrHub": "Hub de Empleados",
+    "billing": "Facturación",
+    "account": "Cuenta",
+    "main": "Principal",
+    "settings": "Configuración"
+  },
+  "sidebar": {
+    "menu": "Menú",
+    "resources": "Recursos",
+    "credits": "Créditos",
+    "creditsAvailable": "Disponibles"
+  },
+  "hero": {
+    "badge": "Coaching de Entrevistas con IA",
+    "headline": {
+      "part1": "Consigue Tu",
+      "part2": "Carrera Soñada"
+    },
+    "subheadline": "Practica entrevistas con IA, obtén retroalimentación instantánea y construye confianza para triunfar en tu próxima oportunidad. Únete a miles de profesionales avanzando en sus carreras.",
+    "cta": {
+      "start": "Inicia Tu Carrera Global",
+      "dashboard": "Ir al Panel",
+      "learnMore": "Saber Más"
+    },
+    "stats": {
+      "users": "Usuarios Globales",
+      "interviews": "Entrevistas",
+      "satisfaction": "Tasa de Éxito"
+    }
+  },
+  "bodyCopy": {
+    "howItWorks": "Cómo Funciona",
+    "features": {
+      "masterInterview": {
+        "title": "Domina la Entrevista",
+        "description": "Perfecciona respuestas con entrevistas simuladas por IA"
+      },
+      "tailoredRecommendations": {
+        "title": "Recomendaciones Personalizadas",
+        "description": "Obtén consejos basados en la descripción del puesto y antigüedad"
+      },
+      "realtimeFeedback": {
+        "title": "Retroalimentación en Tiempo Real",
+        "description": "Recibe comentarios instantáneos y constructivos"
+      },
+      "comprehensiveResults": {
+        "title": "Resultados Completos",
+        "description": "Revisa el rendimiento detallado y perspectivas"
+      }
+    }
+  },
+  "trustBar": {
+    "trustedBy": "Profesionales confían en",
+    "at": "en",
+    "stats": {
+      "users": "Usuarios Activos",
+      "interviews": "Entrevistas Completadas",
+      "countries": "Países",
+      "companies": "Empresas Asociadas",
+      "timeSaved": "Reducción en Tiempo de Contratación",
+      "enterprises": "Clientes Empresariales"
+    },
+    "testimonials": {
+      "badge": "Resultados Empresariales",
+      "heading": "Confiado por Líderes de RRHH",
+      "items": {
+        "1": {
+          "quote": "Redujimos nuestro tiempo de selección en un 70% mientras mejoramos la calidad de los candidatos. Las entrevistas con IA son notablemente exhaustivas.",
+          "author": "Jennifer Walsh",
+          "role": "VP de Adquisición de Talento",
+          "company": "Fortune 500 Tech"
+        },
+        "2": {
+          "quote": "Las métricas de reducción de sesgos convencieron a nuestro equipo directivo. Hemos visto un aumento del 35% en resultados de contratación diversa.",
+          "author": "David Kim",
+          "role": "Chief People Officer",
+          "company": "Global Finance"
+        },
+        "3": {
+          "quote": "Las entrevistas multilingües nos abrieron mercados globales. Ahora contratamos talento en 12 países con evaluación consistente.",
+          "author": "Maria Santos",
+          "role": "Directora de RRHH Global",
+          "company": "International Retail"
+        }
+      }
+    }
+  },
+  "about": {
+    "title": "Acerca de",
+    "subtitle": "Plataforma de preparación para entrevistas con IA",
+    "mission": {
+      "title": "Triunfa en Cada Entrevista",
+      "description": "Practica con nuestro entrevistador de IA, obtén retroalimentación instantánea y construye confianza. Sube tu currículum, ingresa los detalles del trabajo y comienza a mejorar hoy."
+    },
+    "whyVocaid": "¿Por qué Vocaid?",
+    "features": {
+      "realistic": {
+        "title": "Realista",
+        "desc": "Flujo de conversación natural"
+      },
+      "analytics": {
+        "title": "Analíticas",
+        "desc": "Sigue tu progreso"
+      },
+      "practice247": {
+        "title": "Practica 24/7",
+        "desc": "Sin programación"
+      },
+      "feedback": {
+        "title": "Retroalimentación",
+        "desc": "Insights accionables"
+      },
+      "roleSpecific": {
+        "title": "Específico",
+        "desc": "Preguntas personalizadas"
+      },
+      "payPerUse": {
+        "title": "Pago por Uso",
+        "desc": "Sin suscripciones"
+      }
+    },
+    "legal": "Legal",
+    "privacyDesc": "Cómo protegemos tus datos",
+    "termsDesc": "Términos y condiciones"
+  },
+  "contact": {
+    "title": "Contáctenos",
+    "titleHighlight": "",
+    "subtitle": "¿Tienes preguntas o comentarios? Nos encantaría saber de ti.",
+    "email": "Correo",
+    "responseTime": "Tiempo de Respuesta",
+    "responseTimeValue": "24-48 horas",
+    "faq": "FAQ",
+    "aboutPage": "Página Acerca de",
+    "sendMessage": "Envíanos un Mensaje",
+    "form": {
+      "name": "Nombre",
+      "namePlaceholder": "Tu nombre",
+      "email": "Correo",
+      "emailPlaceholder": "tu@correo.com",
+      "subject": "Asunto",
+      "selectSubject": "Selecciona un asunto",
+      "subjects": {
+        "general": "Consulta General",
+        "support": "Soporte Técnico",
+        "billing": "Pregunta de Facturación",
+        "feedback": "Retroalimentación",
+        "partnership": "Oportunidad de Asociación",
+        "other": "Otro"
+      },
+      "message": "Mensaje",
+      "messagePlaceholder": "¿Cómo podemos ayudarte? (mín {{min}} caracteres)",
+      "sendButton": "Enviar Mensaje",
+      "sending": "Enviando...",
+      "moreNeeded": "{{count}} más necesarios",
+      "overLimit": "{{count}} sobre el límite",
+      "looksGood": "¡Se ve bien!",
+      "recaptcha": "Protegido por reCAPTCHA.",
+      "privacy": "Privacidad",
+      "terms": "Términos",
+      "successTitle": "¡Mensaje Enviado!",
+      "successMessage": "Gracias por tu mensaje. Te responderemos pronto."
+    }
+  },
+  "contactThankYou": {
+    "title": "¡Gracias!",
+    "message": "Tu mensaje ha sido enviado exitosamente. Te responderemos pronto.",
+    "redirecting": "Redirigiendo a inicio...",
+    "goHome": "Ir a Inicio Ahora"
+  },
+  "home": {
+    "hero": {
+      "title": "Domina Tus Habilidades de Entrevista",
+      "subtitle": "Practica con entrevistas simuladas con IA personalizadas para tu currículum y trabajo soñado",
+      "cta": "Empezar a Practicar",
+      "secondaryCta": "Saber Más"
+    },
+    "features": {
+      "title": "¿Por qué elegir Vocaid?",
+      "realtime": {
+        "title": "Entrevistas de Voz en Tiempo Real",
+        "description": "Conversación natural con nuestro entrevistador de IA"
+      },
+      "personalized": {
+        "title": "Preguntas Personalizadas",
+        "description": "Preguntas adaptadas a tu currículum y descripción del puesto"
+      },
+      "feedback": {
+        "title": "Retroalimentación Detallada",
+        "description": "Análisis completo de tu desempeño"
+      }
+    }
+  },
+  "interview": {
+    "setup": {
+      "title": "Configuración de Entrevista",
+      "subtitle": "Preparemos tu entrevista simulada",
+      "jobTitle": "Puesto",
+      "jobTitlePlaceholder": "ej: Ingeniero de Software",
+      "companyName": "Nombre de la Empresa",
+      "companyNamePlaceholder": "ej: Google",
+      "jobDescription": "Descripción del Puesto",
+      "jobDescriptionPlaceholder": "Pega la descripción del puesto aquí...",
+      "resume": "Tu Currículum",
+      "resumeUpload": "Sube tu currículum (PDF)",
+      "resumeDragDrop": "Arrastra y suelta tu currículum aquí o haz clic para subir",
+      "startInterview": "Iniciar Entrevista",
+      "creditsRequired": "Esta entrevista usará 1 crédito"
+    },
+    "ready": {
+      "title": "Listo para Empezar",
+      "subtitle": "Tu entrevista está a punto de comenzar",
+      "tips": {
+        "title": "Consejos Rápidos",
+        "tip1": "Habla claramente y a un ritmo natural",
+        "tip2": "Tómate un momento para pensar antes de responder",
+        "tip3": "Sé específico con ejemplos de tu experiencia",
+        "tip4": "Pide aclaraciones si es necesario"
+      },
+      "startButton": "Comenzar Entrevista"
+    },
+    "inProgress": {
+      "listening": "Escuchando...",
+      "speaking": "La IA está hablando...",
+      "thinking": "Procesando...",
+      "endInterview": "Terminar Entrevista",
+      "timeRemaining": "Tiempo restante"
+    },
+    "completed": {
+      "title": "Entrevista Completada",
+      "subtitle": "¡Buen trabajo! Tu retroalimentación se está generando.",
+      "viewFeedback": "Ver Retroalimentación",
+      "newInterview": "Nueva Entrevista"
+    },
+    "title": "Entrevista",
+    "status": {
+      "connecting": "Conectando a Voxly...",
+      "speaking": "Voxly está Hablando...",
+      "listening": "Voxly está Escuchando..."
+    },
+    "buttons": {
+      "quit": "Salir de la entrevista"
+    },
+    "quitModal": {
+      "title": "¿Estás seguro de que quieres salir?",
+      "message": "Tu entrevista terminará y serás redirigido.",
+      "whatHappens": "Qué sucede si sales",
+      "creditRestored": "Si menos de {{seconds}} segundos, tu crédito será restaurado",
+      "creditConsumed": "Si más de {{seconds}} segundos, tu crédito será consumido",
+      "noFeedback": "Si menos de {{seconds}} segundos, no se generará retroalimentación",
+      "progressNotSaved": "Tu progreso actual no se guardará",
+      "confirmQuestion": "¿Estás seguro de que quieres continuar?",
+      "returnButton": "Volver a la Entrevista",
+      "quitButton": "Salir de Todos Modos"
+    },
+    "micModal": {
+      "titles": {
+        "unsupported": "Micrófono No Soportado",
+        "troubleshooting": "Solución de Problemas del Micrófono",
+        "required": "Acceso al Micrófono Requerido"
+      },
+      "troubleshootingMessage": "No podemos acceder a tu micrófono. Esta entrevista requiere acceso al micrófono.",
+      "unsupportedMessage": "Tu navegador no soporta acceso al micrófono. Por favor, usa Chrome, Firefox, Safari o Edge.",
+      "requiredMessage": "Esta entrevista requiere acceso al micrófono. Por favor, permite el acceso cuando se te solicite.",
+      "enableMicIn": "Habilitar micrófono en {{browser}}",
+      "creditRestored": "✓ ¡Tu crédito de entrevista ha sido restaurado con éxito!",
+      "returnHome": "Volver al Inicio",
+      "enableButton": "Habilitar Micrófono",
+      "refreshButton": "Actualizar Página",
+      "instructions": {
+        "chrome": {
+          "step1": "Haz clic en el icono de candado/info en la barra de direcciones",
+          "step2": "Establece \"Micrófono\" en \"Permitir\"",
+          "step3": "Actualiza la página e intenta de nuevo"
+        },
+        "firefox": {
+          "step1": "Haz clic en el icono de candado en la barra de direcciones",
+          "step2": "En Micrófono, elimina el bloqueo",
+          "step3": "Actualiza la página e intenta de nuevo"
+        },
+        "safari": {
+          "step1": "Ve a Safari → Preferencias → Sitios Web → Micrófono",
+          "step2": "Establece el permiso en \"Permitir\" para este sitio",
+          "step3": "Actualiza la página e intenta de nuevo"
+        },
+        "default": {
+          "step1": "Revisa la configuración de tu navegador para permisos de micrófono",
+          "step2": "Asegúrate de que este sitio tenga acceso permitido",
+          "step3": "Actualiza la página después de hacer los cambios"
+        }
+      }
+    }
+  },
+  "interviewSetup": {
+    "backToDashboard": "← Volver al Panel",
+    "title": "Iniciar Entrevista de Práctica",
+    "subtitle": "Configura tu sesión de entrevista simulada con IA",
+    "noCredits": {
+      "title": "Sin créditos restantes",
+      "description": "Necesitas al menos 1 crédito para iniciar una entrevista de práctica.",
+      "buyCredits": "Comprar créditos"
+    },
+    "creditsAvailable": "{{count}} crédito disponible",
+    "creditsAvailable_plural": "{{count}} créditos disponibles",
+    "sessionCost": "Esta sesión usará 1 crédito",
+    "roleSection": {
+      "label": "¿Para qué puesto estás practicando?",
+      "placeholder": "O escribe un puesto personalizado...",
+      "error": "Por favor, selecciona o escribe un puesto"
+    },
+    "companySection": {
+      "label": "Empresa objetivo",
+      "optional": "(opcional)",
+      "placeholder": "ej.: Google, Nubank, Magazine Luiza...",
+      "hint": "Agregar una empresa ayuda a personalizar las preguntas según la cultura y valores de esa empresa."
+    },
+    "languageSection": {
+      "label": "Idioma de la entrevista"
+    },
+    "resumeSection": {
+      "label": "Seleccionar currículum",
+      "optional": "(opcional)",
+      "noResumes": "Sin currículums subidos aún",
+      "uploadResume": "Subir un currículum",
+      "noResumeOption": "Sin currículum (entrevista general)",
+      "score": "Puntuación: {{score}}%"
+    },
+    "submit": {
+      "preparing": "Preparando entrevista...",
+      "start": "Iniciar Entrevista",
+      "disclaimer": "Tu entrevista será grabada y analizada para proporcionar retroalimentación."
+    }
+  },
+  "credits": {
+    "title": "Créditos de Entrevista",
+    "currentBalance": "Saldo Actual",
+    "creditsRemaining": "{{count}} crédito restante",
+    "creditsRemaining_plural": "{{count}} créditos restantes",
+    "packages": {
+      "title": "Paquetes de Créditos",
+      "starter": {
+        "name": "Inicial",
+        "description": "Perfecto para empezar"
+      },
+      "intermediate": {
+        "name": "Intermedio",
+        "description": "Ideal para preparación enfocada"
+      },
+      "professional": {
+        "name": "Profesional",
+        "description": "Perfecto para práctica regular"
+      }
+    },
+    "purchase": "Comprar",
+    "paymentMethods": "Métodos de Pago",
+    "outOfCredits": "Sin créditos",
+    "purchaseToContinue": "Compra para continuar practicando",
+    "buyCredits": "Comprar Créditos"
+  },
+  "creditsPage": {
+    "title": "Créditos de",
+    "titleHighlight": "Entrevista",
+    "subtitle": "Precio por uso para práctica de entrevistas con IA",
+    "pricing": {
+      "title": "Precios Simples y Transparentes",
+      "description": "Sin suscripciones, sin tarifas ocultas. Compra créditos y úsalos cuando estés listo. Cada crédito te da una sesión completa de entrevista con IA y retroalimentación detallada."
+    },
+    "choosePackage": "Elige Tu Paquete",
+    "billing": {
+      "title": "Créditos y",
+      "titleHighlight": "Facturación",
+      "subtitle": "Gestiona tus créditos y consulta tu historial de pagos",
+      "pageTitle": "Facturación y Créditos",
+      "pageSubtitle": "Gestiona tus créditos e historial de compras",
+      "currentBalance": "Saldo Actual",
+      "credits": "créditos",
+      "creditsCount": "{{count}} créditos",
+      "creditsPerInterview": "Cada crédito = 1 entrevista de práctica",
+      "creditsNeverExpire": "Los créditos nunca expiran",
+      "buyCredits": "Comprar Créditos",
+      "mostPopular": "Más Popular",
+      "practiceInterviews": "{{count}} entrevistas de práctica",
+      "fullScorecard": "Puntuación completa y retroalimentación",
+      "performanceAnalytics": "Análisis de rendimiento",
+      "buyNow": "Comprar Ahora",
+      "processing": "Procesando...",
+      "save": "Ahorra {{percent}}",
+      "securePaymentVia": "Pago seguro vía",
+      "transactionHistory": "Historial de Transacciones",
+      "yourPurchasesAndUsage": "Tus compras y uso de créditos",
+      "noTransactions": "Sin transacciones aún",
+      "balance": "Saldo",
+      "needHelp": "¿Necesitas ayuda con la facturación?",
+      "contactSupport": "Contacta nuestro equipo de soporte en"
+    },
+    "buyMoreCredits": "Comprar Más Créditos",
+    "buyCredits": "Comprar Créditos",
+    "stats": {
+      "balance": "Saldo",
+      "purchased": "Comprados",
+      "used": "Usados",
+      "spent": "Gastado"
+    },
+    "paymentHistory": "Historial de Pagos",
+    "noPaymentHistory": "Sin historial de pagos aún",
+    "purchaseToSeeHistory": "Compra créditos para ver tu historial de transacciones",
+    "creditUsage": "Uso de Créditos",
+    "noInterviewsYet": "Sin entrevistas aún",
+    "completeInterviewsToSee": "Completa entrevistas para ver tu historial de uso"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "welcome": "¡Bienvenido de nuevo, {{name}}!",
+    "welcomeSubtitle": "Aquí tienes un resumen de tu progreso en las prácticas de entrevistas.",
+    "startNewInterview": "Iniciar Nueva Entrevista",
+    "stats": {
+      "totalInterviews": "Total de Entrevistas",
+      "averageScore": "Puntuación Promedio",
+      "creditsUsed": "Créditos Usados",
+      "creditsRemaining": "Créditos Restantes",
+      "totalSpent": "Total Gastado",
+      "thisMonth": "este mes",
+      "credits": "Credits",
+      "interviews": "Interviews",
+      "avgScore": "Avg. Score",
+      "resumes": "Resumes"
+    },
+    "charts": {
+      "scoreEvolution": "Evolución de Puntuación",
+      "monthlySpending": "Gastos Mensuales",
+      "noScoreData": "Sin Datos de Puntuación",
+      "noScoreDataDesc": "Completa entrevistas para seguir tu progreso",
+      "noSpendingData": "Sin Datos de Gastos",
+      "noSpendingDataDesc": "Compra créditos para ver tu historial",
+      "performanceTrend": "Performance Trend"
+    },
+    "recentInterviews": "Entrevistas Recientes",
+    "noInterviews": "Sin entrevistas aún. ¡Comienza tu primera sesión de práctica!",
+    "viewAll": "Ver Todo",
+    "readyToPractice": "Ready to practice your next interview?",
+    "startInterview": "Start Interview",
+    "quickActions": {
+      "title": "Quick Actions",
+      "practiceInterview": "Practice Interview",
+      "practiceDesc": "AI-powered mock session",
+      "uploadResume": "Upload Resume",
+      "uploadDesc": "Get feedback & scoring",
+      "viewInsights": "View Insights",
+      "insightsDesc": "Personalized tips"
+    },
+    "noInterviewsHint": "Start your first practice session!",
+    "table": {
+      "role": "Role",
+      "company": "Company",
+      "date": "Date",
+      "score": "Score",
+      "action": "Action"
+    },
+    "lowCredits": {
+      "title": "Running low on credits?",
+      "buyMore": "Buy More Credits"
+    }
+  },
+  "interviews": {
+    "title": "Tus Entrevistas",
+    "subtitle": "Ve tu historial de entrevistas y sigue tu progreso.",
+    "startNew": "Iniciar Nueva Entrevista",
+    "startFirst": "Iniciar Tu Primera Entrevista",
+    "noInterviewsTitle": "Sin Entrevistas Aún",
+    "noInterviewsDescription": "Inicia tu primera entrevista para ver tu historial aquí. Nuestra IA te ayudará a practicar y mejorar tus habilidades.",
+    "positionAndCompany": "Puesto & Empresa",
+    "date": "Fecha",
+    "duration": "Duración",
+    "score": "Puntuación",
+    "new": "Nueva"
+  },
+  "errors": {
+    "generic": "Algo salió mal. Por favor, intenta de nuevo.",
+    "network": "Error de red. Por favor, verifica tu conexión.",
+    "unauthorized": "Por favor, inicia sesión para continuar.",
+    "notFound": "Página no encontrada.",
+    "insufficientCredits": "Créditos insuficientes. Por favor, compra más para continuar."
+  },
+  "language": {
+    "select": "Seleccionar Idioma",
+    "current": "Actual: {{language}}"
+  },
+  "feedback": {
+    "title": "Feedback de la Entrevista",
+    "loading": {
+      "title": "Generando Feedback",
+      "analyzing": "Analizando tu desempeño en la entrevista...",
+      "retrying": "Esperando transcripción... (intento {{attempt}}/{{max}})",
+      "wait": "Esto puede tardar unos segundos"
+    },
+    "error": {
+      "title": "No se pudo cargar el feedback",
+      "returnHome": "Volver al Inicio"
+    },
+    "results": {
+      "outstanding": "¡Desempeño Excepcional!",
+      "great": "¡Excelente Trabajo!",
+      "good": "¡Buen Esfuerzo, Sigue Mejorando!",
+      "room": "Espacio para Crecer",
+      "keep": "¡Sigue Practicando!"
+    },
+    "sections": {
+      "summary": "Resumen",
+      "detailed": "Feedback Detallado",
+      "jobDescription": "Descripción del Puesto"
+    },
+    "noSummary": "No hay resumen disponible",
+    "noFeedback": "No hay feedback detallado disponible",
+    "buttons": {
+      "download": "Descargar Informe PDF",
+      "downloadAria": "Descargar transcripción como PDF",
+      "newInterview": "Nueva Entrevista",
+      "newInterviewAria": "Iniciar nueva entrevista",
+      "backToDashboard": "Volver al Panel"
+    }
+  },
+  "payment": {
+    "redirecting": "Redirigiendo...",
+    "redirectingDesc": "¡Pago completado! Volviendo a tu navegador...",
+    "creditsSummary": "Resumen de Créditos",
+    "confirmingCredits": "Confirmando créditos...",
+    "refreshCredits": "Actualizar créditos",
+    "verifyingCredits": "Verificando créditos...",
+    "redirectCountdown": "Redirigiendo al inicio en {{seconds}} segundos...",
+    "reference": "Referencia de Pago",
+    "loggedInAs": "Conectado como {{email}}",
+    "status": {
+      "processing": "Procesando...",
+      "processingDesc": "Por favor espera mientras verificamos tu pago.",
+      "success": "¡Pago Exitoso!",
+      "successDesc": "Tus créditos han sido añadidos a tu cuenta.",
+      "successProcessing": "Procesando tu pago... Los créditos se añadirán pronto.",
+      "failure": "Pago Fallido",
+      "failureDesc": "Tu pago no pudo ser procesado. Por favor, intenta de nuevo.",
+      "pending": "Pago Pendiente",
+      "pendingDesc": "Tu pago está siendo procesado. Los créditos se añadirán una vez confirmado."
+    },
+    "credits": {
+      "previous": "Anterior",
+      "purchased": "Comprado",
+      "total": "Total"
+    },
+    "buttons": {
+      "goHome": "Ir al Inicio",
+      "tryAgain": "Intentar de Nuevo"
+    }
+  },
+  "analytics": {
+    "sentimentTimeline": {
+      "title": "Línea de Tiempo de Sentimiento y Ritmo",
+      "description": "Rastrea tu confianza, tono y ritmo de habla durante la entrevista",
+      "noData": "No hay datos de línea de tiempo disponibles",
+      "noDataDesc": "Los análisis aparecerán después de completar la entrevista",
+      "legend": {
+        "confidence": "Confianza",
+        "tone": "Tono",
+        "pace": "Ritmo"
+      }
+    },
+    "softSkills": {
+      "title": "Análisis de Habilidades Blandas",
+      "description": "Tu desempeño en áreas clave de competencia",
+      "noData": "No hay datos de habilidades disponibles",
+      "noDataDesc": "Completa una entrevista para ver tu análisis de habilidades blandas",
+      "skills": {
+        "communication": "Comunicación",
+        "problemSolving": "Resolución de Problemas",
+        "technicalDepth": "Profundidad Técnica",
+        "leadership": "Liderazgo",
+        "adaptability": "Adaptabilidad"
+      }
+    },
+    "advancedAnalytics": {
+      "title": "Análisis Avanzado",
+      "description": "Perspectivas profundas sobre tu desempeño en la entrevista"
+    },
+    "benchmark": {
+      "title": "Ranking Comparativo",
+      "basedOn": "Basado en {{count}} entrevistas para este puesto",
+      "scoredHigherThan": "Puntuaste más alto que",
+      "ofCandidatesFor": "de los candidatos para",
+      "yourScore": "Tu Puntuación",
+      "globalAverage": "Promedio Global",
+      "scoreBreakdown": "Comparación de Puntuación vs Promedio",
+      "you": "tú",
+      "avg": "prom",
+      "noData": "No hay datos de referencia disponibles",
+      "noDataHint": "Los rankings se calculan después de analizar tu entrevista",
+      "tiers": {
+        "topPerformer": "Top Performer",
+        "aboveAverage": "Por Encima del Promedio",
+        "average": "Promedio",
+        "belowAverage": "Por Debajo del Promedio",
+        "needsWork": "Necesita Mejorar"
+      }
+    },
+    "learningPath": {
+      "title": "Lista de Estudio Prioritaria",
+      "subtitle": "Temas seleccionados por IA para enfocarte según tu desempeño en la entrevista",
+      "generated": "Generado",
+      "noData": "Sin recomendaciones aún",
+      "noDataHint": "Las recomendaciones de IA se generarán después del análisis de tu entrevista",
+      "areasForImprovement": "Áreas de Mejora",
+      "recommendedTopics": "Temas de Estudio Recomendados",
+      "whyThisMatters": "Por Qué Esto Importa",
+      "estimatedStudyTime": "Tiempo de Estudio Estimado",
+      "suggestedResources": "Recursos Sugeridos",
+      "howItWorks": "Cómo funciona:",
+      "howItWorksDesc": "Nuestra IA analiza tus respuestas en la entrevista e identifica áreas específicas donde el estudio adicional tendría el mayor impacto en tu desempeño. Los temas se priorizan según la importancia para tu puesto objetivo.",
+      "priority": {
+        "high": "Alta Prioridad",
+        "medium": "Media",
+        "low": "Opcional"
+      }
+    },
+    "transcript": {
+      "title": "Transcripción de la Entrevista",
+      "subtitle": "Haz clic en cualquier segmento para saltar a ese momento en la grabación",
+      "noData": "No hay transcripción disponible",
+      "noDataHint": "La transcripción aparecerá después de completar la entrevista",
+      "interviewer": "Entrevistador",
+      "you": "Tú",
+      "segments": "segmentos",
+      "duration": "Duración",
+      "play": "Reproducir",
+      "pause": "Pausar"
+    }
+  },
+  "performanceChat": {
+    "title": "Analista de Rendimiento",
+    "subtitle": "Perspectivas de entrevista con IA",
+    "backToMenu": "Volver al menú",
+    "filterByRole": "Filtrar por puesto/empresa",
+    "newConversation": "Nueva conversación",
+    "filters": {
+      "role": "Puesto",
+      "company": "Empresa",
+      "allRoles": "Todos los puestos",
+      "allCompanies": "Todas las empresas",
+      "clearFilters": "Limpiar filtros"
+    },
+    "loadingInsights": "Cargando tus insights de rendimiento...",
+    "analyzing": "Analizando tu rendimiento...",
+    "tryAsking": "Prueba preguntar:",
+    "placeholder": "Pregunta sobre tu rendimiento en entrevistas...",
+    "suggestedQuestions": {
+      "strengths": "¿Cuáles son mis principales fortalezas en entrevistas?",
+      "improvements": "¿Dónde necesito mejorar más?",
+      "progress": "¿Cómo ha cambiado mi rendimiento con el tiempo?",
+      "nextSteps": "¿En qué debería enfocarme para mi próxima entrevista?"
+    }
+  },
+  "interviewDetails": {
+    "title": "Detalles de la",
+    "titleHighlight": "Entrevista",
+    "subtitle": "Revisa tu desempeño y feedback de la entrevista",
+    "notFound": "Entrevista no encontrada",
+    "notFoundDesc": "No pudimos encontrar la entrevista que estás buscando.",
+    "backToDashboard": "Volver al Panel",
+    "resume": "Currículum",
+    "feedbackButton": "Feedback",
+    "stats": {
+      "position": "Puesto",
+      "company": "Empresa",
+      "date": "Fecha",
+      "duration": "Duración",
+      "score": "Puntuación"
+    },
+    "performance": {
+      "excellent": "¡Desempeño Excelente!",
+      "good": "Buen Desempeño",
+      "average": "Desempeño Promedio",
+      "needs": "Necesita Mejorar"
+    },
+    "performanceScore": "Puntuación de Desempeño",
+    "outOf100": "de 100",
+    "scoreBreakdown": "Desglose de Puntuación",
+    "scores": {
+      "content": "Calidad del Contenido",
+      "communication": "Comunicación",
+      "confidence": "Confianza",
+      "technical": "Conocimiento Técnico"
+    },
+    "scoreExplanation": {
+      "title": "Cómo calculamos tu puntuación:",
+      "desc": "Nuestra IA analiza tus respuestas en cuatro dimensiones clave—calidad del contenido, habilidades de comunicación, nivel de confianza y conocimiento técnico. Cada categoría se califica en una escala de 0–100% basada en estándares y mejores prácticas de la industria. La puntuación general es un promedio ponderado que refleja tu desempeño integral en la entrevista."
+    },
+    "summary": "Resumen de la Entrevista",
+    "sections": {
+      "strengths": "Fortalezas",
+      "improvements": "Mejoras",
+      "recommendations": "Recomendaciones"
+    },
+    "noStrengths": "Sin fortalezas registradas",
+    "noImprovements": "Sin mejoras necesarias",
+    "noRecommendations": "Sin recomendaciones",
+    "analytics": {
+      "title": "Análisis",
+      "highlight": "Avanzado"
+    }
+  },
+  "hrChat": {
+    "title": "Chat de Inteligencia HR",
+    "subtitle": "Insights de entrevistas + soporte FAQ",
+    "floating": {
+      "ariaLabel": "Chat de Inteligencia HR",
+      "tooltip": "Insights de entrevistas y soporte FAQ"
+    },
+    "welcome": {
+      "title": "¡Bienvenido al Chat de Inteligencia HR de Vocaid!",
+      "insightsMode": "Insights de Entrevistas",
+      "insightsDesc": "Analiza tu desempeño en entrevistas con scorecards basados en evidencia, desglose de competencias y sugerencias de mejora personalizadas.",
+      "faqMode": "Conserjería FAQ",
+      "faqDesc": "Obtén respuestas instantáneas sobre créditos, facturación, problemas técnicos, funciones de la plataforma y más.",
+      "autoDetect": "Detectaré automáticamente qué modo usar según tu pregunta. ¡Pregunta naturalmente!"
+    },
+    "sidebar": {
+      "insights": "Insights",
+      "faq": "FAQ",
+      "analysisScope": "Alcance del Análisis",
+      "allRoles": "Todos los roles",
+      "allCompanies": "Todas las empresas",
+      "interviewInsights": "Insights de Entrevistas",
+      "faqConcierge": "Conserjería FAQ",
+      "recentInterviews": "Entrevistas Recientes"
+    },
+    "actions": {
+      "analyzeLatest": "Analizar última entrevista",
+      "myStrengths": "Mis fortalezas en entrevistas",
+      "areasToImprove": "Áreas a mejorar",
+      "progressOverTime": "Progreso a lo largo del tiempo",
+      "generateScorecard": "Generar scorecard",
+      "quickTips": "Consejos rápidos para entrevistas",
+      "creditsBilling": "Créditos y facturación",
+      "audioTroubleshooting": "Solución de problemas de audio",
+      "howItWorks": "Cómo funciona Vocaid",
+      "multiLanguage": "Soporte multiidioma"
+    },
+    "input": {
+      "placeholder": "Pregunta sobre insights de entrevistas, políticas o cómo funciona Vocaid...",
+      "autoDetectHint": "La IA detecta automáticamente: Análisis de Entrevistas o Soporte FAQ"
+    },
+    "loading": "Cargando contexto y generando insights...",
+    "error": {
+      "generic": "Error al obtener respuesta. Por favor, intenta de nuevo.",
+      "dismiss": "Descartar"
+    },
+    "categories": {
+      "insights": "Insights",
+      "faq": "FAQ"
+    },
+    "newConversation": "Nueva conversación",
+    "showSidebar": "Mostrar panel lateral",
+    "hideSidebar": "Ocultar panel lateral",
+    "searchFaq": "Buscar en FAQ...",
+    "noFaqFound": "No se encontraron FAQs",
+    "askAiInstead": "Pregunta a la IA en su lugar"
+  },
+  "howItWorks": {
+    "badge": "Proceso Simple",
+    "title": "Cómo Funciona",
+    "subtitle": "De la publicación del puesto a la decisión de contratación en cuatro simples pasos. Nuestra IA se encarga de la selección para que puedas enfocarte en los mejores candidatos.",
+    "steps": {
+      "upload": {
+        "title": "Sube Puesto y CV",
+        "description": "Añade la descripción del puesto y el CV del candidato. Nuestra IA analiza los requisitos del rol y adapta las preguntas."
+      },
+      "interview": {
+        "title": "Entrevista con IA",
+        "description": "Los candidatos participan en una conversación de voz natural con nuestro entrevistador de IA, disponible 24/7 en más de 8 idiomas."
+      },
+      "analysis": {
+        "title": "Análisis en Tiempo Real",
+        "description": "Obtén tarjetas de puntuación instantáneas con métricas detalladas sobre comunicación, habilidades técnicas y ajuste cultural."
+      },
+      "decision": {
+        "title": "Toma Mejores Decisiones",
+        "description": "Compara candidatos objetivamente con evaluaciones estandarizadas. Reduce sesgos, contrata más rápido."
+      }
+    },
+    "cta": {
+      "start": "Iniciar una Entrevista",
+      "getStarted": "Comenzar Gratis",
+      "noCreditCard": "No se requiere tarjeta de crédito"
+    }
+  },
+  "testimonials": {
+    "badge": "Confianza Empresarial",
+    "title": "Lo Que Dicen los Líderes de RRHH",
+    "subtitle": "Únete a cientos de equipos empresariales que están transformando su proceso de contratación."
+  },
+  "logoCarousel": {
+    "title": "Empresas líderes a nivel mundial confían en nosotros"
+  },
+  "floatingCta": {
+    "title": "¿Listo para transformar tu contratación?",
+    "subtitle": "Comienza a entrevistar candidatos en minutos, no en días.",
+    "button": "Comenzar Gratis"
+  },
+  "legal": {
+    "privacy": {
+      "title": "Política de",
+      "titleHighlight": "Privacidad"
+    },
+    "terms": {
+      "title": "Términos de",
+      "titleHighlight": "Uso"
+    }
+  },
+  "landing": {
+    "nav": {
+      "product": "Producto",
+      "solutions": "Soluciones",
+      "integrations": "Integraciones",
+      "pricing": "Precios",
+      "faq": "FAQ",
+      "menu": "Menú"
+    },
+    "hero": {
+      "badge": "Entrevistas de IA para Empresas",
+      "title": "Convierte entrevistas en",
+      "titleHighlight": "evidencia estructurada",
+      "description": "Vocaid ofrece dos flujos de trabajo esenciales: un Hub de Servicios para Empleados que responde tickets de RH con respuestas basadas en políticas, y una Plataforma de Entrevistas para Reclutadores que entrega evaluaciones consistentes y auditables a escala.",
+      "ctaStart": "Comenzar gratis",
+      "ctaDemo": "Solicitar demo",
+      "trustSubtitle": "Diseñado para equipos de RH e integraciones de plataforma",
+      "features": {
+        "tenant": "Aislamiento de tenant",
+        "audit": "Registros de auditoría",
+        "soc2": "Listo para SOC 2",
+        "gdpr": "Cumplimiento GDPR",
+        "webhook": "Eventos webhook"
+      },
+      "stats": {
+        "accuracy": "Precisión de evaluación",
+        "faster": "Decisiones más rápidas"
+      },
+      "ctaStartPlural": "Start Frees included"
+    },
+    "featureGrid": {
+      "badge": "Lo que hace Vocaid",
+      "title": "Dos plataformas, una misión",
+      "subtitle": "Ya sea optimizando operaciones internas de RH o escalando tu proceso de reclutamiento, Vocaid entrega resultados estructurados y basados en evidencias.",
+      "features": {
+        "employee-hub": {
+          "title": "Hub de Servicios para Empleados",
+          "description": "Desvía tickets de RH con respuestas de IA basadas en políticas",
+          "bullets": [
+            "Respuestas instantáneas sobre políticas y beneficios",
+            "Escalación inteligente a RH humano cuando sea necesario",
+            "Autoservicio para solicitudes comunes (vacaciones, nómina, organigrama)",
+            "Reduce el volumen de tickets de RH hasta en un 60%"
+          ]
+        },
+        "recruiter-platform": {
+          "title": "Plataforma de Entrevistas para Reclutadores",
+          "description": "Evaluaciones de candidatos consistentes y auditables a escala",
+          "bullets": [
+            "Rúbricas de entrevista y frameworks de competencia configurables",
+            "Scorecards en tiempo real con timestamps de evidencias",
+            "Dashboard de analytics para insights de contratación",
+            "Precios por uso que escalan con tus necesidades"
+          ]
+        }
+      }
+    },
+    "integrations": {
+      "badge": "Vocaid Connect",
+      "title": "De embed → scorecard → webhook en minutos",
+      "subtitle": "Integra Vocaid en tus herramientas existentes con nuestro SDK y APIs amigables para desarrolladores.",
+      "tagline": "Diseñado para aislamiento de tenant, pistas de auditoría e integraciones seguras.",
+      "features": [
+        {
+          "title": "Incorpora entrevistas en tu ATS",
+          "description": "Componente React listo o iframe que combina con el aspecto de tu producto."
+        },
+        {
+          "title": "Recibe scorecards vía webhooks firmados",
+          "description": "Recibe notificaciones en tiempo real con cargas útiles firmadas criptográficamente para seguridad."
+        },
+        {
+          "title": "Controles de tema white-label",
+          "description": "Personaliza colores, fuentes y branding para mantener una experiencia de usuario integrada."
+        }
+      ],
+      "badges": {
+        "typescript": "SDK TypeScript",
+        "restApi": "REST API",
+        "webhooks": "Webhooks Firmados",
+        "openapi": "OpenAPI Spec"
+      }
+    },
+    "pricing": {
+      "badge": "Precios",
+      "title": "Planes que crecen contigo",
+      "subtitle": "Empieza gratis, actualiza cuando necesites. Paga solo por lo que uses.",
+      "mostPopular": "Más Popular",
+      "customPlanText": "¿Necesitas un plan personalizado? Podemos adaptar Vocaid a tus necesidades específicas.",
+      "viewFullPricing": "Ver precios completos",
+      "talkToSales": "Hablar con ventas",
+      "plans": {
+        "starter": {
+          "name": "Starter",
+          "description": "Para equipos pequeños comenzando con entrevistas de IA",
+          "cta": "Iniciar prueba gratis",
+          "features": [
+            "Hasta 5 asientos de equipo",
+            "100 minutos de entrevista/mes",
+            "Scorecards básicos",
+            "Soporte por correo",
+            "Integraciones estándar"
+          ]
+        },
+        "growth": {
+          "name": "Growth",
+          "description": "Para equipos en crecimiento que necesitan más poder y flexibilidad",
+          "cta": "Iniciar prueba gratis",
+          "features": [
+            "Hasta 25 asientos de equipo",
+            "500 minutos de entrevista/mes",
+            "Scorecards avanzados con evidencias",
+            "Soporte prioritario",
+            "Todas las integraciones + webhooks",
+            "Rúbricas personalizadas",
+            "Dashboard de analytics"
+          ]
+        },
+        "enterprise": {
+          "name": "Enterprise",
+          "description": "Para organizaciones con necesidades avanzadas de seguridad y cumplimiento",
+          "cta": "Hablar con ventas",
+          "features": [
+            "Asientos ilimitados",
+            "Asignaciones de minutos personalizadas",
+            "Aprovisionamiento SSO y SCIM",
+            "Soporte dedicado",
+            "Integraciones personalizadas",
+            "Registros de auditoría y cumplimiento",
+            "Opciones de residencia de datos",
+            "Garantías de SLA"
+          ]
+        }
+      }
+    },
+    "faq": {
+      "badge": "FAQ",
+      "title": "Preguntas frecuentes",
+      "subtitle": "Todo lo que necesitas saber sobre Vocaid.",
+      "items": {
+        "multiTenancy": {
+          "question": "¿Cómo funciona el multi-tenancy?",
+          "answer": "Vocaid está construido con multi-tenancy de nivel empresarial desde cero. Cada organización recibe almacenamiento de datos aislado, credenciales de API separadas y permisos configurables."
+        },
+        "whiteLabel": {
+          "question": "¿Podemos personalizar la experiencia con nuestra marca?",
+          "answer": "Absolutamente. Nuestros controles de marca blanca te permiten personalizar la interfaz de entrevista con los colores, logo, fuentes y mensajes de tu marca."
+        },
+        "billing": {
+          "question": "¿Cómo funciona la facturación?",
+          "answer": "Usamos un modelo simple de pago por uso basado en minutos de entrevista consumidos. Puedes comprar paquetes de minutos o configurar recargas automáticas."
+        },
+        "compliance": {
+          "question": "¿Qué hay del cumplimiento GDPR?",
+          "answer": "Vocaid está diseñado con las regulaciones de privacidad en mente. Ofrecemos soporte para solicitudes de titulares de datos, funcionalidad de exportación de datos y opciones de residencia de datos."
+        },
+        "atsIntegration": {
+          "question": "¿Podemos exportar datos a nuestro ATS?",
+          "answer": "Sí. Vocaid se integra con las principales plataformas ATS a través de nuestro SDK y webhooks. Puedes enviar automáticamente scorecards, transcripciones y datos de evaluación."
+        },
+        "multilingual": {
+          "question": "¿Soportan entrevistas multilingües?",
+          "answer": "Sí, Vocaid soporta entrevistas en múltiples idiomas. Nuestra IA puede conducir entrevistas y generar scorecards en inglés, español, portugués, francés, alemán y más."
+        },
+        "security": {
+          "question": "¿Qué tan seguros son los datos de la entrevista?",
+          "answer": "Todos los datos están encriptados en reposo y en tránsito usando AES-256 y TLS 1.3. Mantenemos cumplimiento SOC 2 Tipo II y proporcionamos logs de auditoría detallados."
+        },
+        "support": {
+          "question": "¿Qué tipo de soporte ofrecen?",
+          "answer": "Los planes Starter incluyen soporte por email con tiempos de respuesta de 24 horas. Los planes Growth reciben soporte prioritario con respuestas más rápidas."
+        },
+        "rubrics": {
+          "question": "¿Podemos personalizar las rúbricas de evaluación?",
+          "answer": "Los planes Growth y Enterprise incluyen personalización completa de rúbricas. Puedes definir tus propios frameworks de competencia y criterios de puntuación."
+        },
+        "trial": {
+          "question": "¿Hay una prueba gratuita disponible?",
+          "answer": "Sí, ofrecemos una prueba gratuita de 14 días en los planes Starter y Growth sin necesidad de tarjeta de crédito. Tienes acceso completo a todas las funciones."
+        },
+        "howCreditsWork": {
+          "question": "How do credits work?",
+          "answer": "New users receive free credits to get started. Each completed practice interview uses 1 credit. You can purchase more credits anytime through our billing page. Credits never expire, so use them at your own pace."
+        },
+        "difference": {
+          "question": "What's the difference between B2C and B2B?",
+          "answer": "B2C (Interview Practice) is for individual candidates who want to practice and improve their interview skills. B2B (Recruiter Platform) is for organizations that want to evaluate candidates with structured interviews and scorecards. Both are powered by the same AI technology."
+        }
+      }
+    },
+    "demo": {
+      "title": "Solicitar una demo",
+      "description": "Descubre cómo Vocaid puede transformar tus flujos de contratación y RH.",
+      "labels": {
+        "fullName": "Nombre completo",
+        "workEmail": "Correo corporativo",
+        "company": "Empresa",
+        "teamSize": "Tamaño del equipo",
+        "useCase": "Caso de uso principal"
+      },
+      "placeholders": {
+        "fullName": "Juan García",
+        "workEmail": "juan@empresa.com",
+        "company": "Empresa S.A.",
+        "teamSize": "Selecciona el tamaño del equipo",
+        "useCase": "Selecciona el caso de uso"
+      },
+      "teamSizeOptions": [
+        "1-10 empleados",
+        "11-50 empleados",
+        "51-200 empleados",
+        "201-1000 empleados",
+        "1000+ empleados"
+      ],
+      "useCaseOptions": [
+        "Reclutamiento y Adquisición de Talento",
+        "Automatización de Mesa de Servicio RH",
+        "Onboarding de Empleados",
+        "Movilidad Interna y Promociones",
+        "Evaluación de Competencias",
+        "Otro"
+      ],
+      "validation": {
+        "nameRequired": "El nombre es obligatorio",
+        "emailRequired": "El correo es obligatorio",
+        "emailInvalid": "Por favor, introduce un correo corporativo válido",
+        "companyRequired": "La empresa es obligatoria",
+        "teamSizeRequired": "Por favor, selecciona el tamaño del equipo",
+        "useCaseRequired": "Por favor, selecciona un caso de uso",
+        "submitFailed": "Error al enviar. Por favor, inténtalo de nuevo."
+      },
+      "submitButton": "Solicitar demo",
+      "disclaimer": "Al enviar, aceptas nuestra Política de Privacidad y Términos de Servicio.",
+      "success": {
+        "title": "¡Gracias!",
+        "message": "Nos pondremos en contacto en las próximas 24 horas para programar tu demo."
+      }
+    },
+    "finalCta": {
+      "title": "¿Listo para transformar tu proceso de contratación?",
+      "subtitle": "Únete a equipos de RH visionarios usando Vocaid para tomar decisiones de contratación más rápidas, justas y consistentes.",
+      "ctaWorkspace": "Crea tu workspace",
+      "ctaDemo": "Agendar una demo",
+      "disclaimer": "Sin tarjeta de crédito • 14 días gratis • Cancela cuando quieras",
+      "ctaWorkspacePlural": "Start Frees"
+    },
+    "footer": {
+      "description": "Entrevistas de IA empresariales que entregan evaluaciones estructuradas y auditables a escala.",
+      "sections": {
+        "product": "Producto",
+        "company": "Empresa",
+        "legal": "Legal"
+      },
+      "links": {
+        "features": "Características",
+        "solutions": "Soluciones",
+        "integrations": "Integraciones",
+        "pricing": "Precios",
+        "faq": "FAQ",
+        "about": "Acerca de",
+        "contact": "Contacto",
+        "careers": "Carreras",
+        "blog": "Blog",
+        "privacyPolicy": "Política de Privacidad",
+        "termsOfUse": "Términos de Uso",
+        "cookiePolicy": "Política de Cookies",
+        "security": "Seguridad"
+      },
+      "tagline": "Diseñado para aislamiento de tenant, pistas de auditoría e integraciones seguras.",
+      "compliance": {
+        "soc2": "Listo para SOC 2",
+        "gdpr": "Cumplimiento GDPR",
+        "lgpd": "Cumplimiento LGPD"
+      }
+    },
+    "earlyAccess": {
+      "title": "Acceso Anticipado",
+      "description": "Sé el primero en saber cuando lancemos nuestros módulos B2B.",
+      "labels": {
+        "name": "Nombre completo",
+        "email": "Email",
+        "company": "Empresa",
+        "interestedIn": "Me interesa"
+      },
+      "placeholders": {
+        "name": "Juan García",
+        "email": "juan@empresa.com",
+        "company": "Empresa S.A."
+      },
+      "validation": {
+        "nameRequired": "El nombre es obligatorio",
+        "emailRequired": "El email es obligatorio",
+        "emailInvalid": "Por favor, ingresa un email válido",
+        "moduleRequired": "Por favor, selecciona al menos un módulo",
+        "submitFailed": "Error al enviar. Por favor, intenta de nuevo."
+      },
+      "submitButton": "Unirse a la Lista de Espera",
+      "disclaimer": "Al enviar, aceptas nuestra Política de Privacidad y Términos de Servicio.",
+      "success": {
+        "title": "¡Estás en la lista!",
+        "message": "Te avisaremos cuando el acceso anticipado abra para {{modules}}."
+      },
+      "modules": {
+        "recruiter": {
+          "label": "Plataforma de Reclutamiento",
+          "description": "Crea kits de entrevista, evalúa candidatos y toma decisiones de contratación basadas en datos."
+        },
+        "employeeHub": {
+          "label": "Hub del Empleado",
+          "description": "Desvía tickets de RRHH con respuestas basadas en políticas y simplifica la incorporación de empleados."
+        }
+      }
+    },
+    "platformShowcase": {
+      "badge": "Tres Plataformas, Una Misión",
+      "title": "Construido para cada etapa del viaje de entrevistas",
+      "subtitle": "Desde practicar para tu próxima entrevista hasta construir equipos de contratación de clase mundial, Vocaid se adapta a tus necesidades.",
+      "mostPopular": "Más Popular",
+      "b2c": {
+        "forLabel": "Para Candidatos",
+        "title": "Práctica de Entrevistas",
+        "description": "Practica entrevistas simuladas con IA, recibe feedback instantáneo y sigue tu mejora.",
+        "performanceTrend": "Tendencia de Desempeño",
+        "improvement": "+17% este mes",
+        "stats": {
+          "interviews": "Entrevistas",
+          "avgScore": "Promedio",
+          "resumes": "CVs"
+        },
+        "actions": {
+          "startPractice": "Iniciar Práctica",
+          "uploadResume": "Subir CV"
+        },
+        "cta": "Comenzar Gratis"
+      },
+      "b2b": {
+        "forLabel": "Para Organizaciones",
+        "title": "Plataforma de Reclutamiento",
+        "description": "Crea kits de entrevista, evalúa candidatos consistentemente y toma decisiones basadas en datos.",
+        "candidatePipeline": "Pipeline de Candidatos",
+        "thisWeek": "12 esta semana",
+        "recommended": "Recomendado",
+        "underReview": "En Revisión",
+        "actions": {
+          "interviewKits": "Kits de Entrevista",
+          "analytics": "Analytics"
+        },
+        "cta": "Solicitar Acceso"
+      },
+      "hr": {
+        "forLabel": "Para Equipos Internos",
+        "title": "Hub del Empleado",
+        "description": "Desvía tickets de RRHH con respuestas basadas en políticas y simplifica la incorporación de empleados.",
+        "recentQueries": "Consultas Recientes",
+        "resolved": "95% resueltos",
+        "mockQueries": [
+          "¿Cómo solicito vacaciones?",
+          "¿Cuáles son los beneficios de salud?",
+          "Política de trabajo remoto"
+        ],
+        "stats": {
+          "ticketsDeflected": "Tickets Desviados",
+          "avgResponse": "Tiempo Promedio"
+        },
+        "actions": {
+          "askHR": "Preguntar a RRHH",
+          "policies": "Políticas"
+        },
+        "cta": "Solicitar Acceso"
+      }
+    },
+    "dashboardPreview": {
+      "badge": "Velo en Acción",
+      "title": "Tu centro de comando de reclutamiento",
+      "subtitle": "Desde el pipeline de candidatos hasta scorecards detallados e integraciones para desarrolladores—todo lo que necesitas en un solo lugar.",
+      "tabs": {
+        "pipeline": "Pipeline de Candidatos",
+        "scorecard": "Scorecard",
+        "developer": "Portal de Desarrolladores"
+      },
+      "pipeline": {
+        "activeCandidates": "Candidatos Activos",
+        "tableHeaders": {
+          "name": "Nombre",
+          "stage": "Etapa",
+          "fitScore": "Fit Score",
+          "updated": "Actualizado"
+        },
+        "completionRate": "Tasa de Completado",
+        "sampleData": [
+          {
+            "name": "María García",
+            "stage": "Entrevista Final",
+            "fitScore": 92,
+            "lastUpdated": "Hace 2h"
+          },
+          {
+            "name": "Carlos Silva",
+            "stage": "Revisión Técnica",
+            "fitScore": 88,
+            "lastUpdated": "Hace 5h"
+          },
+          {
+            "name": "Ana Rodríguez",
+            "stage": "En Selección",
+            "fitScore": 85,
+            "lastUpdated": "Hace 1d"
+          },
+          {
+            "name": "Luis Fernández",
+            "stage": "Entrevista Inicial",
+            "fitScore": 78,
+            "lastUpdated": "Hace 2d"
+          },
+          {
+            "name": "Sofía Martínez",
+            "stage": "Oferta Extendida",
+            "fitScore": 95,
+            "lastUpdated": "Hace 3d"
+          }
+        ],
+        "stages": {
+          "finalInterview": "Entrevista Final",
+          "technicalReview": "Revisión Técnica",
+          "screening": "En Selección",
+          "initialInterview": "Entrevista Inicial",
+          "offerExtended": "Oferta Extendida"
+        }
+      },
+      "scorecard": {
+        "competencyOverview": "Vista General de Competencias",
+        "competencies": {
+          "problemSolving": "Resolución de Problemas",
+          "communication": "Comunicación",
+          "technicalDepth": "Profundidad Técnica",
+          "leadership": "Liderazgo",
+          "collaboration": "Colaboración",
+          "adaptability": "Adaptabilidad"
+        },
+        "evidence": [
+          {
+            "text": "Demostró excelentes habilidades de resolución de problemas",
+            "timestamp": "14:32"
+          },
+          {
+            "text": "Comunicó ideas técnicas complejas claramente",
+            "timestamp": "14:28"
+          },
+          {
+            "text": "Mostró fuerte experiencia de liderazgo",
+            "timestamp": "14:15"
+          }
+        ]
+      },
+      "developer": {
+        "apiCredentials": "Credenciales de API",
+        "apiKey": "Clave de API",
+        "reveal": "Revelar",
+        "environment": "Ambiente",
+        "production": "Producción",
+        "webhookStatus": "Estado del Webhook",
+        "webhookEvents": [
+          {
+            "event": "entrevista.completada",
+            "status": "success",
+            "timestamp": "14:32:01"
+          },
+          {
+            "event": "scorecard.generado",
+            "status": "success",
+            "timestamp": "14:32:05"
+          },
+          {
+            "event": "candidato.evaluado",
+            "status": "success",
+            "timestamp": "14:32:08"
+          },
+          {
+            "event": "webhook.reintento",
+            "status": "pending",
+            "timestamp": "14:32:12"
+          }
+        ]
+      },
+      "sampleData": {
+        "candidate1": "Sarah Chen",
+        "candidate2": "Marcus Johnson",
+        "candidate3": "Emily Rodriguez",
+        "candidate4": "David Kim",
+        "candidate5": "Lisa Thompson",
+        "timeAgo2h": "2 hours ago",
+        "timeAgo3h": "3 hours ago",
+        "timeAgo5h": "5 hours ago",
+        "timeAgo6h": "6 hours ago",
+        "timeAgo1d": "1 day ago"
+      },
+      "stages": {
+        "hrScreen": "HR Screen",
+        "technical": "Technical Interview",
+        "finalRound": "Final Round",
+        "offerExtended": "Offer Extended"
+      },
+      "skills": {
+        "problemSolving": "Problem Solving",
+        "communication": "Communication",
+        "technicalDepth": "Technical Depth",
+        "leadership": "Leadership",
+        "collaboration": "Collaboration",
+        "adaptability": "Adaptability"
+      },
+      "evidence": {
+        "debugging": "Demonstrated systematic approach to debugging",
+        "solutions": "Proposed multiple solution alternatives",
+        "systemDesign": "Explained system design trade-offs clearly",
+        "distributedSystems": "Deep knowledge of distributed systems",
+        "articulation": "Clear articulation of complex concepts",
+        "clarifying": "Asked clarifying questions effectively"
+      }
+    },
+    "platforms": {
+      "b2c": {
+        "title": "Interview Practice",
+        "subtitle": "For Candidates",
+        "description": "Practice AI-powered mock interviews, get instant feedback, and track your improvement over time."
+      },
+      "b2b": {
+        "title": "Recruiter Platform",
+        "subtitle": "For Organizations",
+        "description": "Create interview kits, evaluate candidates consistently, and make data-driven hiring decisions."
+      },
+      "hr": {
+        "title": "Employee Hub",
+        "subtitle": "For Internal Teams",
+        "description": "Deflect HR tickets with policy-aware answers and streamline employee onboarding."
+      }
+    }
+  },
+  "platform": {
+    "b2c": {
+      "title": "Práctica de Entrevistas",
+      "description": "Practica entrevistas y mejora tu rendimiento"
+    },
+    "b2b": {
+      "title": "Plataforma de Reclutamiento",
+      "description": "Evalúa candidatos con entrevistas estructuradas"
+    },
+    "hr": {
+      "title": "Hub de Empleados",
+      "description": "Soporte interno para empleados e incorporación"
+    }
+  },
+  "auth": {
+    "completingAuthentication": "Completando autenticación...",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "role": "Rol Actual",
+    "preferredLanguage": "Idioma Preferido",
+    "selectRole": "Selecciona tu rol",
+    "selectLanguage": "Selecciona tu idioma",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "creating": "Creando cuenta...",
+    "signingIn": "Iniciando sesión...",
+    "verifying": "Verifying...",
+    "haveAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "didntReceiveCode": "Didn't receive the code?",
+    "resendCode": "Resend",
+    "backToForm": "Back to sign up",
+    "backToSignIn": "Back to sign in",
+    "trustBar": "Join thousands of professionals improving their interview skills with Vocaid.",
+    "verificationCode": "Verification Code",
+    "signUp": {
+      "title": "Create your account",
+      "subtitle": "Start practicing your interview skills today",
+      "button": "Create Account",
+      "link": "Sign up"
+    },
+    "signIn": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to continue your interview practice",
+      "button": "Sign In",
+      "link": "Sign in",
+      "success": "Welcome back!",
+      "redirecting": "Redirecting to your dashboard..."
+    },
+    "verification": {
+      "title": "Verify your email",
+      "subtitle": "We sent a verification code to",
+      "button": "Verify Email"
+    },
+    "complete": {
+      "title": "Welcome to Vocaid!",
+      "subtitle": "Your account has been created successfully. Redirecting to dashboard..."
+    },
+    "twoFactor": {
+      "title": "Two-Factor Authentication",
+      "subtitle": "Enter the code from your authenticator app",
+      "code": "Verification Code",
+      "button": "Verify"
+    },
+    "sso": {
+      "completing": "Completing sign in..."
+    },
+    "roles": {
+      "recruiter": "Recruiter",
+      "candidate": "Candidate",
+      "manager": "Manager",
+      "admin": "Admin",
+      "employee": "Employee"
+    },
+    "accessDenied": "Access Denied",
+    "insufficientPermissions": "You do not have permission to access this page.",
+    "requiredRoles": "Required: {{roles}}",
+    "createAccount": "Sign up"
+  },
+  "account": {
+    "title": "Account Settings",
+    "subtitle": "Manage your profile and preferences",
+    "profileUpdated": "Profile updated successfully",
+    "passwordChanged": "Password changed successfully",
+    "personal": "Personal",
+    "switchWorkspace": "Switch Workspace",
+    "selectWorkspace": "Select Workspace",
+    "sections": {
+      "profile": "Profile",
+      "security": "Security",
+      "danger": "Danger Zone"
+    },
+    "profile": {
+      "title": "Profile Information",
+      "avatar": "Profile Picture",
+      "avatarHint": "Managed through your OAuth provider",
+      "save": "Save Changes"
+    },
+    "security": {
+      "title": "Change Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "changePassword": "Change Password"
+    },
+    "danger": {
+      "title": "Delete Account",
+      "warning": "This action is permanent and cannot be undone. All your data will be permanently deleted.",
+      "confirmLabel": "Type DELETE to confirm",
+      "deleteButton": "Permanently Delete Account",
+      "deleting": "Deleting..."
+    }
+  },
+  "workspace": {
+    "selectRequired": "Select a Workspace",
+    "selectDescription": "Please select or create a workspace to continue.",
+    "selectButton": "Select Workspace"
+  },
+  "footer": {
+    "copyright": "© 2024 Vocaid. All rights reserved."
+  }
+}

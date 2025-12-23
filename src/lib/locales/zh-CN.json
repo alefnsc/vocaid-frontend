@@ -1,0 +1,1587 @@
+{
+  "common": {
+    "loading": "加载中...",
+    "error": "发生错误",
+    "success": "成功",
+    "cancel": "取消",
+    "confirm": "确认",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "back": "返回",
+    "next": "下一步",
+    "submit": "提交",
+    "close": "关闭",
+    "search": "搜索",
+    "filter": "筛选",
+    "logout": "退出登录",
+    "login": "登录",
+    "signUp": "注册",
+    "there": "您",
+    "and": "和",
+    "processing": "处理中...",
+    "optional": "可选",
+    "submitting": "提交中...",
+    "gotIt": "知道了",
+    "soon": "即将",
+    "goBack": "Go Back"
+  },
+  "features": {
+    "badge": "为什么选择Vocaid",
+    "heading": "成功所需的一切",
+    "subheading": "我们的AI驱动平台提供全面的工具，帮助您准备、练习并在面试中脱颖而出。",
+    "learnMore": "了解更多",
+    "aiPractice": {
+      "title": "AI驱动练习",
+      "description": "与我们的智能AI面试官练习，它会根据您的行业和经验水平进行调整。"
+    },
+    "personalized": {
+      "title": "为您量身定制",
+      "description": "根据您的简历、目标职位和职业目标获得定制问题。"
+    },
+    "realtime": {
+      "title": "实时反馈",
+      "description": "即时获得关于您的回答、语气和沟通技巧的分析。"
+    },
+    "analytics": {
+      "title": "详细分析",
+      "description": "通过全面的绩效指标和见解跟踪您的进步。"
+    },
+    "multilingual": {
+      "title": "全球语言支持",
+      "description": "支持8+种语言练习，为国际机会做准备。"
+    },
+    "certification": {
+      "title": "技能认证",
+      "description": "获得证书，向雇主展示您的面试准备情况。"
+    },
+    "available": {
+      "title": "全天候可用",
+      "description": "随时随地练习。我们的AI教练随时待命。"
+    },
+    "privacy": {
+      "title": "隐私优先",
+      "description": "您的数据已加密且绝不共享。放心练习。"
+    },
+    "underConstruction": {
+      "title": "Under Construction",
+      "message": "This feature is coming in the next release. Stay tuned!",
+      "patience": "We're working hard to bring you this feature. Thank you for your patience!"
+    },
+    "comingSoon": "Coming Soon",
+    "nextRelease": "Next Release",
+    "joinWaitlist": "Join Waitlist",
+    "notifyMe": "Notify Me"
+  },
+  "pages": {
+    "underConstruction": {
+      "featureInfo": {
+        "recruiter": {
+          "title": "招聘面试平台",
+          "description": "创建面试套件，一致地评估候选人，并做出数据驱动的招聘决策。"
+        },
+        "hr": {
+          "title": "员工服务中心",
+          "description": "通过符合政策的回答减少HR工单，简化员工入职流程。"
+        },
+        "default": {
+          "title": "此功能",
+          "description": "我们正在为您准备一些令人兴奋的功能。"
+        }
+      },
+      "goToDashboard": "前往仪表板",
+      "backToHome": "返回首页",
+      "haveQuestions": "有问题？",
+      "contactUs": "联系我们"
+    }
+  },
+  "nav": {
+    "home": "首页",
+    "dashboard": "控制面板",
+    "about": "关于",
+    "credits": "积分",
+    "contact": "联系我们",
+    "privacy": "隐私政策",
+    "terms": "使用条款",
+    "interviews": "面试",
+    "newInterview": "新面试",
+    "resumes": "简历",
+    "insights": "洞察分析",
+    "interviewKits": "面试套件",
+    "candidates": "候选人",
+    "analytics": "数据分析",
+    "developer": "开发者",
+    "hrHub": "员工中心",
+    "billing": "账单",
+    "account": "账户",
+    "main": "主要",
+    "settings": "设置"
+  },
+  "sidebar": {
+    "menu": "菜单",
+    "resources": "资源",
+    "credits": "积分",
+    "creditsAvailable": "可用"
+  },
+  "hero": {
+    "badge": "AI驱动的面试指导",
+    "headline": {
+      "part1": "实现您的",
+      "part2": "理想职业"
+    },
+    "subheadline": "使用AI进行面试练习，获得即时反馈，建立信心，在下次机会中脱颖而出。加入数千名正在推进职业发展的专业人士。",
+    "cta": {
+      "start": "开启您的全球职业生涯",
+      "dashboard": "前往控制面板",
+      "learnMore": "了解更多"
+    },
+    "stats": {
+      "users": "全球用户",
+      "interviews": "面试次数",
+      "satisfaction": "成功率"
+    }
+  },
+  "bodyCopy": {
+    "howItWorks": "如何运作",
+    "features": {
+      "masterInterview": {
+        "title": "掌握面试",
+        "description": "通过AI驱动的模拟面试完善回答"
+      },
+      "tailoredRecommendations": {
+        "title": "个性化建议",
+        "description": "根据工作描述和资历获取建议"
+      },
+      "realtimeFeedback": {
+        "title": "实时反馈",
+        "description": "获得即时、建设性的反馈"
+      },
+      "comprehensiveResults": {
+        "title": "全面结果",
+        "description": "查看详细的表现和见解"
+      }
+    }
+  },
+  "trustBar": {
+    "trustedBy": "受到以下公司专业人士的信赖",
+    "at": "于",
+    "stats": {
+      "users": "活跃用户",
+      "interviews": "已完成面试",
+      "countries": "国家/地区",
+      "companies": "合作公司",
+      "timeSaved": "招聘时间缩短",
+      "enterprises": "企业客户"
+    },
+    "testimonials": {
+      "badge": "企业成果",
+      "heading": "受HR领导者信赖",
+      "items": {
+        "1": {
+          "quote": "我们将筛选时间缩短了70%，同时提高了候选人质量。AI面试非常全面。",
+          "author": "Jennifer Walsh",
+          "role": "人才招聘副总裁",
+          "company": "财富500强科技公司"
+        },
+        "2": {
+          "quote": "偏见减少指标说服了我们的领导团队。我们看到多元化招聘成果提高了35%。",
+          "author": "David Kim",
+          "role": "首席人力官",
+          "company": "全球金融公司"
+        },
+        "3": {
+          "quote": "多语言面试为我们打开了全球市场。我们现在在12个国家招聘人才，评估标准一致。",
+          "author": "Maria Santos",
+          "role": "全球HR负责人",
+          "company": "国际零售公司"
+        }
+      }
+    }
+  },
+  "about": {
+    "title": "关于",
+    "subtitle": "AI驱动的面试准备平台",
+    "mission": {
+      "title": "赢得每一次面试",
+      "description": "与我们的AI面试官练习，获得即时反馈，建立信心。上传简历，输入职位详情，今天就开始进步。"
+    },
+    "whyVocaid": "为什么选择Vocaid？",
+    "features": {
+      "realistic": {
+        "title": "真实",
+        "desc": "自然对话流程"
+      },
+      "analytics": {
+        "title": "分析",
+        "desc": "追踪您的进步"
+      },
+      "practice247": {
+        "title": "全天候练习",
+        "desc": "无需预约"
+      },
+      "feedback": {
+        "title": "反馈",
+        "desc": "可操作的建议"
+      },
+      "roleSpecific": {
+        "title": "针对性",
+        "desc": "定制问题"
+      },
+      "payPerUse": {
+        "title": "按次付费",
+        "desc": "无需订阅"
+      }
+    },
+    "legal": "法律",
+    "privacyDesc": "我们如何保护您的数据",
+    "termsDesc": "条款和条件"
+  },
+  "contact": {
+    "title": "联系",
+    "titleHighlight": "我们",
+    "subtitle": "有问题或反馈？我们很乐意听到您的声音。",
+    "email": "邮箱",
+    "responseTime": "响应时间",
+    "responseTimeValue": "24-48小时",
+    "faq": "常见问题",
+    "aboutPage": "关于页面",
+    "sendMessage": "发送消息",
+    "form": {
+      "name": "姓名",
+      "namePlaceholder": "您的姓名",
+      "email": "邮箱",
+      "emailPlaceholder": "您的@邮箱.com",
+      "subject": "主题",
+      "selectSubject": "选择主题",
+      "subjects": {
+        "general": "一般咨询",
+        "support": "技术支持",
+        "billing": "账单问题",
+        "feedback": "反馈",
+        "partnership": "合作机会",
+        "other": "其他"
+      },
+      "message": "消息",
+      "messagePlaceholder": "我们可以如何帮助您？(最少{{min}}字符)",
+      "sendButton": "发送消息",
+      "sending": "发送中...",
+      "moreNeeded": "还需{{count}}个字符",
+      "overLimit": "超出{{count}}个字符",
+      "looksGood": "很好！",
+      "recaptcha": "受reCAPTCHA保护。",
+      "privacy": "隐私",
+      "terms": "条款",
+      "successTitle": "消息已发送！",
+      "successMessage": "感谢您的消息。我们会尽快回复您。"
+    }
+  },
+  "contactThankYou": {
+    "title": "谢谢！",
+    "message": "您的消息已成功发送。我们会尽快回复您。",
+    "redirecting": "正在跳转到首页...",
+    "goHome": "立即返回首页"
+  },
+  "home": {
+    "hero": {
+      "title": "掌握面试技巧",
+      "subtitle": "使用AI模拟面试练习，根据您的简历和理想工作量身定制",
+      "cta": "开始练习",
+      "secondaryCta": "了解更多"
+    },
+    "features": {
+      "title": "为什么选择Vocaid？",
+      "realtime": {
+        "title": "实时语音面试",
+        "description": "与AI面试官自然对话"
+      },
+      "personalized": {
+        "title": "个性化问题",
+        "description": "根据您的简历和职位描述定制问题"
+      },
+      "feedback": {
+        "title": "详细反馈",
+        "description": "全面分析您的表现"
+      }
+    }
+  },
+  "interview": {
+    "setup": {
+      "title": "面试设置",
+      "subtitle": "让我们准备您的模拟面试",
+      "jobTitle": "职位名称",
+      "jobTitlePlaceholder": "例如：软件工程师",
+      "companyName": "公司名称",
+      "companyNamePlaceholder": "例如：Google",
+      "jobDescription": "职位描述",
+      "jobDescriptionPlaceholder": "在此粘贴职位描述...",
+      "resume": "您的简历",
+      "resumeUpload": "上传简历（PDF）",
+      "resumeDragDrop": "拖放简历到此处或点击上传",
+      "startInterview": "开始面试",
+      "creditsRequired": "此面试将使用1个积分"
+    },
+    "ready": {
+      "title": "准备开始",
+      "subtitle": "您的面试即将开始",
+      "tips": {
+        "title": "快速提示",
+        "tip1": "清晰地说话，保持自然的节奏",
+        "tip2": "回答前花点时间思考",
+        "tip3": "用您经历中的具体例子",
+        "tip4": "如需要可请求澄清"
+      },
+      "startButton": "开始面试"
+    },
+    "inProgress": {
+      "listening": "正在听...",
+      "speaking": "AI正在说话...",
+      "thinking": "处理中...",
+      "endInterview": "结束面试",
+      "timeRemaining": "剩余时间"
+    },
+    "completed": {
+      "title": "面试完成",
+      "subtitle": "做得好！正在生成您的反馈。",
+      "viewFeedback": "查看反馈",
+      "newInterview": "新面试"
+    },
+    "title": "面试",
+    "status": {
+      "connecting": "正在连接Voxly...",
+      "speaking": "Voxly正在说话...",
+      "listening": "Voxly正在听..."
+    },
+    "buttons": {
+      "quit": "退出面试"
+    },
+    "quitModal": {
+      "title": "您确定要退出吗？",
+      "message": "您的面试将结束，您将被重定向。",
+      "whatHappens": "如果您退出会发生什么",
+      "creditRestored": "如果少于{{seconds}}秒，您的积分将被恢复",
+      "creditConsumed": "如果超过{{seconds}}秒，您的积分将被消耗",
+      "noFeedback": "如果少于{{seconds}}秒，将不会生成反馈",
+      "progressNotSaved": "您当前的进度将不会保存",
+      "confirmQuestion": "您确定要继续吗？",
+      "returnButton": "返回面试",
+      "quitButton": "仍然退出"
+    },
+    "micModal": {
+      "titles": {
+        "unsupported": "不支持麦克风",
+        "troubleshooting": "麦克风故障排除",
+        "required": "需要麦克风访问权限"
+      },
+      "troubleshootingMessage": "我们无法访问您的麦克风。此面试需要麦克风访问权限。",
+      "unsupportedMessage": "您的浏览器不支持麦克风访问。请使用Chrome、Firefox、Safari或Edge。",
+      "requiredMessage": "此面试需要麦克风访问权限。请在提示时允许访问。",
+      "enableMicIn": "在{{browser}}中启用麦克风",
+      "creditRestored": "✓ 您的面试积分已成功恢复！",
+      "returnHome": "返回首页",
+      "enableButton": "启用麦克风",
+      "refreshButton": "刷新页面",
+      "instructions": {
+        "chrome": {
+          "step1": "点击地址栏中的锁/信息图标",
+          "step2": "将\"麦克风\"设置为\"允许\"",
+          "step3": "刷新页面并重试"
+        },
+        "firefox": {
+          "step1": "点击地址栏中的锁图标",
+          "step2": "在麦克风下，移除阻止",
+          "step3": "刷新页面并重试"
+        },
+        "safari": {
+          "step1": "转到Safari → 偏好设置 → 网站 → 麦克风",
+          "step2": "为此网站设置权限为\"允许\"",
+          "step3": "刷新页面并重试"
+        },
+        "default": {
+          "step1": "检查浏览器设置中的麦克风权限",
+          "step2": "确保此站点已被允许访问",
+          "step3": "更改后刷新页面"
+        }
+      }
+    }
+  },
+  "interviewSetup": {
+    "backToDashboard": "← 返回控制面板",
+    "title": "开始练习面试",
+    "subtitle": "配置您的AI模拟面试会话",
+    "noCredits": {
+      "title": "积分不足",
+      "description": "您需要至少1个积分才能开始练习面试。",
+      "buyCredits": "购买积分"
+    },
+    "creditsAvailable": "{{count}}积分可用",
+    "creditsAvailable_plural": "{{count}}积分可用",
+    "sessionCost": "此会话将使用1个积分",
+    "roleSection": {
+      "label": "您在练习什么职位？",
+      "placeholder": "或输入自定义职位...",
+      "error": "请选择或输入职位"
+    },
+    "companySection": {
+      "label": "目标公司",
+      "optional": "（可选）",
+      "placeholder": "例如：谷歌、腾讯、阿里巴巴...",
+      "hint": "添加公司有助于根据该公司的文化和价值观定制问题。"
+    },
+    "languageSection": {
+      "label": "面试语言"
+    },
+    "resumeSection": {
+      "label": "选择简历",
+      "optional": "（可选）",
+      "noResumes": "尚未上传简历",
+      "uploadResume": "上传简历",
+      "noResumeOption": "无简历（通用面试）",
+      "score": "评分：{{score}}%"
+    },
+    "submit": {
+      "preparing": "准备面试中...",
+      "start": "开始面试",
+      "disclaimer": "您的面试将被录制并分析以提供反馈。"
+    }
+  },
+  "credits": {
+    "title": "面试积分",
+    "currentBalance": "当前余额",
+    "creditsRemaining": "剩余{{count}}个积分",
+    "creditsRemaining_plural": "剩余{{count}}个积分",
+    "packages": {
+      "title": "积分套餐",
+      "starter": {
+        "name": "入门版",
+        "description": "入门的完美选择"
+      },
+      "intermediate": {
+        "name": "进阶版",
+        "description": "专注准备的最佳选择"
+      },
+      "professional": {
+        "name": "专业版",
+        "description": "定期练习的理想选择"
+      }
+    },
+    "purchase": "购买",
+    "paymentMethods": "支付方式",
+    "outOfCredits": "积分用尽",
+    "purchaseToContinue": "购买以继续练习",
+    "buyCredits": "购买积分"
+  },
+  "creditsPage": {
+    "title": "面试",
+    "titleHighlight": "积分",
+    "subtitle": "AI面试练习按次付费",
+    "pricing": {
+      "title": "简单透明的定价",
+      "description": "无需订阅，无隐藏费用。购买积分，随时使用。每个积分提供一次完整的AI面试和详细反馈。"
+    },
+    "choosePackage": "选择套餐",
+    "billing": {
+      "title": "积分与",
+      "titleHighlight": "账单",
+      "subtitle": "管理您的积分并查看付款记录",
+      "pageTitle": "账单与积分",
+      "pageSubtitle": "管理您的积分和购买记录",
+      "currentBalance": "当前余额",
+      "credits": "积分",
+      "creditsCount": "{{count}}积分",
+      "creditsPerInterview": "每个积分 = 1次练习面试",
+      "creditsNeverExpire": "积分永不过期",
+      "buyCredits": "购买积分",
+      "mostPopular": "最受欢迎",
+      "practiceInterviews": "{{count}}次练习面试",
+      "fullScorecard": "完整评分卡和反馈",
+      "performanceAnalytics": "表现分析",
+      "buyNow": "立即购买",
+      "processing": "处理中...",
+      "save": "节省{{percent}}",
+      "securePaymentVia": "安全支付通过",
+      "transactionHistory": "交易记录",
+      "yourPurchasesAndUsage": "您的购买和积分使用情况",
+      "noTransactions": "暂无交易记录",
+      "balance": "余额",
+      "needHelp": "需要账单帮助？",
+      "contactSupport": "联系我们的支持团队"
+    },
+    "buyMoreCredits": "购买更多积分",
+    "buyCredits": "购买积分",
+    "stats": {
+      "balance": "余额",
+      "purchased": "已购买",
+      "used": "已使用",
+      "spent": "已消费"
+    },
+    "paymentHistory": "付款记录",
+    "noPaymentHistory": "暂无付款记录",
+    "purchaseToSeeHistory": "购买积分以查看交易记录",
+    "creditUsage": "积分使用",
+    "noInterviewsYet": "暂无面试",
+    "completeInterviewsToSee": "完成面试以查看使用记录"
+  },
+  "dashboard": {
+    "title": "控制面板",
+    "welcome": "欢迎回来，{{name}}！",
+    "welcomeSubtitle": "这是您的面试练习进度概览。",
+    "startNewInterview": "开始新面试",
+    "stats": {
+      "totalInterviews": "总面试次数",
+      "averageScore": "平均分数",
+      "creditsUsed": "已用积分",
+      "creditsRemaining": "剩余积分",
+      "totalSpent": "总消费",
+      "thisMonth": "本月",
+      "credits": "Credits",
+      "interviews": "Interviews",
+      "avgScore": "Avg. Score",
+      "resumes": "Resumes"
+    },
+    "charts": {
+      "scoreEvolution": "分数变化",
+      "monthlySpending": "月度消费",
+      "noScoreData": "暂无分数数据",
+      "noScoreDataDesc": "完成面试以跟踪您的进度",
+      "noSpendingData": "暂无消费数据",
+      "noSpendingDataDesc": "购买积分以查看您的历史记录",
+      "performanceTrend": "Performance Trend"
+    },
+    "recentInterviews": "最近面试",
+    "noInterviews": "暂无面试记录。开始您的第一次练习！",
+    "viewAll": "查看全部",
+    "readyToPractice": "Ready to practice your next interview?",
+    "startInterview": "Start Interview",
+    "quickActions": {
+      "title": "Quick Actions",
+      "practiceInterview": "Practice Interview",
+      "practiceDesc": "AI-powered mock session",
+      "uploadResume": "Upload Resume",
+      "uploadDesc": "Get feedback & scoring",
+      "viewInsights": "View Insights",
+      "insightsDesc": "Personalized tips"
+    },
+    "noInterviewsHint": "Start your first practice session!",
+    "table": {
+      "role": "Role",
+      "company": "Company",
+      "date": "Date",
+      "score": "Score",
+      "action": "Action"
+    },
+    "lowCredits": {
+      "title": "Running low on credits?",
+      "buyMore": "Buy More Credits"
+    }
+  },
+  "interviews": {
+    "title": "您的面试",
+    "subtitle": "查看您的面试历史并跟踪进度。",
+    "startNew": "开始新面试",
+    "startFirst": "开始您的第一次面试",
+    "noInterviewsTitle": "暂无面试",
+    "noInterviewsDescription": "开始您的第一次面试，在这里查看历史记录。我们的AI将帮助您练习并提高面试技能。",
+    "positionAndCompany": "职位与公司",
+    "date": "日期",
+    "duration": "时长",
+    "score": "分数",
+    "new": "新"
+  },
+  "errors": {
+    "generic": "出错了。请重试。",
+    "network": "网络错误。请检查您的连接。",
+    "unauthorized": "请登录后继续。",
+    "notFound": "页面未找到。",
+    "insufficientCredits": "积分不足。请购买更多以继续。"
+  },
+  "language": {
+    "select": "选择语言",
+    "current": "当前：{{language}}"
+  },
+  "feedback": {
+    "title": "面试反馈",
+    "loading": {
+      "title": "正在生成反馈",
+      "analyzing": "正在分析您的面试表现...",
+      "retrying": "等待转录中... (尝试 {{attempt}}/{{max}})",
+      "wait": "这可能需要几秒钟"
+    },
+    "error": {
+      "title": "无法加载反馈",
+      "returnHome": "返回首页"
+    },
+    "results": {
+      "outstanding": "表现卓越！",
+      "great": "做得很好！",
+      "good": "努力不错，继续改进！",
+      "room": "还有成长空间",
+      "keep": "继续练习！"
+    },
+    "sections": {
+      "summary": "总结",
+      "detailed": "详细反馈",
+      "jobDescription": "职位描述"
+    },
+    "noSummary": "暂无总结",
+    "noFeedback": "暂无详细反馈",
+    "buttons": {
+      "download": "下载PDF报告",
+      "downloadAria": "下载转录为PDF",
+      "newInterview": "新面试",
+      "newInterviewAria": "开始新面试",
+      "backToDashboard": "返回仪表盘"
+    }
+  },
+  "payment": {
+    "redirecting": "正在重定向...",
+    "redirectingDesc": "支付完成！正在返回浏览器...",
+    "creditsSummary": "积分摘要",
+    "confirmingCredits": "正在确认积分...",
+    "refreshCredits": "刷新积分",
+    "verifyingCredits": "正在验证积分...",
+    "redirectCountdown": "{{seconds}}秒后跳转到首页...",
+    "reference": "支付参考号",
+    "loggedInAs": "已登录为 {{email}}",
+    "status": {
+      "processing": "处理中...",
+      "processingDesc": "请稍候，我们正在验证您的支付。",
+      "success": "支付成功！",
+      "successDesc": "积分已添加到您的账户。",
+      "successProcessing": "正在处理您的支付... 积分即将添加。",
+      "failure": "支付失败",
+      "failureDesc": "您的支付无法处理。请重试。",
+      "pending": "支付待处理",
+      "pendingDesc": "您的支付正在处理中。确认后将添加积分。"
+    },
+    "credits": {
+      "previous": "之前",
+      "purchased": "已购买",
+      "total": "总计"
+    },
+    "buttons": {
+      "goHome": "返回首页",
+      "tryAgain": "重试"
+    }
+  },
+  "analytics": {
+    "sentimentTimeline": {
+      "title": "情绪与节奏时间线",
+      "description": "追踪您在面试过程中的自信度、语调和语速",
+      "noData": "暂无时间线数据",
+      "noDataDesc": "分析将在面试完成后显示",
+      "legend": {
+        "confidence": "自信度",
+        "tone": "语调",
+        "pace": "语速"
+      }
+    },
+    "softSkills": {
+      "title": "软技能分析",
+      "description": "您在关键能力领域的表现",
+      "noData": "暂无技能数据",
+      "noDataDesc": "完成面试后查看您的软技能分析",
+      "skills": {
+        "communication": "沟通能力",
+        "problemSolving": "问题解决",
+        "technicalDepth": "技术深度",
+        "leadership": "领导力",
+        "adaptability": "适应能力"
+      }
+    },
+    "advancedAnalytics": {
+      "title": "高级分析",
+      "description": "深入了解您的面试表现"
+    },
+    "benchmark": {
+      "title": "对比排名",
+      "basedOn": "基于该职位的{{count}}次面试",
+      "scoredHigherThan": "您的得分高于",
+      "ofCandidatesFor": "的候选人申请",
+      "yourScore": "您的分数",
+      "globalAverage": "全球平均",
+      "scoreBreakdown": "分数对比与平均值",
+      "you": "您",
+      "avg": "均",
+      "noData": "暂无基准数据",
+      "noDataHint": "排名将在您的面试分析后计算",
+      "tiers": {
+        "topPerformer": "顶尖表现者",
+        "aboveAverage": "高于平均",
+        "average": "平均",
+        "belowAverage": "低于平均",
+        "needsWork": "需要改进"
+      }
+    },
+    "learningPath": {
+      "title": "优先学习列表",
+      "subtitle": "根据您的面试表现由AI精选的重点主题",
+      "generated": "生成于",
+      "noData": "暂无推荐",
+      "noDataHint": "AI推荐将在您的面试分析后生成",
+      "areasForImprovement": "改进领域",
+      "recommendedTopics": "推荐学习主题",
+      "whyThisMatters": "为什么这很重要",
+      "estimatedStudyTime": "预计学习时间",
+      "suggestedResources": "建议资源",
+      "howItWorks": "工作原理：",
+      "howItWorksDesc": "我们的AI分析您的面试回答，识别额外学习能对您表现产生最大影响的特定领域。主题根据对您目标职位的重要性进行优先排序。",
+      "priority": {
+        "high": "高优先级",
+        "medium": "中等",
+        "low": "可选"
+      }
+    },
+    "transcript": {
+      "title": "面试记录",
+      "subtitle": "点击任意片段跳转到录音中的该时刻",
+      "noData": "暂无记录",
+      "noDataHint": "记录将在面试完成后显示",
+      "interviewer": "面试官",
+      "you": "您",
+      "segments": "个片段",
+      "duration": "时长",
+      "play": "播放",
+      "pause": "暂停"
+    }
+  },
+  "performanceChat": {
+    "title": "表现分析师",
+    "subtitle": "AI驱动的面试洞察",
+    "backToMenu": "返回菜单",
+    "filterByRole": "按职位/公司筛选",
+    "newConversation": "新对话",
+    "filters": {
+      "role": "职位",
+      "company": "公司",
+      "allRoles": "所有职位",
+      "allCompanies": "所有公司",
+      "clearFilters": "清除筛选"
+    },
+    "loadingInsights": "正在加载您的表现洞察...",
+    "analyzing": "正在分析您的表现...",
+    "tryAsking": "试着问：",
+    "placeholder": "询问您的面试表现...",
+    "suggestedQuestions": {
+      "strengths": "我在面试中的主要优势是什么？",
+      "improvements": "我需要改进的地方在哪里？",
+      "progress": "我的表现随时间有何变化？",
+      "nextSteps": "下次面试我应该关注什么？"
+    }
+  },
+  "hrChat": {
+    "title": "HR智能对话",
+    "subtitle": "面试洞察 + FAQ支持",
+    "floating": {
+      "ariaLabel": "HR智能对话",
+      "tooltip": "面试洞察和FAQ支持"
+    },
+    "welcome": {
+      "title": "欢迎来到Vocaid HR智能对话！",
+      "insightsMode": "面试洞察",
+      "insightsDesc": "通过基于证据的评分卡、能力分解和个性化改进建议来分析您的面试表现。",
+      "faqMode": "FAQ礼宾",
+      "faqDesc": "获取关于积分、账单、技术问题、平台功能等的即时答复。",
+      "autoDetect": "我会根据您的问题自动检测使用哪种模式。请自然地提问！"
+    },
+    "sidebar": {
+      "insights": "洞察",
+      "faq": "FAQ",
+      "analysisScope": "分析范围",
+      "allRoles": "所有职位",
+      "allCompanies": "所有公司",
+      "interviewInsights": "面试洞察",
+      "faqConcierge": "FAQ礼宾",
+      "recentInterviews": "最近面试"
+    },
+    "actions": {
+      "analyzeLatest": "分析最近的面试",
+      "myStrengths": "我的面试优势",
+      "areasToImprove": "需要改进的领域",
+      "progressOverTime": "随时间的进步",
+      "generateScorecard": "生成评分卡",
+      "quickTips": "面试快速提示",
+      "creditsBilling": "积分与账单",
+      "audioTroubleshooting": "音频故障排除",
+      "howItWorks": "Vocaid如何工作",
+      "multiLanguage": "多语言支持"
+    },
+    "input": {
+      "placeholder": "询问面试洞察、政策或Vocaid如何工作...",
+      "autoDetectHint": "AI自动检测：面试分析或FAQ支持"
+    },
+    "loading": "正在加载上下文并生成洞察...",
+    "error": {
+      "generic": "获取响应失败。请重试。",
+      "dismiss": "关闭"
+    },
+    "categories": {
+      "insights": "洞察",
+      "faq": "FAQ"
+    },
+    "newConversation": "新对话",
+    "showSidebar": "显示侧边栏",
+    "hideSidebar": "隐藏侧边栏",
+    "searchFaq": "搜索FAQ...",
+    "noFaqFound": "未找到FAQ",
+    "askAiInstead": "改为询问AI"
+  },
+  "interviewDetails": {
+    "title": "面试",
+    "titleHighlight": "详情",
+    "subtitle": "查看您的面试表现和反馈",
+    "notFound": "未找到面试",
+    "notFoundDesc": "我们无法找到您正在寻找的面试。",
+    "backToDashboard": "返回仪表盘",
+    "resume": "简历",
+    "feedbackButton": "反馈",
+    "stats": {
+      "position": "职位",
+      "company": "公司",
+      "date": "日期",
+      "duration": "时长",
+      "score": "分数"
+    },
+    "performance": {
+      "excellent": "表现卓越！",
+      "good": "表现良好",
+      "average": "表现一般",
+      "needs": "需要改进"
+    },
+    "performanceScore": "表现分数",
+    "outOf100": "满分100",
+    "scoreBreakdown": "分数细分",
+    "scores": {
+      "content": "内容质量",
+      "communication": "沟通能力",
+      "confidence": "自信程度",
+      "technical": "技术知识"
+    },
+    "scoreExplanation": {
+      "title": "我们如何计算您的分数：",
+      "desc": "我们的AI从四个关键维度分析您的面试回答——内容质量、沟通技能、自信程度和技术知识。每个类别按照行业标准和最佳实践在0-100%的范围内评分。总分是反映您面试综合表现的加权平均值。"
+    },
+    "summary": "面试总结",
+    "sections": {
+      "strengths": "优势",
+      "improvements": "改进点",
+      "recommendations": "建议"
+    },
+    "noStrengths": "暂无记录的优势",
+    "noImprovements": "无需改进",
+    "noRecommendations": "暂无建议",
+    "analytics": {
+      "title": "高级",
+      "highlight": "分析"
+    }
+  },
+  "legal": {
+    "privacy": {
+      "title": "隐私",
+      "titleHighlight": "政策"
+    },
+    "terms": {
+      "title": "使用",
+      "titleHighlight": "条款"
+    }
+  },
+  "howItWorks": {
+    "badge": "简单流程",
+    "title": "使用方法",
+    "subtitle": "从职位发布到招聘决策只需四个简单步骤。我们的AI负责筛选，让您专注于最佳候选人。",
+    "steps": {
+      "upload": {
+        "title": "上传职位和简历",
+        "description": "添加职位描述和候选人简历。我们的AI分析职位要求并量身定制问题。"
+      },
+      "interview": {
+        "title": "AI面试",
+        "description": "候选人与我们的AI面试官进行自然语音对话，全天候可用，支持8+种语言。"
+      },
+      "analysis": {
+        "title": "实时分析",
+        "description": "获取即时评分卡，包含沟通能力、技术技能和文化契合度的详细指标。"
+      },
+      "decision": {
+        "title": "做出更好的决策",
+        "description": "通过标准化评估客观比较候选人。减少偏见，加快招聘。"
+      }
+    },
+    "cta": {
+      "start": "开始面试",
+      "getStarted": "免费开始",
+      "noCreditCard": "无需信用卡"
+    }
+  },
+  "testimonials": {
+    "badge": "企业信赖",
+    "title": "人力资源领导者的评价",
+    "subtitle": "加入数百个正在转型招聘流程的企业团队。"
+  },
+  "logoCarousel": {
+    "title": "全球领先企业信赖我们"
+  },
+  "floatingCta": {
+    "title": "准备好转变您的招聘流程了吗？",
+    "subtitle": "几分钟内开始面试候选人，而不是几天。",
+    "button": "免费开始"
+  },
+  "landing": {
+    "nav": {
+      "product": "产品",
+      "solutions": "解决方案",
+      "integrations": "集成",
+      "pricing": "定价",
+      "faq": "常见问题",
+      "menu": "菜单"
+    },
+    "hero": {
+      "badge": "企业级AI面试",
+      "title": "将面试转化为",
+      "titleHighlight": "结构化证据",
+      "description": "Vocaid提供两个关键工作流程：员工服务中心可以用基于政策的答案处理HR票据，以及招聘面试平台可以大规模提供一致、可审计的评估。",
+      "ctaStart": "免费开始",
+      "ctaDemo": "预约演示",
+      "trustSubtitle": "专为HR团队和平台集成打造",
+      "features": {
+        "tenant": "租户隔离",
+        "audit": "审计跟踪",
+        "soc2": "SOC 2就绪",
+        "gdpr": "GDPR合规",
+        "webhook": "Webhook事件"
+      },
+      "stats": {
+        "accuracy": "评估准确率",
+        "faster": "更快的招聘决策"
+      },
+      "ctaStartPlural": "Start Frees included"
+    },
+    "featureGrid": {
+      "badge": "Vocaid的功能",
+      "title": "两个平台，一个使命",
+      "subtitle": "无论是优化内部HR运营还是扩展招聘流程，Vocaid都能提供结构化、基于证据的成果。",
+      "features": {
+        "employee-hub": {
+          "title": "员工服务中心",
+          "description": "使用基于政策的AI响应转移HR工单",
+          "bullets": [
+            "即时回答政策和福利问题",
+            "需要时智能升级到人工HR",
+            "常见请求自助服务（休假、工资、组织架构）",
+            "将HR工单量减少高达60%"
+          ]
+        },
+        "recruiter-platform": {
+          "title": "招聘面试平台",
+          "description": "大规模一致、可审计的候选人评估",
+          "bullets": [
+            "可配置的面试评分标准和能力框架",
+            "带证据时间戳的实时评分卡",
+            "招聘洞察分析仪表板",
+            "按使用付费，随需求扩展"
+          ]
+        }
+      }
+    },
+    "integrations": {
+      "badge": "Vocaid Connect",
+      "title": "从嵌入 → 评分卡 → webhook 只需几分钟",
+      "subtitle": "使用我们开发者友好的SDK和API将Vocaid集成到您现有的工具中。",
+      "tagline": "为租户隔离、审计跟踪和安全集成而设计。",
+      "features": [
+        {
+          "title": "在您的ATS中嵌入面试",
+          "description": "即插即用的React组件或iframe，与您产品的外观相匹配。"
+        },
+        {
+          "title": "通过签名webhooks接收评分卡",
+          "description": "接收具有加密签名负载的实时通知以确保安全性。"
+        },
+        {
+          "title": "白标主题控制",
+          "description": "自定义颜色、字体和品牌以保持无缝的用户体验。"
+        }
+      ],
+      "badges": {
+        "typescript": "TypeScript SDK",
+        "restApi": "REST API",
+        "webhooks": "签名Webhooks",
+        "openapi": "OpenAPI规范"
+      }
+    },
+    "pricing": {
+      "badge": "定价",
+      "title": "随您成长的计划",
+      "subtitle": "免费开始，需要时升级。只为使用的内容付费。",
+      "mostPopular": "最受欢迎",
+      "customPlanText": "需要定制计划？我们可以根据您的具体需求调整Vocaid。",
+      "viewFullPricing": "查看完整定价",
+      "talkToSales": "联系销售",
+      "plans": {
+        "starter": {
+          "name": "入门版",
+          "description": "适合开始使用AI面试的小型团队",
+          "cta": "开始免费试用",
+          "features": [
+            "最多5个团队席位",
+            "每月100分钟面试",
+            "基础评分卡",
+            "邮件支持",
+            "标准集成"
+          ]
+        },
+        "growth": {
+          "name": "成长版",
+          "description": "适合需要更多功能和灵活性的成长团队",
+          "cta": "开始免费试用",
+          "features": [
+            "最多25个团队席位",
+            "每月500分钟面试",
+            "带证据的高级评分卡",
+            "优先支持",
+            "所有集成 + webhooks",
+            "自定义评分标准",
+            "分析仪表板"
+          ]
+        },
+        "enterprise": {
+          "name": "企业版",
+          "description": "适合有高级安全和合规需求的组织",
+          "cta": "联系销售",
+          "features": [
+            "无限席位",
+            "自定义分钟分配",
+            "SSO和SCIM配置",
+            "专属支持",
+            "自定义集成",
+            "审计日志和合规",
+            "数据驻留选项",
+            "SLA保证"
+          ]
+        }
+      }
+    },
+    "faq": {
+      "badge": "常见问题",
+      "title": "常见问题解答",
+      "subtitle": "关于Vocaid您需要了解的一切。",
+      "items": {
+        "multiTenancy": {
+          "question": "多租户如何工作？",
+          "answer": "Vocaid从一开始就采用企业级多租户架构。每个组织都有隔离的数据存储、独立的API凭证和可配置的权限。"
+        },
+        "whiteLabel": {
+          "question": "我们可以使用自己的品牌吗？",
+          "answer": "当然可以。我们的白标控制允许您使用品牌颜色、徽标、字体和消息自定义面试界面。"
+        },
+        "billing": {
+          "question": "计费如何工作？",
+          "answer": "我们使用简单的按使用付费模式，基于消耗的面试分钟数。您可以购买分钟包或设置自动充值。"
+        },
+        "compliance": {
+          "question": "关于GDPR合规呢？",
+          "answer": "Vocaid在设计时考虑了隐私法规。我们支持数据主体请求、提供数据导出功能和数据驻留选项。"
+        },
+        "atsIntegration": {
+          "question": "我们可以将数据导出到ATS吗？",
+          "answer": "可以。Vocaid通过我们的SDK和webhooks与主要ATS平台集成。您可以自动推送评分卡、转录和评估数据。"
+        },
+        "multilingual": {
+          "question": "你们支持多语言面试吗？",
+          "answer": "是的，Vocaid支持多种语言的面试。我们的AI可以用英语、西班牙语、葡萄牙语、法语、德语等进行面试并生成评分卡。"
+        },
+        "security": {
+          "question": "面试数据有多安全？",
+          "answer": "所有数据在静态和传输过程中都使用AES-256和TLS 1.3加密。我们保持SOC 2 Type II合规并提供详细的审计日志。"
+        },
+        "support": {
+          "question": "你们提供什么样的支持？",
+          "answer": "入门计划包括24小时响应时间的邮件支持。成长计划获得更快响应的优先支持。"
+        },
+        "rubrics": {
+          "question": "我们可以自定义评估标准吗？",
+          "answer": "成长和企业计划包括完整的评估标准自定义。您可以定义自己的能力框架和评分标准。"
+        },
+        "trial": {
+          "question": "有免费试用吗？",
+          "answer": "是的，我们在入门和成长计划上提供14天免费试用，无需信用卡。您可以完全访问所有功能。"
+        },
+        "howCreditsWork": {
+          "question": "How do credits work?",
+          "answer": "New users receive free credits to get started. Each completed practice interview uses 1 credit. You can purchase more credits anytime through our billing page. Credits never expire, so use them at your own pace."
+        },
+        "difference": {
+          "question": "What's the difference between B2C and B2B?",
+          "answer": "B2C (Interview Practice) is for individual candidates who want to practice and improve their interview skills. B2B (Recruiter Platform) is for organizations that want to evaluate candidates with structured interviews and scorecards. Both are powered by the same AI technology."
+        }
+      }
+    },
+    "demo": {
+      "title": "申请演示",
+      "description": "了解Vocaid如何改变您的招聘和人力资源流程。",
+      "labels": {
+        "fullName": "全名",
+        "workEmail": "工作邮箱",
+        "company": "公司",
+        "teamSize": "团队规模",
+        "useCase": "主要用例"
+      },
+      "placeholders": {
+        "fullName": "张三",
+        "workEmail": "zhangsan@company.com",
+        "company": "公司名称",
+        "teamSize": "选择团队规模",
+        "useCase": "选择用例"
+      },
+      "teamSizeOptions": [
+        "1-10名员工",
+        "11-50名员工",
+        "51-200名员工",
+        "201-1000名员工",
+        "1000+名员工"
+      ],
+      "useCaseOptions": [
+        "招聘与人才获取",
+        "人力资源服务台自动化",
+        "员工入职培训",
+        "内部流动与晋升",
+        "技能评估",
+        "其他"
+      ],
+      "validation": {
+        "nameRequired": "姓名为必填项",
+        "emailRequired": "邮箱为必填项",
+        "emailInvalid": "请输入有效的工作邮箱",
+        "companyRequired": "公司为必填项",
+        "teamSizeRequired": "请选择团队规模",
+        "useCaseRequired": "请选择用例",
+        "submitFailed": "提交失败。请重试。"
+      },
+      "submitButton": "申请演示",
+      "disclaimer": "提交即表示您同意我们的隐私政策和服务条款。",
+      "success": {
+        "title": "谢谢！",
+        "message": "我们将在24小时内与您联系安排演示。"
+      }
+    },
+    "finalCta": {
+      "title": "准备好转变您的招聘流程了吗？",
+      "subtitle": "加入使用Vocaid做出更快、更公平、更一致招聘决策的前瞻性HR团队。",
+      "ctaWorkspace": "创建您的工作区",
+      "ctaDemo": "预约演示",
+      "disclaimer": "无需信用卡 • 14天免费试用 • 随时取消",
+      "ctaWorkspacePlural": "Start Frees"
+    },
+    "footer": {
+      "description": "企业级AI面试，大规模提供结构化、可审计的评估。",
+      "sections": {
+        "product": "产品",
+        "company": "公司",
+        "legal": "法律"
+      },
+      "links": {
+        "features": "功能",
+        "solutions": "解决方案",
+        "integrations": "集成",
+        "pricing": "定价",
+        "faq": "常见问题",
+        "about": "关于我们",
+        "contact": "联系我们",
+        "careers": "职业",
+        "blog": "博客",
+        "privacyPolicy": "隐私政策",
+        "termsOfUse": "使用条款",
+        "cookiePolicy": "Cookie政策",
+        "security": "安全"
+      },
+      "tagline": "为租户隔离、审计跟踪和安全集成而设计。",
+      "compliance": {
+        "soc2": "SOC 2就绪",
+        "gdpr": "GDPR合规",
+        "lgpd": "LGPD合规"
+      }
+    },
+    "earlyAccess": {
+      "title": "抢先体验",
+      "description": "成为第一个知道我们B2B模块上线的用户。",
+      "labels": {
+        "name": "姓名",
+        "email": "邮箱",
+        "company": "公司",
+        "interestedIn": "我感兴趣的是"
+      },
+      "placeholders": {
+        "name": "张三",
+        "email": "zhangsan@company.com",
+        "company": "示例公司"
+      },
+      "validation": {
+        "nameRequired": "姓名为必填项",
+        "emailRequired": "邮箱为必填项",
+        "emailInvalid": "请输入有效的邮箱地址",
+        "moduleRequired": "请至少选择一个模块",
+        "submitFailed": "提交失败，请重试。"
+      },
+      "submitButton": "加入等待列表",
+      "disclaimer": "提交即表示您同意我们的隐私政策和服务条款。",
+      "success": {
+        "title": "您已加入列表！",
+        "message": "当{{modules}}的抢先体验开放时，我们会通知您。"
+      },
+      "modules": {
+        "recruiter": {
+          "label": "招聘平台",
+          "description": "创建面试套件，评估候选人，做出数据驱动的招聘决策。"
+        },
+        "employeeHub": {
+          "label": "员工中心",
+          "description": "通过基于政策的回答分流HR工单，简化员工入职流程。"
+        }
+      }
+    },
+    "platformShowcase": {
+      "badge": "三大平台，一个使命",
+      "title": "为面试旅程的每个阶段而构建",
+      "subtitle": "从准备下一次面试到打造世界级招聘团队，Vocaid适应您的需求。",
+      "mostPopular": "最受欢迎",
+      "b2c": {
+        "forLabel": "面向求职者",
+        "title": "面试练习",
+        "description": "练习AI模拟面试，获得即时反馈，跟踪您的进步。",
+        "performanceTrend": "表现趋势",
+        "improvement": "本月+17%",
+        "stats": {
+          "interviews": "面试次数",
+          "avgScore": "平均分",
+          "resumes": "简历数"
+        },
+        "actions": {
+          "startPractice": "开始练习",
+          "uploadResume": "上传简历"
+        },
+        "cta": "免费开始"
+      },
+      "b2b": {
+        "forLabel": "面向企业",
+        "title": "招聘平台",
+        "description": "创建面试套件，一致地评估候选人，做出数据驱动的决策。",
+        "candidatePipeline": "候选人管道",
+        "thisWeek": "本周12人",
+        "recommended": "推荐",
+        "underReview": "审核中",
+        "actions": {
+          "interviewKits": "面试套件",
+          "analytics": "数据分析"
+        },
+        "cta": "获取抢先体验"
+      },
+      "hr": {
+        "forLabel": "面向内部团队",
+        "title": "员工中心",
+        "description": "通过基于政策的回答分流HR工单，简化员工入职流程。",
+        "recentQueries": "最近查询",
+        "resolved": "95%已解决",
+        "mockQueries": [
+          "如何申请休假？",
+          "医疗福利有哪些？",
+          "远程工作政策"
+        ],
+        "stats": {
+          "ticketsDeflected": "分流工单数",
+          "avgResponse": "平均响应"
+        },
+        "actions": {
+          "askHR": "咨询HR",
+          "policies": "政策文档"
+        },
+        "cta": "获取抢先体验"
+      }
+    },
+    "dashboardPreview": {
+      "badge": "实际演示",
+      "title": "您的招聘指挥中心",
+      "subtitle": "从候选人管道到详细评分卡和开发者集成——您需要的一切都在这里。",
+      "tabs": {
+        "pipeline": "候选人管道",
+        "scorecard": "评分卡",
+        "developer": "开发者门户"
+      },
+      "pipeline": {
+        "activeCandidates": "活跃候选人",
+        "tableHeaders": {
+          "name": "姓名",
+          "stage": "阶段",
+          "fitScore": "匹配分数",
+          "updated": "更新时间"
+        },
+        "completionRate": "完成率",
+        "sampleData": [
+          {
+            "name": "王丽华",
+            "stage": "终面",
+            "fitScore": 92,
+            "lastUpdated": "2小时前"
+          },
+          {
+            "name": "李明远",
+            "stage": "技术评审",
+            "fitScore": 88,
+            "lastUpdated": "5小时前"
+          },
+          {
+            "name": "张小雨",
+            "stage": "筛选中",
+            "fitScore": 85,
+            "lastUpdated": "1天前"
+          },
+          {
+            "name": "陈大伟",
+            "stage": "初面",
+            "fitScore": 78,
+            "lastUpdated": "2天前"
+          },
+          {
+            "name": "刘美玲",
+            "stage": "已发offer",
+            "fitScore": 95,
+            "lastUpdated": "3天前"
+          }
+        ],
+        "stages": {
+          "finalInterview": "终面",
+          "technicalReview": "技术评审",
+          "screening": "筛选中",
+          "initialInterview": "初面",
+          "offerExtended": "已发offer"
+        }
+      },
+      "scorecard": {
+        "competencyOverview": "能力概览",
+        "competencies": {
+          "problemSolving": "问题解决",
+          "communication": "沟通能力",
+          "technicalDepth": "技术深度",
+          "leadership": "领导力",
+          "collaboration": "协作能力",
+          "adaptability": "适应能力"
+        },
+        "evidence": [
+          {
+            "text": "展现了出色的问题解决能力",
+            "timestamp": "14:32"
+          },
+          {
+            "text": "清晰地传达了复杂的技术概念",
+            "timestamp": "14:28"
+          },
+          {
+            "text": "展示了丰富的领导经验",
+            "timestamp": "14:15"
+          }
+        ]
+      },
+      "developer": {
+        "apiCredentials": "API凭证",
+        "apiKey": "API密钥",
+        "reveal": "显示",
+        "environment": "环境",
+        "production": "生产环境",
+        "webhookStatus": "Webhook状态",
+        "webhookEvents": [
+          {
+            "event": "面试.完成",
+            "status": "success",
+            "timestamp": "14:32:01"
+          },
+          {
+            "event": "评分卡.生成",
+            "status": "success",
+            "timestamp": "14:32:05"
+          },
+          {
+            "event": "候选人.已评估",
+            "status": "success",
+            "timestamp": "14:32:08"
+          },
+          {
+            "event": "webhook.重试",
+            "status": "pending",
+            "timestamp": "14:32:12"
+          }
+        ]
+      },
+      "sampleData": {
+        "candidate1": "Sarah Chen",
+        "candidate2": "Marcus Johnson",
+        "candidate3": "Emily Rodriguez",
+        "candidate4": "David Kim",
+        "candidate5": "Lisa Thompson",
+        "timeAgo2h": "2 hours ago",
+        "timeAgo3h": "3 hours ago",
+        "timeAgo5h": "5 hours ago",
+        "timeAgo6h": "6 hours ago",
+        "timeAgo1d": "1 day ago"
+      },
+      "stages": {
+        "hrScreen": "HR Screen",
+        "technical": "Technical Interview",
+        "finalRound": "Final Round",
+        "offerExtended": "Offer Extended"
+      },
+      "skills": {
+        "problemSolving": "Problem Solving",
+        "communication": "Communication",
+        "technicalDepth": "Technical Depth",
+        "leadership": "Leadership",
+        "collaboration": "Collaboration",
+        "adaptability": "Adaptability"
+      },
+      "evidence": {
+        "debugging": "Demonstrated systematic approach to debugging",
+        "solutions": "Proposed multiple solution alternatives",
+        "systemDesign": "Explained system design trade-offs clearly",
+        "distributedSystems": "Deep knowledge of distributed systems",
+        "articulation": "Clear articulation of complex concepts",
+        "clarifying": "Asked clarifying questions effectively"
+      }
+    },
+    "platforms": {
+      "b2c": {
+        "title": "Interview Practice",
+        "subtitle": "For Candidates",
+        "description": "Practice AI-powered mock interviews, get instant feedback, and track your improvement over time."
+      },
+      "b2b": {
+        "title": "Recruiter Platform",
+        "subtitle": "For Organizations",
+        "description": "Create interview kits, evaluate candidates consistently, and make data-driven hiring decisions."
+      },
+      "hr": {
+        "title": "Employee Hub",
+        "subtitle": "For Internal Teams",
+        "description": "Deflect HR tickets with policy-aware answers and streamline employee onboarding."
+      }
+    }
+  },
+  "platform": {
+    "b2c": {
+      "title": "Interview Practice",
+      "description": "Practice interviews and improve your performance"
+    },
+    "b2b": {
+      "title": "Recruiter Platform",
+      "description": "Evaluate candidates with structured interviews"
+    },
+    "hr": {
+      "title": "Employee Hub",
+      "description": "Internal employee support and onboarding"
+    }
+  },
+  "auth": {
+    "completingAuthentication": "Completing authentication...",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "password": "Password",
+    "role": "Current Role",
+    "preferredLanguage": "Preferred Language",
+    "selectRole": "Select your role",
+    "selectLanguage": "Select your language",
+    "forgotPassword": "Forgot password?",
+    "creating": "Creating account...",
+    "signingIn": "Signing in...",
+    "verifying": "Verifying...",
+    "haveAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "didntReceiveCode": "Didn't receive the code?",
+    "resendCode": "Resend",
+    "backToForm": "Back to sign up",
+    "backToSignIn": "Back to sign in",
+    "trustBar": "Join thousands of professionals improving their interview skills with Vocaid.",
+    "verificationCode": "Verification Code",
+    "signUp": {
+      "title": "Create your account",
+      "subtitle": "Start practicing your interview skills today",
+      "button": "Create Account",
+      "link": "Sign up"
+    },
+    "signIn": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to continue your interview practice",
+      "button": "Sign In",
+      "link": "Sign in",
+      "success": "Welcome back!",
+      "redirecting": "Redirecting to your dashboard..."
+    },
+    "verification": {
+      "title": "Verify your email",
+      "subtitle": "We sent a verification code to",
+      "button": "Verify Email"
+    },
+    "complete": {
+      "title": "Welcome to Vocaid!",
+      "subtitle": "Your account has been created successfully. Redirecting to dashboard..."
+    },
+    "twoFactor": {
+      "title": "Two-Factor Authentication",
+      "subtitle": "Enter the code from your authenticator app",
+      "code": "Verification Code",
+      "button": "Verify"
+    },
+    "sso": {
+      "completing": "Completing sign in..."
+    },
+    "roles": {
+      "recruiter": "Recruiter",
+      "candidate": "Candidate",
+      "manager": "Manager",
+      "admin": "Admin",
+      "employee": "Employee"
+    },
+    "accessDenied": "Access Denied",
+    "insufficientPermissions": "You do not have permission to access this page.",
+    "requiredRoles": "Required: {{roles}}",
+    "createAccount": "Sign up"
+  },
+  "account": {
+    "title": "Account Settings",
+    "subtitle": "Manage your profile and preferences",
+    "profileUpdated": "Profile updated successfully",
+    "passwordChanged": "Password changed successfully",
+    "personal": "Personal",
+    "switchWorkspace": "Switch Workspace",
+    "selectWorkspace": "Select Workspace",
+    "sections": {
+      "profile": "Profile",
+      "security": "Security",
+      "danger": "Danger Zone"
+    },
+    "profile": {
+      "title": "Profile Information",
+      "avatar": "Profile Picture",
+      "avatarHint": "Managed through your OAuth provider",
+      "save": "Save Changes"
+    },
+    "security": {
+      "title": "Change Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "changePassword": "Change Password"
+    },
+    "danger": {
+      "title": "Delete Account",
+      "warning": "This action is permanent and cannot be undone. All your data will be permanently deleted.",
+      "confirmLabel": "Type DELETE to confirm",
+      "deleteButton": "Permanently Delete Account",
+      "deleting": "Deleting..."
+    }
+  },
+  "workspace": {
+    "selectRequired": "Select a Workspace",
+    "selectDescription": "Please select or create a workspace to continue.",
+    "selectButton": "Select Workspace"
+  },
+  "footer": {
+    "copyright": "© 2024 Vocaid. All rights reserved."
+  }
+}

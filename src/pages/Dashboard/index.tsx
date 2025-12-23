@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useUser } from '@clerk/clerk-react'
+import { useTranslation } from 'react-i18next'
 import { DefaultLayout } from 'components/default-layout'
 import Loading from 'components/loading'
 import { useDashboardData } from 'hooks/use-dashboard-data'
@@ -17,10 +18,10 @@ interface SimpleLineChartProps {
   height?: number
 }
 
-const SimpleLineChart: React.FC<SimpleLineChartProps> = ({ data, color = '#5417C9', height = 200 }) => {
+const SimpleLineChart: React.FC<SimpleLineChartProps> = ({ data, color = '#9333ea', height = 200 }) => {
   if (!data || data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-400">
+      <div className="flex items-center justify-center h-full text-zinc-400">
         No data available
       </div>
     )
@@ -73,7 +74,7 @@ const SimpleLineChart: React.FC<SimpleLineChartProps> = ({ data, color = '#5417C
         })}
       </svg>
       {/* X-axis labels */}
-      <div className="flex justify-between mt-2 text-xs text-gray-500">
+      <div className="flex justify-between mt-2 text-xs text-zinc-500">
         {data.slice(0, 6).map((d, i) => (
           <span key={i}>{d.label}</span>
         ))}
@@ -88,10 +89,10 @@ interface SimpleBarChartProps {
   height?: number
 }
 
-const SimpleBarChart: React.FC<SimpleBarChartProps> = ({ data, color = '#5417C9', height = 200 }) => {
+const SimpleBarChart: React.FC<SimpleBarChartProps> = ({ data, color = '#9333ea', height = 200 }) => {
   if (!data || data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-400">
+      <div className="flex items-center justify-center h-full text-zinc-400">
         No data available
       </div>
     )
@@ -118,7 +119,7 @@ const SimpleBarChart: React.FC<SimpleBarChartProps> = ({ data, color = '#5417C9'
       {/* X-axis labels */}
       <div className="flex gap-2 mt-2">
         {data.map((d, i) => (
-          <span key={i} className="flex-1 text-center text-xs text-gray-500 truncate">
+          <span key={i} className="flex-1 text-center text-xs text-zinc-500 truncate">
             {d.label}
           </span>
         ))}
@@ -130,7 +131,7 @@ const SimpleBarChart: React.FC<SimpleBarChartProps> = ({ data, color = '#5417C9'
 // Score badge component
 const ScoreBadge: React.FC<{ score: number | null }> = ({ score }) => {
   if (score === null) {
-    return <span className="score-badge bg-gray-100 text-gray-600">N/A</span>
+    return <span className="score-badge bg-zinc-100 text-zinc-600">N/A</span>
   }
 
   let badgeClass = 'score-badge-needs-improvement'
@@ -154,14 +155,14 @@ const StatsCard: React.FC<{
       <div>
         <p className="metric-label">{title}</p>
         <p className="metric-value mt-1">{value}</p>
-        {subtitle && <p className="text-sm text-gray-500 mt-1">{subtitle}</p>}
+        {subtitle && <p className="text-sm text-zinc-500 mt-1">{subtitle}</p>}
         {change !== undefined && (
           <p className={change >= 0 ? 'metric-change-positive' : 'metric-change-negative'}>
             {change >= 0 ? '↑' : '↓'} {Math.abs(change)}% from last month
           </p>
         )}
       </div>
-      <div className="p-3 bg-purple-50 rounded-lg text-voxly-purple">
+      <div className="p-3 bg-purple-50 rounded-lg text-purple-600">
         {icon}
       </div>
     </div>
@@ -171,6 +172,7 @@ const StatsCard: React.FC<{
 export default function Dashboard() {
   const { user, isLoaded, isSignedIn } = useUser()
   const navigate = useNavigate()
+  const { t } = useTranslation()
   
   // Use shared dashboard data hook (with caching)
   const { data, isLoading, error, refresh } = useDashboardData(5)
@@ -210,11 +212,11 @@ export default function Dashboard() {
       <div className="page-container py-6 sm:py-8">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-            Welcome back, {user?.firstName || 'there'}!
+          <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900">
+            {t('dashboard.welcome', { name: user?.firstName || t('common.there') })}
           </h1>
-          <p className="text-gray-600 mt-1">
-            Here's an overview of your interview practice progress.
+          <p className="text-zinc-600 mt-1">
+            {t('dashboard.welcomeSubtitle')}
           </p>
         </div>
 
@@ -225,7 +227,7 @@ export default function Dashboard() {
               onClick={() => refresh(true)}
               className="ml-2 underline hover:no-underline"
             >
-              Retry
+              {t('common.retry', 'Retry')}
             </button>
           </div>
         )}
@@ -233,9 +235,9 @@ export default function Dashboard() {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <StatsCard
-            title="Total Interviews"
+            title={t('dashboard.stats.totalInterviews')}
             value={stats?.totalInterviews || 0}
-            subtitle={`${stats?.interviewsThisMonth || 0} this month`}
+            subtitle={`${stats?.interviewsThisMonth || 0} ${t('dashboard.stats.thisMonth')}`}
             icon={
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -243,7 +245,7 @@ export default function Dashboard() {
             }
           />
           <StatsCard
-            title="Average Score"
+            title={t('dashboard.stats.averageScore')}
             value={stats?.averageScore ? `${stats.averageScore}%` : 'N/A'}
             change={stats?.scoreChange}
             icon={
@@ -253,7 +255,7 @@ export default function Dashboard() {
             }
           />
           <StatsCard
-            title="Total Spent"
+            title={t('dashboard.stats.totalSpent')}
             value={formatCurrency(stats?.totalSpent || 0)}
             icon={
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -262,7 +264,7 @@ export default function Dashboard() {
             }
           />
           <StatsCard
-            title="Credits Remaining"
+            title={t('dashboard.stats.creditsRemaining')}
             value={stats?.creditsRemaining || 0}
             icon={
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -275,30 +277,30 @@ export default function Dashboard() {
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
           {/* Score Evolution Chart */}
-          <div className="voxly-card">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Score Evolution</h3>
+          <div className="p-6 bg-white border border-zinc-200 rounded-xl">
+            <h3 className="text-lg font-semibold text-zinc-900 mb-4">{t('dashboard.charts.scoreEvolution')}</h3>
             <div className="chart-container">
               <SimpleLineChart
                 data={scoreData.map(d => ({
                   label: new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
                   value: d.score
                 }))}
-                color="#5417C9"
+                color="#9333ea"
                 height={200}
               />
             </div>
           </div>
 
           {/* Spending Chart */}
-          <div className="voxly-card">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Monthly Spending</h3>
+          <div className="p-6 bg-white border border-zinc-200 rounded-xl">
+            <h3 className="text-lg font-semibold text-zinc-900 mb-4">{t('dashboard.charts.monthlySpending')}</h3>
             <div className="chart-container">
               <SimpleBarChart
                 data={spendingData.map(d => ({
                   label: d.month,
                   value: d.amount
                 }))}
-                color="#5417C9"
+                color="#9333ea"
                 height={200}
               />
             </div>
@@ -306,34 +308,34 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Interviews */}
-        <div className="voxly-card">
+        <div className="p-6 bg-white border border-zinc-200 rounded-xl">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Recent Interviews</h3>
+            <h3 className="text-lg font-semibold text-zinc-900">{t('dashboard.recentInterviews')}</h3>
             <button
               onClick={() => navigate('/interviews')}
-              className="text-sm text-voxly-purple hover:underline"
+              className="text-sm text-purple-600 hover:underline"
             >
-              View All
+              {t('dashboard.viewAll')}
             </button>
           </div>
 
           {interviews.length === 0 ? (
             <div className="text-center py-8">
-              <div className="text-gray-400 mb-4">
+              <div className="text-zinc-400 mb-4">
                 <svg className="w-12 h-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
               </div>
-              <p className="text-gray-600 mb-4">No interviews yet</p>
+              <p className="text-zinc-600 mb-4">{t('dashboard.noInterviews')}</p>
               <button
                 onClick={() => navigate('/')}
                 className="btn-voxly"
               >
-                Start Your First Interview
+                {t('interviews.startFirst')}
               </button>
             </div>
           ) : (
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-zinc-100">
               {interviews.map((interview) => (
                 <div
                   key={interview.id}
@@ -344,15 +346,15 @@ export default function Dashboard() {
                   onKeyDown={(e) => e.key === 'Enter' && navigate(`/interview/${interview.id}`)}
                 >
                   <div className="flex-1 min-w-0">
-                    <p className="font-medium text-gray-900 truncate">{interview.position}</p>
-                    <p className="text-sm text-gray-500">{interview.company}</p>
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="font-medium text-zinc-900 truncate">{interview.position}</p>
+                    <p className="text-sm text-zinc-500">{interview.company}</p>
+                    <p className="text-xs text-zinc-400 mt-1">
                       {formatDate(interview.createdAt)} • {interview.duration} min
                     </p>
                   </div>
                   <div className="flex items-center gap-3 mt-2 sm:mt-0">
                     <ScoreBadge score={interview.overallScore} />
-                    <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </div>

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { DefaultLayout } from 'components/default-layout';
 import { CheckCircle, ArrowRight, Home } from 'lucide-react';
 
 const ContactThankYou: React.FC = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [countdown, setCountdown] = useState(10);
 
     useEffect(() => {
@@ -47,10 +49,10 @@ const ContactThankYou: React.FC = () => {
                         {/* Message */}
                         <div className="text-center p-0 mb-3 sm:mb-4">
                             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2">
-                               Thank You!
+                               {t('contactThankYou.title')}
                             </h2>
                             <p className="text-gray-600 text-sm sm:text-base">
-                                Your message has been sent successfully. We'll get back to you soon.
+                                {t('contactThankYou.message')}
                             </p>
                         </div>
 
@@ -62,7 +64,7 @@ const ContactThankYou: React.FC = () => {
                                 </span>
                             </div>
                             <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">
-                                Redirecting to home...
+                                {t('contactThankYou.redirecting')}
                             </p>
                         </div>
 
@@ -72,7 +74,7 @@ const ContactThankYou: React.FC = () => {
                             className="w-full py-3 sm:py-4 px-4 sm:px-6 rounded-xl font-bold text-base sm:text-lg transition-all duration-300 ease-out flex items-center justify-center gap-2 sm:gap-3 shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98] touch-manipulation bg-gradient-to-r from-purple-700 via-purple-600 to-violet-600 text-white hover:from-purple-800 hover:via-purple-700 hover:to-violet-700 shadow-purple-500/30"
                         >
                             <Home className="w-4 h-4 sm:w-5 sm:h-5" />
-                            <span>Go to Home Now</span>
+                            <span>{t('contactThankYou.goHome')}</span>
                             <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                         </button>
                     </div>
@@ -89,7 +91,7 @@ const ContactThankYou: React.FC = () => {
                         </span>
                     </div>
                     <p className="text-xs sm:text-sm text-gray-500 mt-2 sm:mt-3">
-                        Your feedback helps us improve Voxly
+                        Your feedback helps us improve Vocaid
                     </p>
                 </div>
             </div>

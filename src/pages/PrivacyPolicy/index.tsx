@@ -1,14 +1,16 @@
 'use client'
 
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { DefaultLayout } from 'components/default-layout'
 import { ArrowLeft } from 'lucide-react'
 
 export default function PrivacyPolicy() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   return (
-    <DefaultLayout className="bg-gray-50">
+    <DefaultLayout className="bg-white">
       <div className="page-container py-6 sm:py-8">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
@@ -16,9 +18,9 @@ export default function PrivacyPolicy() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6 sm:mb-8">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
-                <ArrowLeft onClick={() => navigate('/about')} className="w-5 h-5 text-gray-600 hover:text-gray-900 transition-colors" />
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                  Privacy <span className="text-voxly-purple">Policy</span>
+                <ArrowLeft onClick={() => navigate('/about')} className="w-5 h-5 text-zinc-600 hover:text-zinc-900 transition-colors cursor-pointer" aria-label={t('common.goBack')} />
+                <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900">
+                  {t('legal.privacy.title')} <span className="text-purple-600">{t('legal.privacy.titleHighlight')}</span>
                 </h1>
               </div>
             </div>
@@ -26,20 +28,20 @@ export default function PrivacyPolicy() {
         </div>
 
         {/* Content */}
-        <div className="voxly-card prose prose-gray max-w-none">
+        <div className="p-6 bg-white border border-zinc-200 rounded-xl prose prose-zinc max-w-none">
           <section className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">1. Introduction</h2>
-            <p className="text-gray-600 mb-4">
-              Welcome to Voxly. We respect your privacy and are committed to protecting your personal data.
+            <h2 className="text-xl font-semibold text-zinc-900 mb-4">1. Introduction</h2>
+            <p className="text-zinc-600 mb-4">
+              Welcome to Vocaid. We respect your privacy and are committed to protecting your personal data.
               This privacy policy will inform you about how we look after your personal data when you visit
               our website and use our services.
             </p>
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">2. Data We Collect</h2>
-            <p className="text-gray-600 mb-4">We may collect the following types of information:</p>
-            <ul className="list-disc list-inside text-gray-600 space-y-2 ml-4">
+            <h2 className="text-xl font-semibold text-zinc-900 mb-4">2. Data We Collect</h2>
+            <p className="text-zinc-600 mb-4">We may collect the following types of information:</p>
+            <ul className="list-disc list-inside text-zinc-600 space-y-2 ml-4">
               <li><strong>Identity Data:</strong> First name, last name, username</li>
               <li><strong>Contact Data:</strong> Email address</li>
               <li><strong>Technical Data:</strong> IP address, browser type, device information</li>
@@ -49,9 +51,9 @@ export default function PrivacyPolicy() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">3. How We Use Your Data</h2>
-            <p className="text-gray-600 mb-4">We use your data to:</p>
-            <ul className="list-disc list-inside text-gray-600 space-y-2 ml-4">
+            <h2 className="text-xl font-semibold text-zinc-900 mb-4">3. How We Use Your Data</h2>
+            <p className="text-zinc-600 mb-4">We use your data to:</p>
+            <ul className="list-disc list-inside text-zinc-600 space-y-2 ml-4">
               <li>Provide and improve our AI interview practice services</li>
               <li>Generate personalized interview feedback</li>
               <li>Process payments and manage your account</li>
@@ -61,8 +63,8 @@ export default function PrivacyPolicy() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">4. Data Security</h2>
-            <p className="text-gray-600 mb-4">
+            <h2 className="text-xl font-semibold text-zinc-900 mb-4">4. Data Security</h2>
+            <p className="text-zinc-600 mb-4">
               We have implemented appropriate security measures to prevent your personal data from being
               accidentally lost, used, or accessed in an unauthorized way. We limit access to your personal
               data to those employees and third parties who have a business need to know.
@@ -70,9 +72,9 @@ export default function PrivacyPolicy() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">5. Third-Party Services</h2>
-            <p className="text-gray-600 mb-4">We use the following third-party services:</p>
-            <ul className="list-disc list-inside text-gray-600 space-y-2 ml-4">
+            <h2 className="text-xl font-semibold text-zinc-900 mb-4">5. Third-Party Services</h2>
+            <p className="text-zinc-600 mb-4">We use the following third-party services:</p>
+            <ul className="list-disc list-inside text-zinc-600 space-y-2 ml-4">
               <li><strong>Clerk:</strong> Authentication and user management</li>
               <li><strong>MercadoPago:</strong> Payment processing</li>
               <li><strong>AI Services:</strong> Interview simulation and feedback generation</li>
@@ -80,9 +82,9 @@ export default function PrivacyPolicy() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">6. Your Rights</h2>
-            <p className="text-gray-600 mb-4">You have the right to:</p>
-            <ul className="list-disc list-inside text-gray-600 space-y-2 ml-4">
+            <h2 className="text-xl font-semibold text-zinc-900 mb-4">6. Your Rights</h2>
+            <p className="text-zinc-600 mb-4">You have the right to:</p>
+            <ul className="list-disc list-inside text-zinc-600 space-y-2 ml-4">
               <li>Request access to your personal data</li>
               <li>Request correction of your personal data</li>
               <li>Request deletion of your personal data</li>
@@ -92,11 +94,11 @@ export default function PrivacyPolicy() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">7. Contact Us</h2>
-            <p className="text-gray-600">
+            <h2 className="text-xl font-semibold text-zinc-900 mb-4">7. Contact Us</h2>
+            <p className="text-zinc-600">
               If you have any questions about this privacy policy or our privacy practices, please contact us at{' '}
-              <a href="mailto:privacy@voxly.ai" className="text-voxly-purple hover:underline">
-                privacy@voxly.ai
+              <a href="mailto:privacy@vocaid.ai" className="text-purple-600 hover:underline">
+                privacy@vocaid.ai
               </a>
             </p>
           </section>

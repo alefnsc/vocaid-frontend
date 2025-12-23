@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { useForm, ValidationError } from '@formspree/react'
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3'
 import { DefaultLayout } from 'components/default-layout'
@@ -15,6 +16,7 @@ const MESSAGE_MAX_LENGTH = 250
 
 export default function Contact() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { executeRecaptcha } = useGoogleReCaptcha()
   
   // Pass the executeRecaptcha function to Formspree via the data option
@@ -114,65 +116,65 @@ export default function Contact() {
 
   // Character count color
   const getCharCountColor = () => {
-    if (messageLength === 0) return 'text-gray-400'
+    if (messageLength === 0) return 'text-zinc-400'
     if (messageLength < MESSAGE_MIN_LENGTH) return 'text-amber-500'
     if (messageLength > MESSAGE_MAX_LENGTH) return 'text-red-500'
-    return 'text-green-500'
+    return 'text-emerald-500'
   }
 
   const getInputBorderClass = (field: keyof typeof touched) => {
-    if (!touched[field]) return 'border-gray-300'
+    if (!touched[field]) return 'border-zinc-200'
     if (validation.errors[field]) return 'border-red-300'
-    return 'border-green-300'
+    return 'border-emerald-300'
   }
 
   return (
-    <DefaultLayout className="flex flex-col overflow-hidden bg-gray-50">
+    <DefaultLayout className="flex flex-col overflow-hidden bg-white">
       <div className="page-container py-6 sm:py-8">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6 sm:mb-8">
           <div className="flex-1">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-              Contact <span className="text-voxly-purple">Us</span>
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900">
+              {t('contact.title')} <span className="text-purple-600">{t('contact.titleHighlight')}</span>
             </h1>
-            <p className="text-gray-600 mt-1">
-              Have questions or feedback? We'd love to hear from you.
+            <p className="text-zinc-600 mt-1">
+              {t('contact.subtitle')}
             </p>
           </div>
         </div>
 
-        {/* Quick Info Stats - Same pattern as Credits page */}
+        {/* Quick Info Stats */}
         <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
-          <div className="voxly-card flex items-center gap-3 sm:gap-4 p-3 sm:p-4">
-            <div className="p-2 sm:p-3 bg-purple-100 rounded-xl flex-shrink-0">
-              <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+          <div className="p-4 bg-white border border-zinc-200 rounded-xl flex items-center gap-4">
+            <div className="p-3 bg-purple-50 rounded-xl flex-shrink-0">
+              <Mail className="w-5 h-5 text-purple-600" />
             </div>
             <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-500 truncate">Email</p>
-              <a href="mailto:support@voxly.ai" className="text-sm sm:text-base font-bold text-gray-900 hover:text-voxly-purple truncate block">
-                support@voxly.ai
+              <p className="text-xs sm:text-sm text-zinc-500 truncate">{t('contact.email')}</p>
+              <a href="mailto:support@vocaid.ai" className="text-sm sm:text-base font-bold text-zinc-900 hover:text-purple-600 truncate block">
+                support@vocaid.ai
               </a>
             </div>
           </div>
 
-          <div className="voxly-card flex items-center gap-3 sm:gap-4 p-3 sm:p-4">
-            <div className="p-2 sm:p-3 bg-purple-100 rounded-xl flex-shrink-0">
-              <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+          <div className="p-4 bg-white border border-zinc-200 rounded-xl flex items-center gap-4">
+            <div className="p-3 bg-purple-50 rounded-xl flex-shrink-0">
+              <Clock className="w-5 h-5 text-purple-600" />
             </div>
             <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-500 truncate">Response Time</p>
-              <p className="text-sm sm:text-base font-bold text-gray-900">24-48 hours</p>
+              <p className="text-xs sm:text-sm text-zinc-500 truncate">{t('contact.responseTime')}</p>
+              <p className="text-sm sm:text-base font-bold text-zinc-900">{t('contact.responseTimeValue')}</p>
             </div>
           </div>
 
-          <div className="voxly-card flex items-center gap-3 sm:gap-4 p-3 sm:p-4">
-            <div className="p-2 sm:p-3 bg-purple-100 rounded-xl flex-shrink-0">
-              <HelpCircle className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+          <div className="p-4 bg-white border border-zinc-200 rounded-xl flex items-center gap-4">
+            <div className="p-3 bg-purple-50 rounded-xl flex-shrink-0">
+              <HelpCircle className="w-5 h-5 text-purple-600" />
             </div>
             <div className="min-w-0">
-              <p className="text-xs sm:text-sm text-gray-500 truncate">FAQ</p>
-              <a href="/about" className="text-sm sm:text-base font-bold text-gray-900 hover:text-voxly-purple">
-                About page
+              <p className="text-xs sm:text-sm text-zinc-500 truncate">{t('contact.faq')}</p>
+              <a href="/about" className="text-sm sm:text-base font-bold text-zinc-900 hover:text-purple-600">
+                {t('contact.aboutPage')}
               </a>
             </div>
           </div>
@@ -181,16 +183,16 @@ export default function Contact() {
         {/* Contact Form Section */}
         <div>
           <div className="flex items-center gap-2 mb-3 sm:mb-4">
-            <Send className="w-5 h-5 text-voxly-purple" />
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Send us a Message</h2>
+            <Send className="w-5 h-5 text-purple-600" />
+            <h2 className="text-lg sm:text-xl font-semibold text-zinc-900">{t('contact.sendMessage')}</h2>
           </div>
           
-          <div className="voxly-card">
+          <div className="p-6 bg-white border border-zinc-200 rounded-xl">
             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                    Name <span className="text-red-500">*</span>
+                  <label htmlFor="name" className="block text-sm font-medium text-zinc-700 mb-1">
+                    {t('contact.form.name')} <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -200,8 +202,8 @@ export default function Contact() {
                     value={formData.name}
                     onChange={handleInputChange}
                     onBlur={() => handleBlur('name')}
-                    className={`w-full px-3 sm:px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-sm sm:text-base ${getInputBorderClass('name')}`}
-                    placeholder="Your name"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-sm ${getInputBorderClass('name')}`}
+                    placeholder={t('contact.form.namePlaceholder')}
                   />
                   <ValidationError prefix="Name" field="name" errors={state.errors} />
                   {touched.name && validation.errors.name && (
@@ -213,8 +215,8 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                    Email <span className="text-red-500">*</span>
+                  <label htmlFor="email" className="block text-sm font-medium text-zinc-700 mb-1">
+                    {t('contact.form.email')} <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="email"
@@ -224,8 +226,8 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleInputChange}
                     onBlur={() => handleBlur('email')}
-                    className={`w-full px-3 sm:px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-sm sm:text-base ${getInputBorderClass('email')}`}
-                    placeholder="your@email.com"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-sm ${getInputBorderClass('email')}`}
+                    placeholder={t('contact.form.emailPlaceholder')}
                   />
                   <ValidationError prefix="Email" field="email" errors={state.errors} />
                   {touched.email && validation.errors.email && (
@@ -238,8 +240,8 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
-                  Subject <span className="text-red-500">*</span>
+                <label htmlFor="subject" className="block text-sm font-medium text-zinc-700 mb-1">
+                  {t('contact.form.subject')} <span className="text-red-500">*</span>
                 </label>
                 <select
                   id="subject"
@@ -248,15 +250,15 @@ export default function Contact() {
                   value={formData.subject}
                   onChange={handleInputChange}
                   onBlur={() => handleBlur('subject')}
-                  className={`w-full px-3 sm:px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-sm sm:text-base ${getInputBorderClass('subject')}`}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-sm ${getInputBorderClass('subject')}`}
                 >
-                  <option value="">Select a subject</option>
-                  <option value="general">General Inquiry</option>
-                  <option value="support">Technical Support</option>
-                  <option value="billing">Billing Question</option>
-                  <option value="feedback">Feedback</option>
-                  <option value="partnership">Partnership Opportunity</option>
-                  <option value="other">Other</option>
+                  <option value="">{t('contact.form.selectSubject')}</option>
+                  <option value="general">{t('contact.form.subjects.general')}</option>
+                  <option value="support">{t('contact.form.subjects.support')}</option>
+                  <option value="billing">{t('contact.form.subjects.billing')}</option>
+                  <option value="feedback">{t('contact.form.subjects.feedback')}</option>
+                  <option value="partnership">{t('contact.form.subjects.partnership')}</option>
+                  <option value="other">{t('contact.form.subjects.other')}</option>
                 </select>
                 <ValidationError prefix="Subject" field="subject" errors={state.errors} />
                 {touched.subject && validation.errors.subject && (
@@ -268,8 +270,8 @@ export default function Contact() {
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                  Message <span className="text-red-500">*</span>
+                <label htmlFor="message" className="block text-sm font-medium text-zinc-700 mb-1">
+                  {t('contact.form.message')} <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   id="message"
@@ -281,16 +283,16 @@ export default function Contact() {
                   value={formData.message}
                   onChange={handleInputChange}
                   onBlur={() => handleBlur('message')}
-                  className={`w-full px-3 sm:px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none text-sm sm:text-base ${
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none text-sm ${
                     touched.message && messageLength > 0
                       ? messageLength < MESSAGE_MIN_LENGTH
                         ? 'border-amber-300 bg-amber-50/50'
                         : messageLength > MESSAGE_MAX_LENGTH
                         ? 'border-red-300 bg-red-50/50'
-                        : 'border-green-300'
-                      : 'border-gray-300'
+                        : 'border-emerald-300'
+                      : 'border-zinc-200'
                   }`}
-                  placeholder={`How can we help you? (min ${MESSAGE_MIN_LENGTH} chars)`}
+                  placeholder={t('contact.form.messagePlaceholder', { min: MESSAGE_MIN_LENGTH })}
                 />
                 <ValidationError prefix="Message" field="message" errors={state.errors} />
                 
@@ -299,19 +301,19 @@ export default function Contact() {
                     {touched.message && messageLength > 0 && messageLength < MESSAGE_MIN_LENGTH && (
                       <p className="text-xs text-amber-600 flex items-center gap-1">
                         <AlertCircle className="w-3 h-3" />
-                        {MESSAGE_MIN_LENGTH - messageLength} more needed
+                        {t('contact.form.moreNeeded', { count: MESSAGE_MIN_LENGTH - messageLength })}
                       </p>
                     )}
                     {messageLength > MESSAGE_MAX_LENGTH && (
                       <p className="text-xs text-red-500 flex items-center gap-1">
                         <AlertCircle className="w-3 h-3" />
-                        {messageLength - MESSAGE_MAX_LENGTH} over limit
+                        {t('contact.form.overLimit', { count: messageLength - MESSAGE_MAX_LENGTH })}
                       </p>
                     )}
                     {messageLength >= MESSAGE_MIN_LENGTH && messageLength <= MESSAGE_MAX_LENGTH && (
-                      <p className="text-xs text-green-600 flex items-center gap-1">
+                      <p className="text-xs text-emerald-600 flex items-center gap-1">
                         <CheckCircle className="w-3 h-3" />
-                        Looks good!
+                        {t('contact.form.looksGood')}
                       </p>
                     )}
                   </div>
@@ -324,26 +326,26 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={state.submitting || !validation.isValid}
-                className="w-full btn-voxly py-2.5 sm:py-3 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full py-3 px-6 bg-purple-600 hover:bg-purple-500 text-white font-medium rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {state.submitting ? (
                   <>
-                    <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" />
-                    Sending...
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    {t('contact.form.sending')}
                   </>
                 ) : (
                   <>
-                    <Send className="w-4 h-4 sm:w-5 sm:h-5" />
-                    Send Message
+                    <Send className="w-4 h-4" />
+                    {t('contact.form.sendButton')}
                   </>
                 )}
               </button>
               
-              <p className="text-xs text-gray-400 text-center">
-                Protected by reCAPTCHA.{' '}
-                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-600">Privacy</a>
+              <p className="text-xs text-zinc-400 text-center">
+                {t('contact.form.recaptcha')}{' '}
+                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-600">{t('contact.form.privacy')}</a>
                 {' & '}
-                <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-600">Terms</a>
+                <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-zinc-600">{t('contact.form.terms')}</a>
               </p>
             </form>
           </div>

@@ -2,29 +2,60 @@
 
 import React, { useState, useCallback, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import MainLogo from '../main-logo'
-import { useUser, SignInButton, UserButton } from '@clerk/clerk-react';
-import { Coins } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useUser } from '@clerk/clerk-react';
 import { useAuthCheck } from '../../hooks/use-auth-check';
+import { LanguageSelector } from '../language-selector';
+import { AccountMenu } from '../account-menu';
+import { NAV_CONFIG } from '../../config/navigation';
+import { FEATURES } from '../../config/features';
+import { BrandMark } from '../shared/Brand';
+import { cn } from '../../lib/utils';
 
 interface NavItem {
-  label: string;
+  labelKey: string;
   path: string;
   requiresAuth?: boolean;
+  disabled?: boolean;
+  comingSoon?: boolean;
 }
 
-// Dashboard is now integrated into Home page for logged-in users
-const navItems: NavItem[] = [
-  { label: 'Home', path: '/' },
-  { label: 'Credits', path: '/credits' },
-  { label: 'About', path: '/about' },
-  { label: 'Contact', path: '/contact' },
+// Landing page navigation items (for unauthenticated users)
+const landingNavItems: NavItem[] = [
+  { labelKey: 'nav.home', path: '/' },
+  { labelKey: 'nav.about', path: '/about' },
+  { labelKey: 'nav.contact', path: '/contact' },
 ];
+
+// Get B2C nav items for authenticated mobile menu
+const getB2CNavItems = (): NavItem[] => {
+  return NAV_CONFIG.filter(
+    (item) => item.requiredContext === 'b2c' && item.requiresAuth
+  ).sort((a, b) => a.order - b.order).map((item) => ({
+    labelKey: item.labelKey,
+    path: item.path,
+    requiresAuth: item.requiresAuth,
+  }));
+};
+
+// Get B2B nav items with coming soon flag
+const getB2BNavItems = (): NavItem[] => {
+  return NAV_CONFIG.filter(
+    (item) => item.requiredContext === 'b2b' && item.requiresAuth
+  ).sort((a, b) => a.order - b.order).slice(0, 3).map((item) => ({
+    labelKey: item.labelKey,
+    path: item.path,
+    requiresAuth: item.requiresAuth,
+    disabled: !FEATURES.B2B_RECRUITER_PLATFORM_ENABLED,
+    comingSoon: !FEATURES.B2B_RECRUITER_PLATFORM_ENABLED,
+  }));
+};
 
 const TopBar: React.FC = () => {
   const { user, isSignedIn } = useUser();
   const { userCredits } = useAuthCheck();
   const location = useLocation();
+  const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isActivePath = useCallback((path: string) => {
@@ -71,38 +102,53 @@ const TopBar: React.FC = () => {
   }, [isMobileMenuOpen]);
 
   // Filter nav items based on auth
-  const visibleNavItems = navItems.filter(
-    item => !item.requiresAuth || isSignedIn
-  );
+  // Unauthenticated users see landing nav; authenticated users use sidebar navigation
+  const visibleNavItems = landingNavItems;
   
   return (
     <>
-      <nav className="flex h-[70px] items-center justify-center border-b border-gray-200 bg-white" role="navigation" aria-label="Main navigation">
-        <div className="flex flex-row items-center justify-between w-full max-w-7xl px-6 sm:px-8 md:px-10 lg:px-8">
-          {/* Logo */}
-          <div className="flex justify-center items-center">
-            <MainLogo />
-          </div>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-1">
-            {visibleNavItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={isActivePath(item.path) ? 'nav-link-active' : 'nav-link'}
-              >
-                {item.label}
+      <nav className="flex h-[80px] items-center justify-center border-b border-zinc-200 bg-white" role="navigation" aria-label="Main navigation">
+        <div className={`flex flex-row items-center w-full max-w-6xl px-6 sm:px-8 md:px-10 lg:px-8 ${isSignedIn ? 'justify-between lg:justify-end' : 'justify-between'}`}>
+          {/* Logo - Hidden on desktop when authenticated (sidebar has the logo) */}
+          {isSignedIn ? (
+            <div className="flex justify-center items-center lg:hidden">
+              <Link to="/" aria-label="Vocaid Home">
+                <BrandMark size="lg" linkToHome={false} />
               </Link>
-            ))}
-          </div>
+            </div>
+          ) : (
+            <div className="flex justify-center items-center">
+              <Link to="/" aria-label="Vocaid Home">
+                <BrandMark size="lg" linkToHome={false} />
+              </Link>
+            </div>
+          )}
+
+          {/* Desktop Navigation - Hidden when authenticated (sidebar handles navigation) */}
+          {!isSignedIn && (
+            <div className="hidden md:flex items-center gap-1">
+              {visibleNavItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActivePath(item.path) 
+                      ? 'text-purple-600 bg-purple-50' 
+                      : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50'
+                  }`}
+                >
+                  {t(item.labelKey)}
+                </Link>
+              ))}
+            </div>
+          )}
 
           {/* User Section & Mobile Menu Button */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3">      
             {/* Mobile Menu Button - Always visible on mobile */}
             <button
               onClick={toggleMobileMenu}
-              className="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+              className="md:hidden p-2 rounded-lg text-zinc-600 hover:bg-zinc-100 transition-colors"
               aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMobileMenuOpen}
             >
@@ -121,40 +167,38 @@ const TopBar: React.FC = () => {
             {user ? (
               <div className="hidden md:flex items-center gap-3">
                 {/* Credits Display - Desktop */}
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 border border-gray-200 rounded-full">
-                  <Coins className="w-4 h-4 text-gray-500" />
-                  <span className="text-sm font-semibold text-gray-700">{userCredits}</span>
-                  <span className="text-xs text-gray-500 hidden lg:inline">credits</span>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-50 border border-zinc-200 rounded-full">
+                  <span className="text-xs text-purple-600 font-medium">{t('nav.credits')}</span>
+                  <span className="text-sm font-semibold text-zinc-900">{userCredits}</span>
                 </div>
-                {/* User name and avatar */}
-                <div className="flex items-center gap-2 pl-2 border-l border-gray-200">
-                  <span className="text-sm font-medium text-gray-700">
-                    {user.firstName}
-                  </span>
-                  <UserButton 
-                    afterSignOutUrl='/' 
-                    appearance={{
-                      elements: {
-                        avatarBox: "w-9 h-9",
-                        userButtonPopoverCard: "shadow-lg"
-                      }
-                    }}
-                  />
+                {/* Account Menu - Custom dropdown */}
+                <div className="pl-2 border-l border-zinc-200">
+                  <AccountMenu variant="desktop" />
                 </div>
               </div>
             ) : (
               /* Desktop Sign In Button - Hidden on mobile, sign in available in mobile menu */
-              <SignInButton 
-                mode='modal'
-                forceRedirectUrl='/'
-              >
-                <button 
-                  className="hidden md:block px-4 py-2 text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-md transition-colors shadow-sm"
-                  aria-label="Sign in to Voxly"
+              <div className="hidden md:flex items-center gap-3">
+                <Link
+                  to="/sign-in"
+                  className={cn(
+                    'px-4 py-2 text-sm font-medium rounded-lg transition-colors',
+                    'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50'
+                  )}
                 >
-                  Sign In
-                </button>
-              </SignInButton>
+                  {t('common.login')}
+                </Link>
+                <Link
+                  to="/sign-up"
+                  className={cn(
+                    'px-4 py-2 text-sm font-medium rounded-lg transition-colors',
+                    'text-white bg-zinc-900 hover:bg-zinc-800',
+                    'focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2'
+                  )}
+                >
+                  {t('auth.createAccount', 'Sign up')}
+                </Link>
+              </div>
             )}
           </div>
         </div>
@@ -176,11 +220,11 @@ const TopBar: React.FC = () => {
       >
         <div className="flex flex-col h-full">
           {/* Mobile Menu Header */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <span className="font-semibold text-gray-900">Menu</span>
+          <div className="flex items-center justify-between p-4 border-b border-zinc-200">
+            <span className="font-semibold text-zinc-900">{t('nav.home')}</span>
             <button
               onClick={closeMobileMenu}
-              className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+              className="p-2 rounded-lg text-zinc-600 hover:bg-zinc-100 transition-colors"
               aria-label="Close menu"
               tabIndex={isMobileMenuOpen ? 0 : -1}
             >
@@ -192,65 +236,140 @@ const TopBar: React.FC = () => {
 
           {/* User Profile Section - Mobile */}
           {user ? (
-            <div className="border-b border-gray-200 p-5">
-              <div className="flex items-center gap-4">
-                <UserButton 
-                  afterSignOutUrl='/' 
-                  appearance={{
-                    elements: {
-                      avatarBox: "w-14 h-14",
-                      userButtonPopoverCard: "shadow-lg"
-                    }
-                  }}
-                />
-                <div className="flex-1 min-w-0">
-                  <p className="text-lg font-semibold text-gray-900 truncate">{user.firstName} {user.lastName}</p>
-                  <p className="text-sm text-gray-500 truncate">{user.primaryEmailAddress?.emailAddress}</p>
-                </div>
-              </div>
+            <div className="border-b border-zinc-200 p-5">
+              <AccountMenu variant="mobile" />
               {/* Credits Display - Mobile */}
-              <div className="mt-4 flex items-center gap-2 px-4 py-3 bg-gray-100 border border-gray-200 rounded-xl">
-                <Coins className="w-5 h-5 text-gray-500" />
-                <span className="text-base font-semibold text-gray-700">{userCredits}</span>
-                <span className="text-sm text-gray-500">credits available</span>
+              <div className="mt-4 flex items-center justify-between px-4 py-3 bg-zinc-50 border border-zinc-200 rounded-xl">
+                <span className="text-sm text-zinc-500">{t('dashboard.stats.creditsRemaining')}</span>
+                <span className="text-base font-semibold text-zinc-900">{userCredits}</span>
               </div>
             </div>
           ) : (
             /* Sign In Section for Mobile - Unauthenticated Users */
-            <div className="border-b border-gray-200 p-5">
-              <p className="text-sm text-gray-600 mb-3">Sign in to access all features</p>
-              <SignInButton 
-                mode='modal'
-                forceRedirectUrl='/'
+            <div className="border-b border-zinc-200 p-5 space-y-3">
+              <p className="text-sm text-zinc-600">{t('common.signInPrompt', 'Sign in to access all features')}</p>
+              <Link 
+                to="/sign-in"
+                className={cn(
+                  'block w-full px-4 py-3 text-center text-base font-medium rounded-xl transition-colors',
+                  'text-zinc-900 bg-zinc-100 hover:bg-zinc-200',
+                  'focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2'
+                )}
+                onClick={closeMobileMenu}
               >
-                <button 
-                  className="w-full px-4 py-3 text-base font-medium text-white bg-gray-800 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-xl transition-colors shadow-sm"
-                  aria-label="Sign in to Voxly"
-                  onClick={closeMobileMenu}
-                >
-                  Sign In
-                </button>
-              </SignInButton>
+                {t('common.login')}
+              </Link>
+              <Link 
+                to="/sign-up"
+                className={cn(
+                  'block w-full px-4 py-3 text-center text-base font-medium rounded-xl transition-colors',
+                  'text-white bg-zinc-900 hover:bg-zinc-800',
+                  'focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2'
+                )}
+                onClick={closeMobileMenu}
+              >
+                {t('auth.createAccount', 'Sign up')}
+              </Link>
             </div>
           )}
 
           {/* Mobile Navigation Links */}
-          <div className="flex-1 py-4">
-            {visibleNavItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`block px-6 py-4 text-lg font-medium transition-colors ${
-                  isActivePath(item.path)
-                    ? 'text-voxly-purple bg-purple-50'
-                    : 'text-gray-700 hover:bg-gray-50'
-                }`}
-                onClick={closeMobileMenu}
-                tabIndex={isMobileMenuOpen ? 0 : -1}
-              >
-                {item.label}
-              </Link>
-            ))}
+          <div className="flex-1 py-4 overflow-y-auto">
+            {/* Show different nav based on auth state */}
+            {isSignedIn ? (
+              <>
+                {/* B2C Interview Practice Section */}
+                <div className="mb-4">
+                  <p className="px-6 mb-2 text-xs font-bold uppercase tracking-widest text-zinc-400">
+                    {t('platform.b2c.title', 'Interview Practice')}
+                  </p>
+                  {getB2CNavItems().map((item) => (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className={`block px-6 py-3 text-base font-medium transition-colors ${
+                        isActivePath(item.path)
+                          ? 'text-purple-600 bg-purple-50'
+                          : 'text-zinc-700 hover:bg-zinc-50'
+                      }`}
+                      onClick={closeMobileMenu}
+                      tabIndex={isMobileMenuOpen ? 0 : -1}
+                    >
+                      {t(item.labelKey)}
+                    </Link>
+                  ))}
+                </div>
+                
+                {/* B2B Recruiter Section - Coming Soon */}
+                <div className="mb-4">
+                  <p className="px-6 mb-2 text-xs font-bold uppercase tracking-widest text-zinc-400 flex items-center gap-2">
+                    {t('platform.b2b.title', 'For Recruiters')}
+                    <span className="text-[10px] font-semibold px-1.5 py-0.5 bg-amber-100 text-amber-700 rounded-full">
+                      {t('common.comingSoon', 'Coming Soon')}
+                    </span>
+                  </p>
+                  {getB2BNavItems().map((item) => (
+                    <div
+                      key={item.path}
+                      className="flex items-center justify-between px-6 py-3 text-base font-medium text-zinc-400 cursor-not-allowed"
+                      aria-disabled="true"
+                    >
+                      <span>{t(item.labelKey)}</span>
+                      <span className="text-[10px] font-medium px-1.5 py-0.5 bg-zinc-100 text-zinc-500 rounded">
+                        Soon
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Resources Section */}
+                <div className="border-t border-zinc-200 pt-4">
+                  <p className="px-6 mb-2 text-xs font-bold uppercase tracking-widest text-zinc-400">
+                    {t('common.more', 'Resources')}
+                  </p>
+                  {landingNavItems.filter(item => item.path !== '/').map((item) => (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className={`block px-6 py-3 text-base font-medium transition-colors ${
+                        isActivePath(item.path)
+                          ? 'text-purple-600 bg-purple-50'
+                          : 'text-zinc-700 hover:bg-zinc-50'
+                      }`}
+                      onClick={closeMobileMenu}
+                      tabIndex={isMobileMenuOpen ? 0 : -1}
+                    >
+                      {t(item.labelKey)}
+                    </Link>
+                  ))}
+                </div>
+              </>
+            ) : (
+              /* Unauthenticated: Landing nav items */
+              visibleNavItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`block px-6 py-4 text-lg font-medium transition-colors ${
+                    isActivePath(item.path)
+                      ? 'text-purple-600 bg-purple-50'
+                      : 'text-zinc-700 hover:bg-zinc-50'
+                  }`}
+                  onClick={closeMobileMenu}
+                  tabIndex={isMobileMenuOpen ? 0 : -1}
+                >
+                  {t(item.labelKey)}
+                </Link>
+              ))
+            )}
+          </div>
+          
+          {/* Mobile Language Selector */}
+          <div className="border-t border-zinc-200 p-4">
+            <p className="px-2 mb-3 text-xs font-bold uppercase tracking-widest text-zinc-400">
+              {t('language.select')}
+            </p>
+            <LanguageSelector variant="horizontal" className="justify-center" />
           </div>
         </div>
       </div>

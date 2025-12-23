@@ -1,0 +1,1612 @@
+{
+  "common": {
+    "loading": "लोड हो रहा है...",
+    "error": "एक त्रुटि हुई",
+    "success": "सफलता",
+    "cancel": "रद्द करें",
+    "confirm": "पुष्टि करें",
+    "save": "सहेजें",
+    "delete": "हटाएं",
+    "edit": "संपादित करें",
+    "back": "वापस",
+    "next": "अगला",
+    "submit": "जमा करें",
+    "close": "बंद करें",
+    "search": "खोजें",
+    "filter": "फ़िल्टर",
+    "logout": "लॉग आउट",
+    "login": "लॉग इन",
+    "signUp": "साइन अप",
+    "there": "वहाँ",
+    "and": "और",
+    "processing": "प्रोसेसिंग...",
+    "optional": "वैकल्पिक",
+    "submitting": "सबमिट हो रहा है...",
+    "gotIt": "समझ गया",
+    "soon": "जल्द",
+    "goBack": "Go Back"
+  },
+  "features": {
+    "badge": "Vocaid क्यों चुनें",
+    "heading": "सफलता के लिए सब कुछ",
+    "subheading": "हमारा AI-संचालित प्लेटफॉर्म आपको तैयारी, अभ्यास और इंटरव्यू में उत्कृष्टता के लिए व्यापक उपकरण प्रदान करता है।",
+    "learnMore": "और जानें",
+    "aiPractice": {
+      "title": "AI-संचालित अभ्यास",
+      "description": "हमारे बुद्धिमान AI इंटरव्यूअर के साथ अभ्यास करें जो आपके उद्योग और अनुभव स्तर के अनुसार अनुकूलित होता है।"
+    },
+    "personalized": {
+      "title": "आपके लिए अनुकूलित",
+      "description": "अपने रिज्यूमे, लक्षित भूमिका और करियर लक्ष्यों के आधार पर कस्टमाइज्ड प्रश्न प्राप्त करें।"
+    },
+    "realtime": {
+      "title": "रीयल-टाइम फीडबैक",
+      "description": "अपने जवाबों, टोन और संचार कौशल पर तुरंत विश्लेषण प्राप्त करें।"
+    },
+    "analytics": {
+      "title": "विस्तृत एनालिटिक्स",
+      "description": "व्यापक प्रदर्शन मेट्रिक्स और अंतर्दृष्टि के साथ अपनी प्रगति को ट्रैक करें।"
+    },
+    "multilingual": {
+      "title": "वैश्विक भाषाएं",
+      "description": "अंतरराष्ट्रीय अवसरों के लिए तैयारी हेतु 8+ भाषाओं में अभ्यास करें।"
+    },
+    "certification": {
+      "title": "कौशल प्रमाणन",
+      "description": "नियोक्ताओं को अपनी इंटरव्यू तैयारी दिखाने के लिए प्रमाणपत्र अर्जित करें।"
+    },
+    "available": {
+      "title": "24/7 उपलब्ध",
+      "description": "कभी भी, कहीं भी अभ्यास करें। हमारा AI कोच हमेशा तैयार है।"
+    },
+    "privacy": {
+      "title": "गोपनीयता पहले",
+      "description": "आपका डेटा एन्क्रिप्टेड है और कभी साझा नहीं किया जाता। पूर्ण विश्वास के साथ अभ्यास करें।"
+    },
+    "underConstruction": {
+      "title": "Under Construction",
+      "message": "This feature is coming in the next release. Stay tuned!",
+      "patience": "We're working hard to bring you this feature. Thank you for your patience!"
+    },
+    "comingSoon": "Coming Soon",
+    "nextRelease": "Next Release",
+    "joinWaitlist": "Join Waitlist",
+    "notifyMe": "Notify Me"
+  },
+  "pages": {
+    "home": {
+      "title": "होम",
+      "welcome": "वापसी पर स्वागत है",
+      "yourInterviews": "आपके इंटरव्यू",
+      "startNewInterview": "नया इंटरव्यू शुरू करें",
+      "outOfCredits": "क्रेडिट खत्म",
+      "buyMoreCredits": "क्रेडिट खरीदें"
+    },
+    "interviews": {
+      "title": "इंटरव्यू",
+      "subtitle": "अपना इतिहास देखें और प्रगति ट्रैक करें"
+    },
+    "underConstruction": {
+      "featureInfo": {
+        "recruiter": {
+          "title": "Recruiter Interview Platform",
+          "description": "Create interview kits, evaluate candidates consistently, and make data-driven hiring decisions."
+        },
+        "hr": {
+          "title": "Employee Service Hub",
+          "description": "Deflect HR tickets with policy-aware answers and streamline employee onboarding."
+        },
+        "default": {
+          "title": "This Feature",
+          "description": "We're working on something exciting for you."
+        }
+      },
+      "goToDashboard": "Go to Dashboard",
+      "backToHome": "Back to Home",
+      "haveQuestions": "Have questions?",
+      "contactUs": "Contact us"
+    }
+  },
+  "nav": {
+    "home": "होम",
+    "dashboard": "डैशबोर्ड",
+    "about": "हमारे बारे में",
+    "credits": "क्रेडिट्स",
+    "contact": "संपर्क",
+    "privacy": "गोपनीयता नीति",
+    "terms": "उपयोग की शर्तें",
+    "interviews": "इंटरव्यू",
+    "newInterview": "नया इंटरव्यू",
+    "resumes": "रिज्यूमे",
+    "insights": "इनसाइट्स",
+    "interviewKits": "इंटरव्यू किट्स",
+    "candidates": "उम्मीदवार",
+    "analytics": "एनालिटिक्स",
+    "developer": "डेवलपर",
+    "hrHub": "कर्मचारी हब",
+    "billing": "बिलिंग",
+    "account": "अकाउंट",
+    "main": "मुख्य",
+    "settings": "सेटिंग्स"
+  },
+  "sidebar": {
+    "menu": "मेन्यू",
+    "resources": "संसाधन",
+    "credits": "क्रेडिट्स",
+    "creditsAvailable": "उपलब्ध"
+  },
+  "hero": {
+    "badge": "AI-संचालित इंटरव्यू कोचिंग",
+    "headline": {
+      "part1": "अपना सपनों का",
+      "part2": "करियर पाएं"
+    },
+    "subheadline": "AI के साथ इंटरव्यू का अभ्यास करें, तुरंत फीडबैक पाएं, और अपने अगले अवसर में सफल होने का आत्मविश्वास बनाएं। हजारों पेशेवरों से जुड़ें जो अपने करियर को आगे बढ़ा रहे हैं।",
+    "cta": {
+      "start": "अपना वैश्विक करियर शुरू करें",
+      "dashboard": "डैशबोर्ड पर जाएं",
+      "learnMore": "और जानें"
+    },
+    "stats": {
+      "users": "वैश्विक उपयोगकर्ता",
+      "interviews": "इंटरव्यू",
+      "satisfaction": "सफलता दर"
+    }
+  },
+  "bodyCopy": {
+    "howItWorks": "यह कैसे काम करता है",
+    "features": {
+      "masterInterview": {
+        "title": "इंटरव्यू में महारत हासिल करें",
+        "description": "AI-संचालित मॉक इंटरव्यू से जवाबों को बेहतर करें"
+      },
+      "tailoredRecommendations": {
+        "title": "व्यक्तिगत सिफारिशें",
+        "description": "नौकरी विवरण और वरिष्ठता के आधार पर सुझाव प्राप्त करें"
+      },
+      "realtimeFeedback": {
+        "title": "रियल-टाइम फीडबैक",
+        "description": "तुरंत, रचनात्मक प्रतिक्रिया प्राप्त करें"
+      },
+      "comprehensiveResults": {
+        "title": "व्यापक परिणाम",
+        "description": "विस्तृत प्रदर्शन और अंतर्दृष्टि देखें"
+      }
+    }
+  },
+  "trustBar": {
+    "trustedBy": "इन कंपनियों के पेशेवरों द्वारा विश्वसनीय",
+    "at": "में",
+    "stats": {
+      "users": "सक्रिय उपयोगकर्ता",
+      "interviews": "पूर्ण इंटरव्यू",
+      "countries": "देश",
+      "companies": "साझेदार कंपनियां",
+      "timeSaved": "भर्ती समय में कमी",
+      "enterprises": "एंटरप्राइज़ क्लाइंट"
+    },
+    "testimonials": {
+      "badge": "एंटरप्राइज़ परिणाम",
+      "heading": "HR नेताओं द्वारा विश्वसनीय",
+      "items": {
+        "1": {
+          "quote": "हमने उम्मीदवारों की गुणवत्ता में सुधार करते हुए अपने स्क्रीनिंग समय को 70% कम किया। AI इंटरव्यू उल्लेखनीय रूप से संपूर्ण हैं।",
+          "author": "जेनिफर वॉल्श",
+          "role": "टैलेंट एक्विजिशन VP",
+          "company": "Fortune 500 Tech"
+        },
+        "2": {
+          "quote": "पूर्वाग्रह में कमी के मेट्रिक्स ने हमारी लीडरशिप टीम को मना लिया। हमने विविध भर्ती परिणामों में 35% की वृद्धि देखी है।",
+          "author": "डेविड किम",
+          "role": "Chief People Officer",
+          "company": "Global Finance"
+        },
+        "3": {
+          "quote": "बहुभाषी इंटरव्यू ने हमारे लिए वैश्विक बाजार खोले। अब हम 12 देशों में सुसंगत मूल्यांकन के साथ प्रतिभा की भर्ती करते हैं।",
+          "author": "मारिया सैंटोस",
+          "role": "ग्लोबल HR प्रमुख",
+          "company": "International Retail"
+        }
+      }
+    }
+  },
+  "about": {
+    "title": "के बारे में",
+    "subtitle": "AI-संचालित इंटरव्यू तैयारी प्लेटफॉर्म",
+    "mission": {
+      "title": "हर इंटरव्यू में सफल हों",
+      "description": "हमारे AI इंटरव्यूअर के साथ अभ्यास करें, तुरंत फीडबैक पाएं और आत्मविश्वास बनाएं। अपना रिज्यूमे अपलोड करें, जॉब डिटेल्स डालें और आज ही सुधार शुरू करें।"
+    },
+    "whyVocaid": "Vocaid क्यों?",
+    "features": {
+      "realistic": {
+        "title": "यथार्थवादी",
+        "desc": "प्राकृतिक बातचीत प्रवाह"
+      },
+      "analytics": {
+        "title": "विश्लेषण",
+        "desc": "अपनी प्रगति ट्रैक करें"
+      },
+      "practice247": {
+        "title": "24/7 अभ्यास",
+        "desc": "कोई शेड्यूलिंग नहीं"
+      },
+      "feedback": {
+        "title": "फीडबैक",
+        "desc": "कार्रवाई योग्य सुझाव"
+      },
+      "roleSpecific": {
+        "title": "विशिष्ट",
+        "desc": "अनुकूलित प्रश्न"
+      },
+      "payPerUse": {
+        "title": "उपयोग पर भुगतान",
+        "desc": "कोई सब्सक्रिप्शन नहीं"
+      }
+    },
+    "legal": "कानूनी",
+    "privacyDesc": "हम आपके डेटा की कैसे रक्षा करते हैं",
+    "termsDesc": "नियम और शर्तें"
+  },
+  "contact": {
+    "title": "संपर्क",
+    "titleHighlight": "करें",
+    "subtitle": "सवाल या फीडबैक है? हम आपसे सुनना पसंद करेंगे।",
+    "email": "ईमेल",
+    "responseTime": "प्रतिक्रिया समय",
+    "responseTimeValue": "24-48 घंटे",
+    "faq": "FAQ",
+    "aboutPage": "हमारे बारे में पेज",
+    "sendMessage": "हमें संदेश भेजें",
+    "form": {
+      "name": "नाम",
+      "namePlaceholder": "आपका नाम",
+      "email": "ईमेल",
+      "emailPlaceholder": "आपका@ईमेल.com",
+      "subject": "विषय",
+      "selectSubject": "एक विषय चुनें",
+      "subjects": {
+        "general": "सामान्य पूछताछ",
+        "support": "तकनीकी सहायता",
+        "billing": "बिलिंग प्रश्न",
+        "feedback": "फीडबैक",
+        "partnership": "साझेदारी का अवसर",
+        "other": "अन्य"
+      },
+      "message": "संदेश",
+      "messagePlaceholder": "हम आपकी कैसे मदद कर सकते हैं? (न्यूनतम {{min}} अक्षर)",
+      "sendButton": "संदेश भेजें",
+      "sending": "भेज रहा है...",
+      "moreNeeded": "{{count}} और चाहिए",
+      "overLimit": "{{count}} अधिक",
+      "looksGood": "अच्छा लग रहा है!",
+      "recaptcha": "reCAPTCHA द्वारा सुरक्षित।",
+      "privacy": "गोपनीयता",
+      "terms": "शर्तें",
+      "successTitle": "संदेश भेजा गया!",
+      "successMessage": "आपके संदेश के लिए धन्यवाद। हम जल्द ही जवाब देंगे।"
+    }
+  },
+  "contactThankYou": {
+    "title": "धन्यवाद!",
+    "message": "आपका संदेश सफलतापूर्वक भेजा गया। हम जल्द ही जवाब देंगे।",
+    "redirecting": "होम पर रीडायरेक्ट हो रहा है...",
+    "goHome": "अभी होम पर जाएं"
+  },
+  "home": {
+    "hero": {
+      "title": "अपने इंटरव्यू कौशल में महारत हासिल करें",
+      "subtitle": "अपने रिज्यूमे और सपनों की नौकरी के अनुसार AI-संचालित मॉक इंटरव्यू के साथ अभ्यास करें",
+      "cta": "अभ्यास शुरू करें",
+      "secondaryCta": "और जानें"
+    },
+    "features": {
+      "title": "Vocaid क्यों चुनें?",
+      "realtime": {
+        "title": "रियल-टाइम वॉइस इंटरव्यू",
+        "description": "हमारे AI इंटरव्यूअर के साथ प्राकृतिक बातचीत"
+      },
+      "personalized": {
+        "title": "व्यक्तिगत प्रश्न",
+        "description": "आपके रिज्यूमे और जॉब विवरण के अनुसार प्रश्न"
+      },
+      "feedback": {
+        "title": "विस्तृत फीडबैक",
+        "description": "आपके प्रदर्शन का व्यापक विश्लेषण"
+      }
+    }
+  },
+  "interview": {
+    "setup": {
+      "title": "इंटरव्यू सेटअप",
+      "subtitle": "आइए आपका मॉक इंटरव्यू तैयार करें",
+      "jobTitle": "पद का नाम",
+      "jobTitlePlaceholder": "जैसे: सॉफ्टवेयर इंजीनियर",
+      "companyName": "कंपनी का नाम",
+      "companyNamePlaceholder": "जैसे: Google",
+      "jobDescription": "जॉब विवरण",
+      "jobDescriptionPlaceholder": "जॉब विवरण यहां पेस्ट करें...",
+      "resume": "आपका रिज्यूमे",
+      "resumeUpload": "अपना रिज्यूमे अपलोड करें (PDF)",
+      "resumeDragDrop": "अपना रिज्यूमे यहां खींचें और छोड़ें या अपलोड के लिए क्लिक करें",
+      "startInterview": "इंटरव्यू शुरू करें",
+      "creditsRequired": "इस इंटरव्यू में 1 क्रेडिट लगेगा"
+    },
+    "ready": {
+      "title": "शुरू करने के लिए तैयार",
+      "subtitle": "आपका इंटरव्यू शुरू होने वाला है",
+      "tips": {
+        "title": "त्वरित सुझाव",
+        "tip1": "स्पष्ट और प्राकृतिक गति से बोलें",
+        "tip2": "जवाब देने से पहले सोचने के लिए समय लें",
+        "tip3": "अपने अनुभव से विशिष्ट उदाहरण दें",
+        "tip4": "जरूरत हो तो स्पष्टीकरण मांगें"
+      },
+      "startButton": "इंटरव्यू शुरू करें"
+    },
+    "inProgress": {
+      "listening": "सुन रहा है...",
+      "speaking": "AI बोल रहा है...",
+      "thinking": "प्रोसेसिंग...",
+      "endInterview": "इंटरव्यू समाप्त करें",
+      "timeRemaining": "शेष समय"
+    },
+    "completed": {
+      "title": "इंटरव्यू पूरा हुआ",
+      "subtitle": "बहुत अच्छा! आपका फीडबैक तैयार हो रहा है।",
+      "viewFeedback": "फीडबैक देखें",
+      "newInterview": "नया इंटरव्यू"
+    },
+    "title": "इंटरव्यू",
+    "status": {
+      "connecting": "Voxly से कनेक्ट हो रहा है...",
+      "speaking": "Voxly बोल रहा है...",
+      "listening": "Voxly सुन रहा है..."
+    },
+    "buttons": {
+      "quit": "इंटरव्यू छोड़ें"
+    },
+    "quitModal": {
+      "title": "क्या आप वाकई छोड़ना चाहते हैं?",
+      "message": "आपका इंटरव्यू समाप्त हो जाएगा और आपको रीडायरेक्ट किया जाएगा।",
+      "whatHappens": "छोड़ने पर क्या होता है",
+      "creditRestored": "यदि {{seconds}} सेकंड से कम, आपका क्रेडिट बहाल किया जाएगा",
+      "creditConsumed": "यदि {{seconds}} सेकंड से अधिक, आपका क्रेडिट उपयोग किया जाएगा",
+      "noFeedback": "यदि {{seconds}} सेकंड से कम, कोई फीडबैक नहीं बनाया जाएगा",
+      "progressNotSaved": "आपकी वर्तमान प्रगति सहेजी नहीं जाएगी",
+      "confirmQuestion": "क्या आप वाकई जारी रखना चाहते हैं?",
+      "returnButton": "इंटरव्यू पर वापस",
+      "quitButton": "फिर भी छोड़ें"
+    },
+    "micModal": {
+      "titles": {
+        "unsupported": "माइक्रोफोन समर्थित नहीं",
+        "troubleshooting": "माइक्रोफोन समस्या निवारण",
+        "required": "माइक्रोफोन एक्सेस आवश्यक"
+      },
+      "troubleshootingMessage": "हम आपके माइक्रोफोन तक पहुंचने में असमर्थ हैं। इस इंटरव्यू के लिए माइक्रोफोन एक्सेस आवश्यक है।",
+      "unsupportedMessage": "आपका ब्राउज़र माइक्रोफोन एक्सेस का समर्थन नहीं करता। कृपया Chrome, Firefox, Safari या Edge का उपयोग करें।",
+      "requiredMessage": "इस इंटरव्यू के लिए माइक्रोफोन एक्सेस आवश्यक है। कृपया पूछे जाने पर एक्सेस की अनुमति दें।",
+      "enableMicIn": "{{browser}} में माइक्रोफोन सक्षम करें",
+      "creditRestored": "✓ आपका इंटरव्यू क्रेडिट सफलतापूर्वक बहाल किया गया!",
+      "returnHome": "होम पर वापस",
+      "enableButton": "माइक्रोफोन सक्षम करें",
+      "refreshButton": "पेज रीफ्रेश करें",
+      "instructions": {
+        "chrome": {
+          "step1": "एड्रेस बार में लॉक/इन्फो आइकन पर क्लिक करें",
+          "step2": "\"माइक्रोफोन\" को \"अनुमति दें\" पर सेट करें",
+          "step3": "पेज रीफ्रेश करें और फिर से प्रयास करें"
+        },
+        "firefox": {
+          "step1": "एड्रेस बार में लॉक आइकन पर क्लिक करें",
+          "step2": "माइक्रोफोन के तहत, ब्लॉक हटाएं",
+          "step3": "पेज रीफ्रेश करें और फिर से प्रयास करें"
+        },
+        "safari": {
+          "step1": "Safari → प्राथमिकताएं → वेबसाइट → माइक्रोफोन पर जाएं",
+          "step2": "इस वेबसाइट के लिए अनुमति \"अनुमति दें\" पर सेट करें",
+          "step3": "पेज रीफ्रेश करें और फिर से प्रयास करें"
+        },
+        "default": {
+          "step1": "माइक्रोफोन अनुमतियों के लिए अपनी ब्राउज़र सेटिंग्स जांचें",
+          "step2": "सुनिश्चित करें कि इस साइट को एक्सेस की अनुमति है",
+          "step3": "बदलाव करने के बाद पेज रीफ्रेश करें"
+        }
+      }
+    }
+  },
+  "interviewSetup": {
+    "backToDashboard": "← डैशबोर्ड पर वापस",
+    "title": "अभ्यास इंटरव्यू शुरू करें",
+    "subtitle": "अपने AI-संचालित मॉक इंटरव्यू सत्र को कॉन्फ़िगर करें",
+    "noCredits": {
+      "title": "कोई क्रेडिट शेष नहीं",
+      "description": "अभ्यास इंटरव्यू शुरू करने के लिए आपको कम से कम 1 क्रेडिट की आवश्यकता है।",
+      "buyCredits": "क्रेडिट खरीदें"
+    },
+    "creditsAvailable": "{{count}} क्रेडिट उपलब्ध",
+    "creditsAvailable_plural": "{{count}} क्रेडिट उपलब्ध",
+    "sessionCost": "यह सत्र 1 क्रेडिट का उपयोग करेगा",
+    "roleSection": {
+      "label": "आप किस पद के लिए अभ्यास कर रहे हैं?",
+      "placeholder": "या कस्टम पद टाइप करें...",
+      "error": "कृपया एक पद चुनें या दर्ज करें"
+    },
+    "companySection": {
+      "label": "लक्ष्य कंपनी",
+      "optional": "(वैकल्पिक)",
+      "placeholder": "उदा.: Google, TCS, Infosys...",
+      "hint": "कंपनी जोड़ने से उस कंपनी की संस्कृति और मूल्यों के अनुसार प्रश्न तैयार होते हैं।"
+    },
+    "languageSection": {
+      "label": "इंटरव्यू भाषा"
+    },
+    "resumeSection": {
+      "label": "रिज्यूमे चुनें",
+      "optional": "(वैकल्पिक)",
+      "noResumes": "अभी तक कोई रिज्यूमे अपलोड नहीं हुआ",
+      "uploadResume": "रिज्यूमे अपलोड करें",
+      "noResumeOption": "बिना रिज्यूमे (सामान्य इंटरव्यू)",
+      "score": "स्कोर: {{score}}%"
+    },
+    "submit": {
+      "preparing": "इंटरव्यू तैयार हो रहा है...",
+      "start": "इंटरव्यू शुरू करें",
+      "disclaimer": "आपका इंटरव्यू फीडबैक प्रदान करने के लिए रिकॉर्ड और विश्लेषित किया जाएगा।"
+    }
+  },
+  "credits": {
+    "title": "इंटरव्यू क्रेडिट्स",
+    "currentBalance": "वर्तमान बैलेंस",
+    "creditsRemaining": "{{count}} क्रेडिट बाकी",
+    "creditsRemaining_plural": "{{count}} क्रेडिट्स बाकी",
+    "packages": {
+      "title": "क्रेडिट पैकेज",
+      "starter": {
+        "name": "स्टार्टर",
+        "description": "शुरू करने के लिए बिल्कुल सही"
+      },
+      "intermediate": {
+        "name": "इंटरमीडिएट",
+        "description": "केंद्रित तैयारी के लिए बढ़िया"
+      },
+      "professional": {
+        "name": "प्रोफेशनल",
+        "description": "नियमित अभ्यास के लिए आदर्श"
+      }
+    },
+    "purchase": "खरीदें",
+    "paymentMethods": "भुगतान विधियां",
+    "outOfCredits": "Out of credits",
+    "purchaseToContinue": "Purchase to continue practicing",
+    "buyCredits": "Buy Credits"
+  },
+  "creditsPage": {
+    "title": "इंटरव्यू",
+    "titleHighlight": "क्रेडिट्स",
+    "subtitle": "AI इंटरव्यू अभ्यास के लिए उपयोग-आधारित मूल्य निर्धारण",
+    "pricing": {
+      "title": "सरल, पारदर्शी मूल्य निर्धारण",
+      "description": "कोई सब्सक्रिप्शन नहीं, कोई छिपी फीस नहीं। क्रेडिट खरीदें और जब तैयार हों तब उपयोग करें। प्रत्येक क्रेडिट आपको विस्तृत फीडबैक के साथ एक पूर्ण AI इंटरव्यू सत्र देता है।"
+    },
+    "choosePackage": "अपना पैकेज चुनें",
+    "billing": {
+      "title": "क्रेडिट्स और",
+      "titleHighlight": "बिलिंग",
+      "subtitle": "अपने क्रेडिट्स प्रबंधित करें और भुगतान इतिहास देखें",
+      "pageTitle": "बिलिंग और क्रेडिट्स",
+      "pageSubtitle": "अपने क्रेडिट्स और खरीद इतिहास प्रबंधित करें",
+      "currentBalance": "वर्तमान बैलेंस",
+      "credits": "क्रेडिट्स",
+      "creditsCount": "{{count}} क्रेडिट्स",
+      "creditsPerInterview": "प्रत्येक क्रेडिट = 1 अभ्यास इंटरव्यू",
+      "creditsNeverExpire": "क्रेडिट्स कभी समाप्त नहीं होते",
+      "buyCredits": "क्रेडिट्स खरीदें",
+      "mostPopular": "सबसे लोकप्रिय",
+      "practiceInterviews": "{{count}} अभ्यास इंटरव्यू",
+      "fullScorecard": "पूर्ण स्कोरकार्ड और फीडबैक",
+      "performanceAnalytics": "प्रदर्शन विश्लेषण",
+      "buyNow": "अभी खरीदें",
+      "processing": "प्रोसेसिंग...",
+      "save": "{{percent}} बचाएं",
+      "securePaymentVia": "सुरक्षित भुगतान द्वारा",
+      "transactionHistory": "लेनदेन इतिहास",
+      "yourPurchasesAndUsage": "आपकी खरीद और क्रेडिट उपयोग",
+      "noTransactions": "अभी तक कोई लेनदेन नहीं",
+      "balance": "बैलेंस",
+      "needHelp": "बिलिंग में मदद चाहिए?",
+      "contactSupport": "हमारी सहायता टीम से संपर्क करें"
+    },
+    "buyMoreCredits": "और क्रेडिट्स खरीदें",
+    "buyCredits": "क्रेडिट्स खरीदें",
+    "stats": {
+      "balance": "बैलेंस",
+      "purchased": "खरीदे गए",
+      "used": "उपयोग किए गए",
+      "spent": "खर्च किए गए"
+    },
+    "paymentHistory": "भुगतान इतिहास",
+    "noPaymentHistory": "अभी तक कोई भुगतान इतिहास नहीं",
+    "purchaseToSeeHistory": "लेनदेन इतिहास देखने के लिए क्रेडिट खरीदें",
+    "creditUsage": "क्रेडिट उपयोग",
+    "noInterviewsYet": "अभी तक कोई इंटरव्यू नहीं",
+    "completeInterviewsToSee": "उपयोग इतिहास देखने के लिए इंटरव्यू पूरे करें"
+  },
+  "dashboard": {
+    "title": "डैशबोर्ड",
+    "welcome": "वापसी पर स्वागत है, {{name}}!",
+    "welcomeSubtitle": "आपकी इंटरव्यू अभ्यास प्रगति का अवलोकन।",
+    "startNewInterview": "नया इंटरव्यू शुरू करें",
+    "overview": "अवलोकन",
+    "stats": {
+      "totalInterviews": "कुल इंटरव्यू",
+      "averageScore": "औसत स्कोर",
+      "creditsUsed": "उपयोग किए गए क्रेडिट्स",
+      "creditsRemaining": "शेष क्रेडिट्स",
+      "totalSpent": "कुल खर्च",
+      "thisMonth": "इस महीने",
+      "credits": "Credits",
+      "interviews": "Interviews",
+      "avgScore": "Avg. Score",
+      "resumes": "Resumes"
+    },
+    "charts": {
+      "scoreEvolution": "स्कोर विकास",
+      "monthlySpending": "मासिक खर्च",
+      "noScoreData": "कोई स्कोर डेटा नहीं",
+      "noScoreDataDesc": "प्रगति ट्रैक करने के लिए इंटरव्यू पूरे करें",
+      "noSpendingData": "कोई खर्च डेटा नहीं",
+      "noSpendingDataDesc": "इतिहास देखने के लिए क्रेडिट खरीदें",
+      "performanceTrend": "Performance Trend"
+    },
+    "recentInterviews": "हाल के इंटरव्यू",
+    "noInterviews": "अभी तक कोई इंटरव्यू नहीं। अपना पहला अभ्यास सत्र शुरू करें!",
+    "viewAll": "सभी देखें",
+    "readyToPractice": "Ready to practice your next interview?",
+    "startInterview": "Start Interview",
+    "quickActions": {
+      "title": "Quick Actions",
+      "practiceInterview": "Practice Interview",
+      "practiceDesc": "AI-powered mock session",
+      "uploadResume": "Upload Resume",
+      "uploadDesc": "Get feedback & scoring",
+      "viewInsights": "View Insights",
+      "insightsDesc": "Personalized tips"
+    },
+    "noInterviewsHint": "Start your first practice session!",
+    "table": {
+      "role": "Role",
+      "company": "Company",
+      "date": "Date",
+      "score": "Score",
+      "action": "Action"
+    },
+    "lowCredits": {
+      "title": "Running low on credits?",
+      "buyMore": "Buy More Credits"
+    }
+  },
+  "interviews": {
+    "title": "आपके इंटरव्यू",
+    "subtitle": "अपना इंटरव्यू इतिहास देखें और प्रगति ट्रैक करें",
+    "startNew": "नया इंटरव्यू शुरू करें",
+    "outOfCredits": "क्रेडिट खत्म",
+    "buyCredits": "और क्रेडिट खरीदें",
+    "noInterviews": "अभी तक कोई इंटरव्यू नहीं",
+    "noInterviewsDesc": "यहां इतिहास देखने के लिए अपना पहला इंटरव्यू शुरू करें",
+    "table": {
+      "date": "तारीख",
+      "position": "पद",
+      "score": "स्कोर",
+      "duration": "अवधि",
+      "actions": "क्रियाएं"
+    },
+    "viewFeedback": "फीडबैक देखें",
+    "startFirst": "Start Your First Interview",
+    "noInterviewsTitle": "No Interviews Yet",
+    "noInterviewsDescription": "Start your first interview to see your history here. Our AI will help you practice and improve your interview skills.",
+    "positionAndCompany": "Position & Company",
+    "date": "Date",
+    "duration": "Duration",
+    "score": "Score",
+    "new": "New"
+  },
+  "errors": {
+    "generic": "कुछ गलत हो गया। कृपया पुनः प्रयास करें।",
+    "network": "नेटवर्क त्रुटि। कृपया अपना कनेक्शन जांचें।",
+    "unauthorized": "जारी रखने के लिए कृपया लॉग इन करें।",
+    "notFound": "पेज नहीं मिला।",
+    "insufficientCredits": "अपर्याप्त क्रेडिट। जारी रखने के लिए कृपया और खरीदें।"
+  },
+  "language": {
+    "select": "भाषा चुनें",
+    "current": "वर्तमान: {{language}}"
+  },
+  "feedback": {
+    "title": "इंटरव्यू फीडबैक",
+    "loading": {
+      "title": "फीडबैक जनरेट हो रहा है",
+      "analyzing": "आपके इंटरव्यू प्रदर्शन का विश्लेषण हो रहा है...",
+      "retrying": "ट्रांसक्रिप्ट की प्रतीक्षा... (प्रयास {{attempt}}/{{max}})",
+      "wait": "इसमें कुछ सेकंड लग सकते हैं"
+    },
+    "error": {
+      "title": "फीडबैक लोड करने में असमर्थ",
+      "returnHome": "होम पर वापस जाएं"
+    },
+    "results": {
+      "outstanding": "शानदार प्रदर्शन!",
+      "great": "बहुत बढ़िया!",
+      "good": "अच्छा प्रयास, सुधार जारी रखें!",
+      "room": "विकास की गुंजाइश",
+      "keep": "अभ्यास जारी रखें!"
+    },
+    "sections": {
+      "summary": "सारांश",
+      "detailed": "विस्तृत फीडबैक",
+      "jobDescription": "जॉब विवरण"
+    },
+    "noSummary": "कोई सारांश उपलब्ध नहीं",
+    "noFeedback": "कोई विस्तृत फीडबैक उपलब्ध नहीं",
+    "buttons": {
+      "download": "PDF रिपोर्ट डाउनलोड करें",
+      "downloadAria": "PDF के रूप में ट्रांसक्रिप्ट डाउनलोड करें",
+      "newInterview": "नया इंटरव्यू",
+      "newInterviewAria": "नया इंटरव्यू शुरू करें",
+      "backToDashboard": "डैशबोर्ड पर वापस"
+    }
+  },
+  "payment": {
+    "redirecting": "रीडायरेक्ट हो रहा है...",
+    "redirectingDesc": "भुगतान पूर्ण! आपके ब्राउज़र पर वापस जा रहे हैं...",
+    "creditsSummary": "क्रेडिट सारांश",
+    "confirmingCredits": "क्रेडिट की पुष्टि हो रही है...",
+    "refreshCredits": "क्रेडिट रिफ्रेश करें",
+    "verifyingCredits": "क्रेडिट सत्यापित हो रहे हैं...",
+    "redirectCountdown": "{{seconds}} सेकंड में होम पर रीडायरेक्ट...",
+    "reference": "भुगतान संदर्भ",
+    "loggedInAs": "{{email}} के रूप में लॉग इन",
+    "status": {
+      "processing": "प्रोसेस हो रहा है...",
+      "processingDesc": "कृपया प्रतीक्षा करें जब हम आपके भुगतान को सत्यापित करते हैं।",
+      "success": "भुगतान सफल!",
+      "successDesc": "आपके खाते में क्रेडिट जोड़ दिए गए हैं।",
+      "successProcessing": "आपका भुगतान प्रोसेस हो रहा है... क्रेडिट जल्द ही जोड़े जाएंगे।",
+      "failure": "भुगतान विफल",
+      "failureDesc": "आपका भुगतान प्रोसेस नहीं हो सका। कृपया पुनः प्रयास करें।",
+      "pending": "भुगतान लंबित",
+      "pendingDesc": "आपका भुगतान प्रोसेस हो रहा है। पुष्टि होने पर क्रेडिट जोड़े जाएंगे।"
+    },
+    "credits": {
+      "previous": "पिछला",
+      "purchased": "खरीदा गया",
+      "total": "कुल"
+    },
+    "buttons": {
+      "goHome": "होम पर जाएं",
+      "tryAgain": "पुनः प्रयास करें"
+    }
+  },
+  "analytics": {
+    "sentimentTimeline": {
+      "title": "भावना और गति समयरेखा",
+      "description": "इंटरव्यू के दौरान अपने आत्मविश्वास, स्वर और बोलने की गति को ट्रैक करें",
+      "noData": "कोई समयरेखा डेटा उपलब्ध नहीं",
+      "noDataDesc": "इंटरव्यू पूरा होने के बाद विश्लेषण दिखाई देगा",
+      "legend": {
+        "confidence": "आत्मविश्वास",
+        "tone": "स्वर",
+        "pace": "गति"
+      }
+    },
+    "softSkills": {
+      "title": "सॉफ्ट स्किल्स विश्लेषण",
+      "description": "प्रमुख दक्षता क्षेत्रों में आपका प्रदर्शन",
+      "noData": "कोई कौशल डेटा उपलब्ध नहीं",
+      "noDataDesc": "अपना सॉफ्ट स्किल्स विश्लेषण देखने के लिए एक इंटरव्यू पूरा करें",
+      "skills": {
+        "communication": "संचार",
+        "problemSolving": "समस्या समाधान",
+        "technicalDepth": "तकनीकी गहराई",
+        "leadership": "नेतृत्व",
+        "adaptability": "अनुकूलनशीलता"
+      }
+    },
+    "advancedAnalytics": {
+      "title": "उन्नत विश्लेषण",
+      "description": "आपके इंटरव्यू प्रदर्शन की गहन जानकारी"
+    },
+    "benchmark": {
+      "title": "तुलनात्मक रैंकिंग",
+      "basedOn": "इस भूमिका के लिए {{count}} इंटरव्यू के आधार पर",
+      "scoredHigherThan": "आपने अधिक स्कोर किया",
+      "ofCandidatesFor": "उम्मीदवारों से",
+      "yourScore": "आपका स्कोर",
+      "globalAverage": "वैश्विक औसत",
+      "scoreBreakdown": "स्कोर तुलना vs औसत",
+      "you": "आप",
+      "avg": "औस",
+      "noData": "कोई बेंचमार्क डेटा उपलब्ध नहीं",
+      "noDataHint": "आपके इंटरव्यू का विश्लेषण होने के बाद रैंकिंग की गणना की जाती है",
+      "tiers": {
+        "topPerformer": "शीर्ष प्रदर्शक",
+        "aboveAverage": "औसत से ऊपर",
+        "average": "औसत",
+        "belowAverage": "औसत से नीचे",
+        "needsWork": "सुधार की आवश्यकता"
+      }
+    },
+    "learningPath": {
+      "title": "प्राथमिकता अध्ययन सूची",
+      "subtitle": "आपके इंटरव्यू प्रदर्शन के आधार पर AI द्वारा चुने गए विषय",
+      "generated": "उत्पन्न",
+      "noData": "अभी तक कोई सिफारिशें नहीं",
+      "noDataHint": "आपके इंटरव्यू विश्लेषण के बाद AI सिफारिशें उत्पन्न होंगी",
+      "areasForImprovement": "सुधार के क्षेत्र",
+      "recommendedTopics": "अनुशंसित अध्ययन विषय",
+      "whyThisMatters": "यह क्यों महत्वपूर्ण है",
+      "estimatedStudyTime": "अनुमानित अध्ययन समय",
+      "suggestedResources": "सुझाए गए संसाधन",
+      "howItWorks": "यह कैसे काम करता है:",
+      "howItWorksDesc": "हमारा AI आपके इंटरव्यू उत्तरों का विश्लेषण करता है और उन विशिष्ट क्षेत्रों की पहचान करता है जहां अतिरिक्त अध्ययन का आपके प्रदर्शन पर सबसे अधिक प्रभाव पड़ेगा। विषयों को आपकी लक्षित भूमिका के लिए महत्व के आधार पर प्राथमिकता दी जाती है।",
+      "priority": {
+        "high": "उच्च प्राथमिकता",
+        "medium": "मध्यम",
+        "low": "वैकल्पिक"
+      }
+    },
+    "transcript": {
+      "title": "इंटरव्यू ट्रांसक्रिप्ट",
+      "subtitle": "रिकॉर्डिंग में उस समय पर जाने के लिए किसी भी खंड पर क्लिक करें",
+      "noData": "कोई ट्रांसक्रिप्ट उपलब्ध नहीं",
+      "noDataHint": "इंटरव्यू पूरा होने के बाद ट्रांसक्रिप्ट दिखाई देगा",
+      "interviewer": "साक्षात्कारकर्ता",
+      "you": "आप",
+      "segments": "खंड",
+      "duration": "अवधि",
+      "play": "चलाएं",
+      "pause": "रोकें"
+    }
+  },
+  "performanceChat": {
+    "title": "प्रदर्शन विश्लेषक",
+    "subtitle": "AI-संचालित इंटरव्यू अंतर्दृष्टि",
+    "backToMenu": "मेनू पर वापस",
+    "filterByRole": "भूमिका/कंपनी द्वारा फ़िल्टर",
+    "newConversation": "नई बातचीत",
+    "filters": {
+      "role": "भूमिका",
+      "company": "कंपनी",
+      "allRoles": "सभी भूमिकाएं",
+      "allCompanies": "सभी कंपनियां",
+      "clearFilters": "फ़िल्टर साफ़ करें"
+    },
+    "loadingInsights": "आपकी प्रदर्शन अंतर्दृष्टि लोड हो रही है...",
+    "analyzing": "आपका प्रदर्शन विश्लेषण हो रहा है...",
+    "tryAsking": "पूछने का प्रयास करें:",
+    "placeholder": "अपने इंटरव्यू प्रदर्शन के बारे में पूछें...",
+    "suggestedQuestions": {
+      "strengths": "इंटरव्यू में मेरी मुख्य ताकतें क्या हैं?",
+      "improvements": "मुझे सबसे ज्यादा सुधार की जरूरत कहां है?",
+      "progress": "समय के साथ मेरा प्रदर्शन कैसे बदला है?",
+      "nextSteps": "अपने अगले इंटरव्यू के लिए मुझे किस पर ध्यान देना चाहिए?"
+    }
+  },
+  "hrChat": {
+    "title": "HR इंटेलिजेंस चैट",
+    "subtitle": "इंटरव्यू अंतर्दृष्टि + FAQ सहायता",
+    "floating": {
+      "ariaLabel": "HR इंटेलिजेंस चैट",
+      "tooltip": "इंटरव्यू अंतर्दृष्टि और FAQ सहायता"
+    },
+    "welcome": {
+      "title": "Vocaid HR इंटेलिजेंस चैट में आपका स्वागत है!",
+      "insightsMode": "इंटरव्यू अंतर्दृष्टि",
+      "insightsDesc": "साक्ष्य-आधारित स्कोरकार्ड, क्षमता विश्लेषण और व्यक्तिगत सुधार सुझावों के साथ अपने इंटरव्यू प्रदर्शन का विश्लेषण करें।",
+      "faqMode": "FAQ कॉन्सीयर्ज",
+      "faqDesc": "क्रेडिट, बिलिंग, तकनीकी समस्याओं, प्लेटफॉर्म सुविधाओं और अधिक के बारे में तत्काल उत्तर प्राप्त करें।",
+      "autoDetect": "मैं आपके प्रश्न के आधार पर स्वचालित रूप से पता लगाऊंगा कि कौन सा मोड उपयोग करना है। बस स्वाभाविक रूप से पूछें!"
+    },
+    "sidebar": {
+      "insights": "अंतर्दृष्टि",
+      "faq": "FAQ",
+      "analysisScope": "विश्लेषण क्षेत्र",
+      "allRoles": "सभी भूमिकाएं",
+      "allCompanies": "सभी कंपनियां",
+      "interviewInsights": "इंटरव्यू अंतर्दृष्टि",
+      "faqConcierge": "FAQ कॉन्सीयर्ज",
+      "recentInterviews": "हाल के इंटरव्यू"
+    },
+    "actions": {
+      "analyzeLatest": "नवीनतम इंटरव्यू का विश्लेषण करें",
+      "myStrengths": "मेरी इंटरव्यू ताकतें",
+      "areasToImprove": "सुधार के क्षेत्र",
+      "progressOverTime": "समय के साथ प्रगति",
+      "generateScorecard": "स्कोरकार्ड बनाएं",
+      "quickTips": "त्वरित इंटरव्यू सुझाव",
+      "creditsBilling": "क्रेडिट और बिलिंग",
+      "audioTroubleshooting": "ऑडियो समस्या निवारण",
+      "howItWorks": "Vocaid कैसे काम करता है",
+      "multiLanguage": "बहुभाषी सहायता"
+    },
+    "input": {
+      "placeholder": "इंटरव्यू अंतर्दृष्टि, नीतियों या Vocaid कैसे काम करता है के बारे में पूछें...",
+      "autoDetectHint": "AI स्वचालित रूप से पता लगाता है: इंटरव्यू विश्लेषण या FAQ सहायता"
+    },
+    "loading": "संदर्भ लोड हो रहा है और अंतर्दृष्टि जनरेट हो रही है...",
+    "error": {
+      "generic": "प्रतिक्रिया प्राप्त करने में विफल। कृपया पुनः प्रयास करें।",
+      "dismiss": "खारिज करें"
+    },
+    "categories": {
+      "insights": "अंतर्दृष्टि",
+      "faq": "FAQ"
+    },
+    "newConversation": "नई बातचीत",
+    "showSidebar": "साइडबार दिखाएं",
+    "hideSidebar": "साइडबार छुपाएं",
+    "searchFaq": "FAQ खोजें...",
+    "noFaqFound": "कोई FAQ नहीं मिला",
+    "askAiInstead": "इसके बजाय AI से पूछें"
+  },
+  "interviewDetails": {
+    "title": "इंटरव्यू",
+    "titleHighlight": "विवरण",
+    "subtitle": "अपने इंटरव्यू प्रदर्शन और फीडबैक की समीक्षा करें",
+    "notFound": "इंटरव्यू नहीं मिला",
+    "notFoundDesc": "हम वह इंटरव्यू नहीं ढूंढ सके जो आप खोज रहे हैं।",
+    "backToDashboard": "डैशबोर्ड पर वापस",
+    "resume": "रेज़्यूमे",
+    "feedbackButton": "फीडबैक",
+    "stats": {
+      "position": "पद",
+      "company": "कंपनी",
+      "date": "तारीख",
+      "duration": "अवधि",
+      "score": "स्कोर"
+    },
+    "performance": {
+      "excellent": "उत्कृष्ट प्रदर्शन!",
+      "good": "अच्छा प्रदर्शन",
+      "average": "औसत प्रदर्शन",
+      "needs": "सुधार की आवश्यकता"
+    },
+    "performanceScore": "प्रदर्शन स्कोर",
+    "outOf100": "100 में से",
+    "scoreBreakdown": "स्कोर विवरण",
+    "scores": {
+      "content": "सामग्री गुणवत्ता",
+      "communication": "संचार",
+      "confidence": "आत्मविश्वास",
+      "technical": "तकनीकी ज्ञान"
+    },
+    "scoreExplanation": {
+      "title": "हम आपका स्कोर कैसे गिनते हैं:",
+      "desc": "हमारा AI आपके इंटरव्यू जवाबों का चार मुख्य आयामों में विश्लेषण करता है—सामग्री गुणवत्ता, संचार कौशल, आत्मविश्वास स्तर और तकनीकी ज्ञान। प्रत्येक श्रेणी को उद्योग मानकों और सर्वोत्तम प्रथाओं के आधार पर 0-100% पैमाने पर रेटिंग दी जाती है। समग्र स्कोर आपके व्यापक इंटरव्यू प्रदर्शन को दर्शाने वाला भारित औसत है।"
+    },
+    "summary": "इंटरव्यू सारांश",
+    "sections": {
+      "strengths": "ताकत",
+      "improvements": "सुधार",
+      "recommendations": "सिफारिशें"
+    },
+    "noStrengths": "कोई ताकत दर्ज नहीं",
+    "noImprovements": "सुधार की आवश्यकता नहीं",
+    "noRecommendations": "कोई सिफारिश नहीं",
+    "analytics": {
+      "title": "उन्नत",
+      "highlight": "विश्लेषण"
+    }
+  },
+  "legal": {
+    "privacy": {
+      "title": "गोपनीयता",
+      "titleHighlight": "नीति"
+    },
+    "terms": {
+      "title": "उपयोग की",
+      "titleHighlight": "शर्तें"
+    }
+  },
+  "howItWorks": {
+    "badge": "सरल प्रक्रिया",
+    "title": "यह कैसे काम करता है",
+    "subtitle": "नौकरी पोस्टिंग से भर्ती निर्णय तक चार सरल चरणों में। हमारा AI स्क्रीनिंग संभालता है ताकि आप सर्वश्रेष्ठ उम्मीदवारों पर ध्यान दे सकें।",
+    "steps": {
+      "upload": {
+        "title": "नौकरी और रेज़्यूमे अपलोड करें",
+        "description": "नौकरी विवरण और उम्मीदवार का रेज़्यूमे जोड़ें। हमारा AI भूमिका आवश्यकताओं का विश्लेषण करता है और प्रश्न तैयार करता है।"
+      },
+      "interview": {
+        "title": "AI-संचालित इंटरव्यू",
+        "description": "उम्मीदवार हमारे AI इंटरव्यूअर के साथ प्राकृतिक वॉइस बातचीत करते हैं, 24/7 उपलब्ध, 8+ भाषाओं में।"
+      },
+      "analysis": {
+        "title": "रियल-टाइम विश्लेषण",
+        "description": "संचार, तकनीकी कौशल और सांस्कृतिक फिट पर विस्तृत मेट्रिक्स के साथ तत्काल स्कोरकार्ड प्राप्त करें।"
+      },
+      "decision": {
+        "title": "बेहतर निर्णय लें",
+        "description": "मानकीकृत मूल्यांकन के साथ उम्मीदवारों की निष्पक्ष तुलना करें। पूर्वाग्रह कम करें, तेज़ी से भर्ती करें।"
+      }
+    },
+    "cta": {
+      "start": "इंटरव्यू शुरू करें",
+      "getStarted": "मुफ्त में शुरू करें",
+      "noCreditCard": "क्रेडिट कार्ड आवश्यक नहीं"
+    }
+  },
+  "testimonials": {
+    "badge": "उद्यम विश्वास",
+    "title": "HR नेता क्या कहते हैं",
+    "subtitle": "सैकड़ों उद्यम टीमों में शामिल हों जो अपनी भर्ती प्रक्रिया को बदल रही हैं।"
+  },
+  "logoCarousel": {
+    "title": "विश्व की अग्रणी कंपनियां हम पर भरोसा करती हैं"
+  },
+  "floatingCta": {
+    "title": "अपनी भर्ती को बदलने के लिए तैयार हैं?",
+    "subtitle": "दिनों में नहीं, मिनटों में उम्मीदवारों का इंटरव्यू शुरू करें।",
+    "button": "मुफ्त में शुरू करें"
+  },
+  "landing": {
+    "nav": {
+      "product": "उत्पाद",
+      "solutions": "समाधान",
+      "integrations": "एकीकरण",
+      "pricing": "मूल्य निर्धारण",
+      "faq": "अक्सर पूछे जाने वाले प्रश्न",
+      "menu": "मेनू"
+    },
+    "hero": {
+      "badge": "एंटरप्राइज-रेडी AI इंटरव्यू",
+      "title": "इंटरव्यू को बदलें",
+      "titleHighlight": "संरचित साक्ष्य में",
+      "description": "Vocaid दो महत्वपूर्ण वर्कफ़्लो प्रदान करता है: एक कर्मचारी सेवा हब जो नीति-आधारित उत्तरों के साथ HR टिकट का जवाब देता है, और एक भर्तीकर्ता इंटरव्यू प्लेटफ़ॉर्म जो बड़े पैमाने पर सुसंगत, ऑडिट योग्य मूल्यांकन प्रदान करता है।",
+      "ctaStart": "मुफ्त शुरू करें",
+      "ctaDemo": "डेमो का अनुरोध करें",
+      "trustSubtitle": "HR टीमों और प्लेटफ़ॉर्म इंटीग्रेशन के लिए बनाया गया",
+      "features": {
+        "tenant": "टेनेंट आइसोलेशन",
+        "audit": "ऑडिट ट्रेल्स",
+        "soc2": "SOC 2 तैयार",
+        "gdpr": "GDPR अनुपालक",
+        "webhook": "Webhook इवेंट्स"
+      },
+      "stats": {
+        "accuracy": "मूल्यांकन सटीकता",
+        "faster": "तेज़ भर्ती निर्णय"
+      },
+      "ctaStartPlural": "Start Frees included"
+    },
+    "featureGrid": {
+      "badge": "Vocaid की विशेषताएं",
+      "title": "दो प्लेटफ़ॉर्म, एक मिशन",
+      "subtitle": "चाहे आंतरिक HR संचालन को अनुकूलित करना हो या भर्ती पाइपलाइन को स्केल करना हो, Vocaid संरचित, साक्ष्य-आधारित परिणाम प्रदान करता है।",
+      "features": {
+        "employee-hub": {
+          "title": "कर्मचारी सेवा हब",
+          "description": "नीति-आधारित AI प्रतिक्रियाओं के साथ HR टिकट्स को डायवर्ट करें",
+          "bullets": [
+            "नीति और लाभ प्रश्नों के तत्काल उत्तर",
+            "आवश्यकता होने पर मानव HR को स्मार्ट एस्केलेशन",
+            "सामान्य अनुरोधों के लिए स्व-सेवा (छुट्टी, पेरोल, org chart)",
+            "HR टिकट वॉल्यूम में 60% तक की कमी"
+          ]
+        },
+        "recruiter-platform": {
+          "title": "भर्तीकर्ता साक्षात्कार प्लेटफ़ॉर्म",
+          "description": "बड़े पैमाने पर सुसंगत, ऑडिट योग्य उम्मीदवार मूल्यांकन",
+          "bullets": [
+            "कॉन्फ़िगर करने योग्य साक्षात्कार रूब्रिक और योग्यता ढांचे",
+            "साक्ष्य टाइमस्टैम्प के साथ रीयल-टाइम स्कोरकार्ड",
+            "भर्ती अंतर्दृष्टि के लिए एनालिटिक्स डैशबोर्ड",
+            "मांग के साथ स्केल करने वाला पे-एज़-यू-गो मूल्य निर्धारण"
+          ]
+        }
+      }
+    },
+    "integrations": {
+      "badge": "Vocaid Connect",
+      "title": "एम्बेड → स्कोरकार्ड → webhook मिनटों में",
+      "subtitle": "हमारे डेवलपर-अनुकूल SDK और APIs के साथ Vocaid को अपने मौजूदा टूल्स में एकीकृत करें।",
+      "tagline": "टेनेंट आइसोलेशन, ऑडिट ट्रेल्स और सुरक्षित एकीकरण के लिए डिज़ाइन किया गया।",
+      "features": [
+        {
+          "title": "अपने ATS में साक्षात्कार एम्बेड करें",
+          "description": "ड्रॉप-इन React कंपोनेंट या iframe जो आपके उत्पाद के रूप से मेल खाता है।"
+        },
+        {
+          "title": "हस्ताक्षरित webhooks के माध्यम से स्कोरकार्ड प्राप्त करें",
+          "description": "सुरक्षा के लिए क्रिप्टोग्राफिक रूप से हस्ताक्षरित पेलोड के साथ रीयल-टाइम सूचनाएं प्राप्त करें।"
+        },
+        {
+          "title": "व्हाइट-लेबल थीम नियंत्रण",
+          "description": "एक सहज उपयोगकर्ता अनुभव बनाए रखने के लिए रंग, फ़ॉन्ट और ब्रांडिंग कस्टमाइज़ करें।"
+        }
+      ],
+      "badges": {
+        "typescript": "TypeScript SDK",
+        "restApi": "REST API",
+        "webhooks": "हस्ताक्षरित Webhooks",
+        "openapi": "OpenAPI Spec"
+      }
+    },
+    "pricing": {
+      "badge": "मूल्य निर्धारण",
+      "title": "आपके साथ बढ़ने वाले प्लान",
+      "subtitle": "मुफ्त में शुरू करें, जरूरत पड़ने पर अपग्रेड करें। केवल जो उपयोग करें उसके लिए भुगतान करें।",
+      "mostPopular": "सबसे लोकप्रिय",
+      "customPlanText": "कस्टम प्लान चाहिए? हम Vocaid को आपकी विशिष्ट आवश्यकताओं के अनुसार तैयार कर सकते हैं।",
+      "viewFullPricing": "पूर्ण मूल्य देखें",
+      "talkToSales": "बिक्री से बात करें",
+      "plans": {
+        "starter": {
+          "name": "स्टार्टर",
+          "description": "AI साक्षात्कार के साथ शुरुआत करने वाली छोटी टीमों के लिए",
+          "cta": "मुफ्त परीक्षण शुरू करें",
+          "features": [
+            "5 टीम सीट तक",
+            "100 साक्षात्कार मिनट/माह",
+            "बुनियादी स्कोरकार्ड",
+            "ईमेल सहायता",
+            "मानक एकीकरण"
+          ]
+        },
+        "growth": {
+          "name": "ग्रोथ",
+          "description": "अधिक शक्ति और लचीलेपन की आवश्यकता वाली बढ़ती टीमों के लिए",
+          "cta": "मुफ्त परीक्षण शुरू करें",
+          "features": [
+            "25 टीम सीट तक",
+            "500 साक्षात्कार मिनट/माह",
+            "साक्ष्य के साथ उन्नत स्कोरकार्ड",
+            "प्राथमिकता सहायता",
+            "सभी एकीकरण + webhooks",
+            "कस्टम रूब्रिक्स",
+            "एनालिटिक्स डैशबोर्ड"
+          ]
+        },
+        "enterprise": {
+          "name": "एंटरप्राइज़",
+          "description": "उन्नत सुरक्षा और अनुपालन आवश्यकताओं वाले संगठनों के लिए",
+          "cta": "बिक्री से बात करें",
+          "features": [
+            "असीमित सीटें",
+            "कस्टम मिनट आवंटन",
+            "SSO और SCIM प्रोविजनिंग",
+            "समर्पित सहायता",
+            "कस्टम एकीकरण",
+            "ऑडिट लॉग और अनुपालन",
+            "डेटा रेजीडेंसी विकल्प",
+            "SLA गारंटी"
+          ]
+        }
+      }
+    },
+    "faq": {
+      "badge": "FAQ",
+      "title": "अक्सर पूछे जाने वाले प्रश्न",
+      "subtitle": "Vocaid के बारे में आपको जो कुछ भी जानना चाहिए।",
+      "items": {
+        "multiTenancy": {
+          "question": "मल्टी-टेनेंसी कैसे काम करती है?",
+          "answer": "Vocaid शुरू से ही एंटरप्राइज-ग्रेड मल्टी-टेनेंसी के साथ बनाया गया है। प्रत्येक संगठन को पृथक डेटा स्टोरेज, अलग API क्रेडेंशियल और कॉन्फ़िगर करने योग्य अनुमतियाँ मिलती हैं।"
+        },
+        "whiteLabel": {
+          "question": "क्या हम अपनी ब्रांडिंग का उपयोग कर सकते हैं?",
+          "answer": "बिल्कुल। हमारे व्हाइट-लेबल नियंत्रण आपको अपने ब्रांड रंगों, लोगो, फ़ॉन्ट और संदेशों के साथ इंटरव्यू इंटरफ़ेस को कस्टमाइज़ करने देते हैं।"
+        },
+        "billing": {
+          "question": "बिलिंग कैसे काम करती है?",
+          "answer": "हम उपभोग किए गए इंटरव्यू मिनटों के आधार पर एक सीधा पे-पर-यूज़ मॉडल का उपयोग करते हैं। आप मिनट पैकेज खरीद सकते हैं या ऑटोमैटिक टॉप-अप सेट कर सकते हैं।"
+        },
+        "compliance": {
+          "question": "GDPR अनुपालन के बारे में क्या?",
+          "answer": "Vocaid गोपनीयता नियमों को ध्यान में रखकर डिज़ाइन किया गया है। हम डेटा विषय अनुरोधों का समर्थन करते हैं, डेटा निर्यात कार्यक्षमता और डेटा निवास विकल्प प्रदान करते हैं।"
+        },
+        "atsIntegration": {
+          "question": "क्या हम अपने ATS में डेटा एक्सपोर्ट कर सकते हैं?",
+          "answer": "हाँ। Vocaid हमारे SDK और webhooks के माध्यम से प्रमुख ATS प्लेटफ़ॉर्म के साथ इंटीग्रेट करता है। आप स्वचालित रूप से स्कोरकार्ड, ट्रांसक्रिप्ट और मूल्यांकन डेटा भेज सकते हैं।"
+        },
+        "multilingual": {
+          "question": "क्या आप बहुभाषी इंटरव्यू का समर्थन करते हैं?",
+          "answer": "हाँ, Vocaid कई भाषाओं में इंटरव्यू का समर्थन करता है। हमारा AI अंग्रेज़ी, स्पेनिश, पुर्तगाली, फ्रेंच, जर्मन और अधिक में इंटरव्यू कर सकता है और स्कोरकार्ड जनरेट कर सकता है।"
+        },
+        "security": {
+          "question": "इंटरव्यू डेटा कितना सुरक्षित है?",
+          "answer": "सभी डेटा AES-256 और TLS 1.3 का उपयोग करके आराम और पारगमन में एन्क्रिप्टेड है। हम SOC 2 Type II अनुपालन बनाए रखते हैं और विस्तृत ऑडिट लॉग प्रदान करते हैं।"
+        },
+        "support": {
+          "question": "आप किस तरह का सपोर्ट देते हैं?",
+          "answer": "स्टार्टर प्लान में 24-घंटे रिस्पॉन्स टाइम के साथ ईमेल सपोर्ट शामिल है। ग्रोथ प्लान को तेज़ रिस्पॉन्स के साथ प्राथमिकता सपोर्ट मिलता है।"
+        },
+        "rubrics": {
+          "question": "क्या हम मूल्यांकन रूब्रिक कस्टमाइज़ कर सकते हैं?",
+          "answer": "ग्रोथ और एंटरप्राइज प्लान में पूर्ण रूब्रिक कस्टमाइज़ेशन शामिल है। आप अपने स्वयं के कॉम्पिटेंसी फ्रेमवर्क और स्कोरिंग मानदंड परिभाषित कर सकते हैं।"
+        },
+        "trial": {
+          "question": "क्या मुफ्त ट्रायल उपलब्ध है?",
+          "answer": "हाँ, हम स्टार्टर और ग्रोथ प्लान पर बिना क्रेडिट कार्ड के 14-दिन का मुफ्त ट्रायल देते हैं। आपको सभी सुविधाओं तक पूर्ण पहुंच मिलती है।"
+        },
+        "howCreditsWork": {
+          "question": "How do credits work?",
+          "answer": "New users receive free credits to get started. Each completed practice interview uses 1 credit. You can purchase more credits anytime through our billing page. Credits never expire, so use them at your own pace."
+        },
+        "difference": {
+          "question": "What's the difference between B2C and B2B?",
+          "answer": "B2C (Interview Practice) is for individual candidates who want to practice and improve their interview skills. B2B (Recruiter Platform) is for organizations that want to evaluate candidates with structured interviews and scorecards. Both are powered by the same AI technology."
+        }
+      }
+    },
+    "demo": {
+      "title": "डेमो का अनुरोध करें",
+      "description": "जानें कि Vocaid आपके भर्ती और HR वर्कफ़्लो को कैसे बदल सकता है।",
+      "labels": {
+        "fullName": "पूरा नाम",
+        "workEmail": "कार्य ईमेल",
+        "company": "कंपनी",
+        "teamSize": "टीम का आकार",
+        "useCase": "प्राथमिक उपयोग केस"
+      },
+      "placeholders": {
+        "fullName": "राजेश कुमार",
+        "workEmail": "rajesh@company.com",
+        "company": "कंपनी का नाम",
+        "teamSize": "टीम का आकार चुनें",
+        "useCase": "उपयोग केस चुनें"
+      },
+      "teamSizeOptions": [
+        "1-10 कर्मचारी",
+        "11-50 कर्मचारी",
+        "51-200 कर्मचारी",
+        "201-1000 कर्मचारी",
+        "1000+ कर्मचारी"
+      ],
+      "useCaseOptions": [
+        "भर्ती और प्रतिभा अधिग्रहण",
+        "HR सर्विस डेस्क ऑटोमेशन",
+        "कर्मचारी ऑनबोर्डिंग",
+        "आंतरिक गतिशीलता और प्रमोशन",
+        "कौशल मूल्यांकन",
+        "अन्य"
+      ],
+      "validation": {
+        "nameRequired": "नाम आवश्यक है",
+        "emailRequired": "ईमेल आवश्यक है",
+        "emailInvalid": "कृपया एक वैध कार्य ईमेल दर्ज करें",
+        "companyRequired": "कंपनी आवश्यक है",
+        "teamSizeRequired": "कृपया टीम का आकार चुनें",
+        "useCaseRequired": "कृपया उपयोग केस चुनें",
+        "submitFailed": "सबमिट करने में विफल। कृपया पुनः प्रयास करें।"
+      },
+      "submitButton": "डेमो का अनुरोध करें",
+      "disclaimer": "सबमिट करके, आप हमारी गोपनीयता नीति और सेवा की शर्तों से सहमत होते हैं।",
+      "success": {
+        "title": "धन्यवाद!",
+        "message": "हम आपके डेमो को शेड्यूल करने के लिए 24 घंटों के भीतर संपर्क करेंगे।"
+      }
+    },
+    "finalCta": {
+      "title": "अपनी भर्ती प्रक्रिया को बदलने के लिए तैयार हैं?",
+      "subtitle": "Vocaid का उपयोग करके तेज़, निष्पक्ष और सुसंगत भर्ती निर्णय लेने वाली दूरदर्शी HR टीमों में शामिल हों।",
+      "ctaWorkspace": "अपना वर्कस्पेस बनाएं",
+      "ctaDemo": "डेमो बुक करें",
+      "disclaimer": "क्रेडिट कार्ड आवश्यक नहीं • 14 दिन मुफ्त • कभी भी रद्द करें",
+      "ctaWorkspacePlural": "Start Frees"
+    },
+    "footer": {
+      "description": "एंटरप्राइज़ AI साक्षात्कार जो बड़े पैमाने पर संरचित, ऑडिट योग्य मूल्यांकन प्रदान करते हैं।",
+      "sections": {
+        "product": "उत्पाद",
+        "company": "कंपनी",
+        "legal": "कानूनी"
+      },
+      "links": {
+        "features": "विशेषताएं",
+        "solutions": "समाधान",
+        "integrations": "एकीकरण",
+        "pricing": "मूल्य निर्धारण",
+        "faq": "FAQ",
+        "about": "हमारे बारे में",
+        "contact": "संपर्क",
+        "careers": "करियर",
+        "blog": "ब्लॉग",
+        "privacyPolicy": "गोपनीयता नीति",
+        "termsOfUse": "उपयोग की शर्तें",
+        "cookiePolicy": "कुकी नीति",
+        "security": "सुरक्षा"
+      },
+      "tagline": "टेनेंट आइसोलेशन, ऑडिट ट्रेल्स और सुरक्षित एकीकरण के लिए डिज़ाइन किया गया।",
+      "compliance": {
+        "soc2": "SOC 2 तैयार",
+        "gdpr": "GDPR अनुपालक",
+        "lgpd": "LGPD अनुपालक"
+      }
+    },
+    "earlyAccess": {
+      "title": "जल्दी पहुंच प्राप्त करें",
+      "description": "हमारे B2B मॉड्यूल लॉन्च होने पर सबसे पहले जानने वाले बनें।",
+      "labels": {
+        "name": "पूरा नाम",
+        "email": "ईमेल",
+        "company": "कंपनी",
+        "interestedIn": "मुझे रुचि है"
+      },
+      "placeholders": {
+        "name": "राहुल शर्मा",
+        "email": "rahul@company.com",
+        "company": "कंपनी प्रा. लि."
+      },
+      "validation": {
+        "nameRequired": "नाम आवश्यक है",
+        "emailRequired": "ईमेल आवश्यक है",
+        "emailInvalid": "कृपया वैध ईमेल दर्ज करें",
+        "moduleRequired": "कृपया कम से कम एक मॉड्यूल चुनें",
+        "submitFailed": "सबमिट करने में विफल। कृपया पुनः प्रयास करें।"
+      },
+      "submitButton": "वेटलिस्ट में शामिल हों",
+      "disclaimer": "सबमिट करके, आप हमारी गोपनीयता नीति और सेवा की शर्तों से सहमत होते हैं।",
+      "success": {
+        "title": "आप सूची में हैं!",
+        "message": "जब {{modules}} के लिए जल्दी पहुंच खुलेगी तो हम आपको सूचित करेंगे।"
+      },
+      "modules": {
+        "recruiter": {
+          "label": "भर्तीकर्ता प्लेटफ़ॉर्म",
+          "description": "साक्षात्कार किट बनाएं, उम्मीदवारों का मूल्यांकन करें और डेटा-संचालित भर्ती निर्णय लें।"
+        },
+        "employeeHub": {
+          "label": "कर्मचारी हब",
+          "description": "नीति-जागरूक उत्तरों के साथ HR टिकट विचलित करें और कर्मचारी ऑनबोर्डिंग को सुव्यवस्थित करें।"
+        }
+      }
+    },
+    "platformShowcase": {
+      "badge": "तीन प्लेटफ़ॉर्म, एक मिशन",
+      "title": "साक्षात्कार यात्रा के हर चरण के लिए निर्मित",
+      "subtitle": "अपने अगले साक्षात्कार के लिए अभ्यास से लेकर विश्व स्तरीय भर्ती टीम बनाने तक, Vocaid आपकी जरूरतों के अनुसार अनुकूलित होता है।",
+      "mostPopular": "सबसे लोकप्रिय",
+      "b2c": {
+        "forLabel": "उम्मीदवारों के लिए",
+        "title": "साक्षात्कार अभ्यास",
+        "description": "AI-संचालित मॉक साक्षात्कार का अभ्यास करें, तत्काल प्रतिक्रिया प्राप्त करें और अपने सुधार को ट्रैक करें।",
+        "performanceTrend": "प्रदर्शन प्रवृत्ति",
+        "improvement": "इस महीने +17%",
+        "stats": {
+          "interviews": "साक्षात्कार",
+          "avgScore": "औसत स्कोर",
+          "resumes": "रिज्यूमे"
+        },
+        "actions": {
+          "startPractice": "अभ्यास शुरू करें",
+          "uploadResume": "रिज्यूमे अपलोड करें"
+        },
+        "cta": "मुफ्त शुरू करें"
+      },
+      "b2b": {
+        "forLabel": "संगठनों के लिए",
+        "title": "भर्तीकर्ता प्लेटफ़ॉर्म",
+        "description": "साक्षात्कार किट बनाएं, उम्मीदवारों का लगातार मूल्यांकन करें और डेटा-संचालित निर्णय लें।",
+        "candidatePipeline": "उम्मीदवार पाइपलाइन",
+        "thisWeek": "इस सप्ताह 12",
+        "recommended": "अनुशंसित",
+        "underReview": "समीक्षा में",
+        "actions": {
+          "interviewKits": "साक्षात्कार किट",
+          "analytics": "एनालिटिक्स"
+        },
+        "cta": "जल्दी पहुंच प्राप्त करें"
+      },
+      "hr": {
+        "forLabel": "आंतरिक टीमों के लिए",
+        "title": "कर्मचारी हब",
+        "description": "नीति-जागरूक उत्तरों के साथ HR टिकट विचलित करें और कर्मचारी ऑनबोर्डिंग को सुव्यवस्थित करें।",
+        "recentQueries": "हाल की क्वेरी",
+        "resolved": "95% हल",
+        "mockQueries": [
+          "छुट्टी कैसे मांगें?",
+          "स्वास्थ्य लाभ क्या हैं?",
+          "रिमोट वर्क पॉलिसी"
+        ],
+        "stats": {
+          "ticketsDeflected": "विचलित टिकट",
+          "avgResponse": "औसत प्रतिक्रिया"
+        },
+        "actions": {
+          "askHR": "HR से पूछें",
+          "policies": "नीतियां"
+        },
+        "cta": "जल्दी पहुंच प्राप्त करें"
+      }
+    },
+    "dashboardPreview": {
+      "badge": "कार्रवाई में देखें",
+      "title": "आपका भर्ती कमांड सेंटर",
+      "subtitle": "उम्मीदवार पाइपलाइन से विस्तृत स्कोरकार्ड और डेवलपर एकीकरण तक—आपको जो कुछ भी चाहिए वह एक ही स्थान पर।",
+      "tabs": {
+        "pipeline": "उम्मीदवार पाइपलाइन",
+        "scorecard": "स्कोरकार्ड",
+        "developer": "डेवलपर पोर्टल"
+      },
+      "pipeline": {
+        "activeCandidates": "सक्रिय उम्मीदवार",
+        "tableHeaders": {
+          "name": "नाम",
+          "stage": "चरण",
+          "fitScore": "फिट स्कोर",
+          "updated": "अपडेट किया गया"
+        },
+        "completionRate": "पूर्णता दर",
+        "sampleData": [
+          {
+            "name": "प्रिया शर्मा",
+            "stage": "अंतिम साक्षात्कार",
+            "fitScore": 92,
+            "lastUpdated": "2 घंटे पहले"
+          },
+          {
+            "name": "राहुल वर्मा",
+            "stage": "तकनीकी समीक्षा",
+            "fitScore": 88,
+            "lastUpdated": "5 घंटे पहले"
+          },
+          {
+            "name": "अंकिता गुप्ता",
+            "stage": "स्क्रीनिंग",
+            "fitScore": 85,
+            "lastUpdated": "1 दिन पहले"
+          },
+          {
+            "name": "अमित कुमार",
+            "stage": "प्रारंभिक साक्षात्कार",
+            "fitScore": 78,
+            "lastUpdated": "2 दिन पहले"
+          },
+          {
+            "name": "नेहा पटेल",
+            "stage": "प्रस्ताव भेजा गया",
+            "fitScore": 95,
+            "lastUpdated": "3 दिन पहले"
+          }
+        ],
+        "stages": {
+          "finalInterview": "अंतिम साक्षात्कार",
+          "technicalReview": "तकनीकी समीक्षा",
+          "screening": "स्क्रीनिंग",
+          "initialInterview": "प्रारंभिक साक्षात्कार",
+          "offerExtended": "प्रस्ताव भेजा गया"
+        }
+      },
+      "scorecard": {
+        "competencyOverview": "क्षमता अवलोकन",
+        "competencies": {
+          "problemSolving": "समस्या समाधान",
+          "communication": "संचार",
+          "technicalDepth": "तकनीकी गहराई",
+          "leadership": "नेतृत्व",
+          "collaboration": "सहयोग",
+          "adaptability": "अनुकूलनशीलता"
+        },
+        "evidence": [
+          {
+            "text": "उत्कृष्ट समस्या समाधान कौशल प्रदर्शित किया",
+            "timestamp": "14:32"
+          },
+          {
+            "text": "जटिल तकनीकी विचारों को स्पष्ट रूप से संप्रेषित किया",
+            "timestamp": "14:28"
+          },
+          {
+            "text": "मजबूत नेतृत्व अनुभव दिखाया",
+            "timestamp": "14:15"
+          }
+        ]
+      },
+      "developer": {
+        "apiCredentials": "API क्रेडेंशियल",
+        "apiKey": "API कुंजी",
+        "reveal": "दिखाएं",
+        "environment": "वातावरण",
+        "production": "प्रोडक्शन",
+        "webhookStatus": "Webhook स्थिति",
+        "webhookEvents": [
+          {
+            "event": "साक्षात्कार.पूर्ण",
+            "status": "success",
+            "timestamp": "14:32:01"
+          },
+          {
+            "event": "स्कोरकार्ड.उत्पन्न",
+            "status": "success",
+            "timestamp": "14:32:05"
+          },
+          {
+            "event": "उम्मीदवार.मूल्यांकित",
+            "status": "success",
+            "timestamp": "14:32:08"
+          },
+          {
+            "event": "webhook.पुनः प्रयास",
+            "status": "pending",
+            "timestamp": "14:32:12"
+          }
+        ]
+      },
+      "sampleData": {
+        "candidate1": "Sarah Chen",
+        "candidate2": "Marcus Johnson",
+        "candidate3": "Emily Rodriguez",
+        "candidate4": "David Kim",
+        "candidate5": "Lisa Thompson",
+        "timeAgo2h": "2 hours ago",
+        "timeAgo3h": "3 hours ago",
+        "timeAgo5h": "5 hours ago",
+        "timeAgo6h": "6 hours ago",
+        "timeAgo1d": "1 day ago"
+      },
+      "stages": {
+        "hrScreen": "HR Screen",
+        "technical": "Technical Interview",
+        "finalRound": "Final Round",
+        "offerExtended": "Offer Extended"
+      },
+      "skills": {
+        "problemSolving": "Problem Solving",
+        "communication": "Communication",
+        "technicalDepth": "Technical Depth",
+        "leadership": "Leadership",
+        "collaboration": "Collaboration",
+        "adaptability": "Adaptability"
+      },
+      "evidence": {
+        "debugging": "Demonstrated systematic approach to debugging",
+        "solutions": "Proposed multiple solution alternatives",
+        "systemDesign": "Explained system design trade-offs clearly",
+        "distributedSystems": "Deep knowledge of distributed systems",
+        "articulation": "Clear articulation of complex concepts",
+        "clarifying": "Asked clarifying questions effectively"
+      }
+    },
+    "platforms": {
+      "b2c": {
+        "title": "Interview Practice",
+        "subtitle": "For Candidates",
+        "description": "Practice AI-powered mock interviews, get instant feedback, and track your improvement over time."
+      },
+      "b2b": {
+        "title": "Recruiter Platform",
+        "subtitle": "For Organizations",
+        "description": "Create interview kits, evaluate candidates consistently, and make data-driven hiring decisions."
+      },
+      "hr": {
+        "title": "Employee Hub",
+        "subtitle": "For Internal Teams",
+        "description": "Deflect HR tickets with policy-aware answers and streamline employee onboarding."
+      }
+    }
+  },
+  "platform": {
+    "b2c": {
+      "title": "Interview Practice",
+      "description": "Practice interviews and improve your performance"
+    },
+    "b2b": {
+      "title": "Recruiter Platform",
+      "description": "Evaluate candidates with structured interviews"
+    },
+    "hr": {
+      "title": "Employee Hub",
+      "description": "Internal employee support and onboarding"
+    }
+  },
+  "auth": {
+    "completingAuthentication": "Completing authentication...",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "password": "Password",
+    "role": "Current Role",
+    "preferredLanguage": "Preferred Language",
+    "selectRole": "Select your role",
+    "selectLanguage": "Select your language",
+    "forgotPassword": "Forgot password?",
+    "creating": "Creating account...",
+    "signingIn": "Signing in...",
+    "verifying": "Verifying...",
+    "haveAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "didntReceiveCode": "Didn't receive the code?",
+    "resendCode": "Resend",
+    "backToForm": "Back to sign up",
+    "backToSignIn": "Back to sign in",
+    "trustBar": "Join thousands of professionals improving their interview skills with Vocaid.",
+    "verificationCode": "Verification Code",
+    "signUp": {
+      "title": "Create your account",
+      "subtitle": "Start practicing your interview skills today",
+      "button": "Create Account",
+      "link": "Sign up"
+    },
+    "signIn": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to continue your interview practice",
+      "button": "Sign In",
+      "link": "Sign in",
+      "success": "Welcome back!",
+      "redirecting": "Redirecting to your dashboard..."
+    },
+    "verification": {
+      "title": "Verify your email",
+      "subtitle": "We sent a verification code to",
+      "button": "Verify Email"
+    },
+    "complete": {
+      "title": "Welcome to Vocaid!",
+      "subtitle": "Your account has been created successfully. Redirecting to dashboard..."
+    },
+    "twoFactor": {
+      "title": "Two-Factor Authentication",
+      "subtitle": "Enter the code from your authenticator app",
+      "code": "Verification Code",
+      "button": "Verify"
+    },
+    "sso": {
+      "completing": "Completing sign in..."
+    },
+    "roles": {
+      "recruiter": "Recruiter",
+      "candidate": "Candidate",
+      "manager": "Manager",
+      "admin": "Admin",
+      "employee": "Employee"
+    },
+    "accessDenied": "Access Denied",
+    "insufficientPermissions": "You do not have permission to access this page.",
+    "requiredRoles": "Required: {{roles}}",
+    "createAccount": "Sign up"
+  },
+  "account": {
+    "title": "Account Settings",
+    "subtitle": "Manage your profile and preferences",
+    "profileUpdated": "Profile updated successfully",
+    "passwordChanged": "Password changed successfully",
+    "personal": "Personal",
+    "switchWorkspace": "Switch Workspace",
+    "selectWorkspace": "Select Workspace",
+    "sections": {
+      "profile": "Profile",
+      "security": "Security",
+      "danger": "Danger Zone"
+    },
+    "profile": {
+      "title": "Profile Information",
+      "avatar": "Profile Picture",
+      "avatarHint": "Managed through your OAuth provider",
+      "save": "Save Changes"
+    },
+    "security": {
+      "title": "Change Password",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New Password",
+      "changePassword": "Change Password"
+    },
+    "danger": {
+      "title": "Delete Account",
+      "warning": "This action is permanent and cannot be undone. All your data will be permanently deleted.",
+      "confirmLabel": "Type DELETE to confirm",
+      "deleteButton": "Permanently Delete Account",
+      "deleting": "Deleting..."
+    }
+  },
+  "workspace": {
+    "selectRequired": "Select a Workspace",
+    "selectDescription": "Please select or create a workspace to continue.",
+    "selectButton": "Select Workspace"
+  },
+  "footer": {
+    "copyright": "© 2024 Vocaid. All rights reserved."
+  }
+}

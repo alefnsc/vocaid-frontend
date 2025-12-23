@@ -108,6 +108,58 @@ function clearAllCache(): void {
     invalidateCache('voxly_');
 }
 
+// ==========================================
+// SAFE JSON RESPONSE HANDLING
+// ==========================================
+
+/**
+ * Safely parse JSON response with proper error handling
+ * Ensures we never try to parse HTML as JSON
+ */
+async function safeJsonParse<T>(response: Response, endpointName: string): Promise<T> {
+    const contentType = response.headers.get('content-type') || '';
+    
+    // Check if response is JSON
+    if (!contentType.includes('application/json')) {
+        // Get first 200 chars of response for debugging
+        const text = await response.text();
+        const preview = text.slice(0, 200);
+        
+        console.error(`❌ Non-JSON response from ${endpointName}:`, {
+            status: response.status,
+            contentType,
+            preview: preview.replace(/\n/g, ' ')
+        });
+        
+        // If it looks like HTML, provide a helpful error
+        if (text.includes('<!DOCTYPE') || text.includes('<html')) {
+            throw new Error(`Server returned HTML instead of JSON for ${endpointName}. The endpoint may not exist or there's a server error.`);
+        }
+        
+        throw new Error(`Invalid response type from ${endpointName}: expected JSON, got ${contentType || 'unknown'}`);
+    }
+    
+    try {
+        return await response.json() as T;
+    } catch (parseError) {
+        console.error(`❌ JSON parse error for ${endpointName}:`, parseError);
+        throw new Error(`Failed to parse JSON response from ${endpointName}`);
+    }
+}
+
+/**
+ * Make a fetch request with safe JSON handling
+ */
+async function safeFetch<T>(
+    url: string,
+    options: RequestInit,
+    endpointName: string
+): Promise<{ response: Response; data: T }> {
+    const response = await fetch(url, options);
+    const data = await safeJsonParse<T>(response, endpointName);
+    return { response, data };
+}
+
 // Get headers with optional user authentication
 const getHeaders = (userId?: string): Record<string, string> => {
     const headers: Record<string, string> = {
@@ -139,6 +191,7 @@ interface Metadata {
     resume_file_name?: string;
     resume_mime_type?: string;
     interview_id?: string;
+    preferred_language?: string; // Language code for multilingual support (e.g., 'en-US', 'zh-CN')
 }
 
 interface MainInterface {
@@ -338,9 +391,10 @@ class APIService {
     async completeInterview(interviewId: string, userId: string, results: {
         score?: number;
         feedbackText?: string;
+        feedbackPdf?: string;
         callDuration?: number;
     }): Promise<void> {
-        console.log('✅ Completing interview:', { interviewId });
+        console.log('✅ Completing interview:', { interviewId, hasScore: !!results.score, hasPdf: !!results.feedbackPdf });
         
         const response = await fetch(`${BACKEND_URL}/api/interviews/${interviewId}`, {
             method: "PATCH",
@@ -356,6 +410,100 @@ class APIService {
             console.error('❌ Failed to complete interview:', response.status);
         } else {
             console.log('✅ Interview marked as completed');
+        }
+    }
+
+    /**
+     * Send feedback email with PDF attachment
+     * Uses the new unified email endpoint that accepts PDF directly
+     * 
+     * @param interviewId - Interview UUID
+     * @param pdfBase64 - Base64 encoded PDF (with or without data URL prefix)
+     * @param options - Optional metadata for email
+     */
+    async sendFeedbackEmail(
+        interviewId: string, 
+        pdfBase64: string,
+        options?: {
+            fileName?: string;
+            locale?: string;
+            meta?: { roleTitle?: string; seniority?: string; company?: string }
+        }
+    ): Promise<{ ok: boolean; messageId?: string; error?: { code: string; message: string }; status?: string }> {
+        console.log('📧 Sending feedback email with PDF:', { 
+            interviewId, 
+            pdfSize: `${Math.round(pdfBase64.length / 1024)}KB`
+        });
+        
+        try {
+            const response = await fetch(`${BACKEND_URL}/api/email/feedback`, {
+                method: "POST",
+                headers: getHeaders(),
+                body: JSON.stringify({
+                    interviewId,
+                    pdfBase64,
+                    fileName: options?.fileName,
+                    locale: options?.locale,
+                    meta: options?.meta
+                }),
+            });
+            
+            // Verify response is JSON
+            const contentType = response.headers.get('content-type');
+            if (!contentType?.includes('application/json')) {
+                console.error('❌ Non-JSON response from email endpoint:', contentType);
+                return { 
+                    ok: false, 
+                    error: { 
+                        code: 'INVALID_RESPONSE', 
+                        message: 'Server returned an invalid response' 
+                    } 
+                };
+            }
+            
+            const result = await response.json();
+            
+            if (!response.ok) {
+                console.error('❌ Failed to send feedback email:', response.status, result);
+                return { 
+                    ok: false, 
+                    error: result.error || { code: 'UNKNOWN', message: 'Failed to send email' }
+                };
+            }
+            
+            console.log('✅ Feedback email result:', result);
+            return result;
+        } catch (error: any) {
+            console.error('❌ Error sending feedback email:', error);
+            return { 
+                ok: false, 
+                error: { code: 'NETWORK_ERROR', message: error.message }
+            };
+        }
+    }
+
+    /**
+     * Get email status for an interview
+     */
+    async getEmailStatus(interviewId: string): Promise<{
+        ok: boolean;
+        status?: 'PENDING' | 'SENDING' | 'SENT' | 'FAILED';
+        sentAt?: string;
+        error?: string;
+    }> {
+        try {
+            const response = await fetch(`${BACKEND_URL}/api/email/status/${interviewId}`, {
+                method: "GET",
+                headers: getHeaders(),
+            });
+            
+            if (!response.ok) {
+                return { ok: false };
+            }
+            
+            return await response.json();
+        } catch (error) {
+            return { ok: false };
         }
     }
 
@@ -833,12 +981,17 @@ class APIService {
             body: JSON.stringify({ deviceFingerprint }),
         });
         
+        // Use safe JSON parsing to avoid HTML errors
+        const result = await safeJsonParse<{ status: string; user: any; message: string; freeTrialGranted?: boolean; freeCreditBlocked?: boolean }>(
+            response, 
+            'validateUser'
+        );
+        
         if (!response.ok) {
-            console.error('❌ User validation failed:', response.status);
-            throw new Error(`Error validating user: ${response.status}`);
+            console.error('❌ User validation failed:', response.status, result);
+            throw new Error(result.message || `Error validating user: ${response.status}`);
         }
         
-        const result = await response.json();
         console.log('✅ User validated:', {
             status: result.status,
             message: result.message,
@@ -852,8 +1005,28 @@ class APIService {
 
     /**
      * Get current user data from backend
+     * Uses sessionStorage cache to prevent excessive API calls
      */
-    async getCurrentUser(userId: string): Promise<{ status: string; user: any }> {
+    async getCurrentUser(userId: string, skipCache: boolean = false): Promise<{ status: string; user: any }> {
+        const cacheKey = `voxly_current_user_${userId}`;
+        const cacheTTL = 60 * 1000; // 1 minute cache
+        
+        // Check cache first (unless skipCache is true)
+        if (!skipCache) {
+            try {
+                const cached = sessionStorage.getItem(cacheKey);
+                if (cached) {
+                    const { data, timestamp } = JSON.parse(cached);
+                    if (Date.now() - timestamp < cacheTTL) {
+                        console.log('📦 Using cached user data (getCurrentUser)');
+                        return data;
+                    }
+                }
+            } catch {
+                // Ignore cache errors
+            }
+        }
+        
         console.log('👤 Getting current user from backend:', userId);
         
         const response = await fetch(`${BACKEND_URL}/api/users/me`, {
@@ -872,8 +1045,1232 @@ class APIService {
             email: result.user?.email,
             credits: result.user?.credits
         });
+        
+        // Cache the result
+        try {
+            sessionStorage.setItem(cacheKey, JSON.stringify({
+                data: result,
+                timestamp: Date.now()
+            }));
+        } catch {
+            // Ignore cache errors
+        }
+        
         return result;
     }
+
+    // ==========================================
+    // CREDITS WALLET API
+    // ==========================================
+
+    /**
+     * Get user's wallet balance and summary
+     */
+    async getWalletBalance(userId: string): Promise<{
+        status: string;
+        data: {
+            balance: number;
+            totalEarned: number;
+            totalSpent: number;
+            totalPurchased: number;
+            totalGranted: number;
+            lastCreditAt?: string;
+            lastDebitAt?: string;
+        };
+    }> {
+        console.log('💰 Getting wallet balance:', userId);
+        
+        const response = await fetch(`${BACKEND_URL}/api/credits`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error getting wallet balance: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Get user's credit transaction history
+     */
+    async getWalletHistory(
+        userId: string,
+        options?: { limit?: number; offset?: number; type?: string }
+    ): Promise<{
+        status: string;
+        data: {
+            transactions: Array<{
+                id: string;
+                type: string;
+                amount: number;
+                balanceAfter: number;
+                description: string;
+                referenceType?: string;
+                referenceId?: string;
+                createdAt: string;
+            }>;
+            pagination: {
+                total: number;
+                limit: number;
+                offset: number;
+                hasMore: boolean;
+            };
+        };
+    }> {
+        console.log('📜 Getting wallet history:', userId);
+        
+        const params = new URLSearchParams();
+        if (options?.limit) params.append('limit', String(options.limit));
+        if (options?.offset) params.append('offset', String(options.offset));
+        if (options?.type) params.append('type', options.type);
+        
+        const url = `${BACKEND_URL}/api/credits/history${params.toString() ? `?${params}` : ''}`;
+        
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error getting wallet history: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Check if user has enough credits
+     */
+    async checkCredits(userId: string, amount: number = 1): Promise<{
+        status: string;
+        data: {
+            hasEnough: boolean;
+            currentBalance: number;
+            required: number;
+        };
+    }> {
+        console.log('🔍 Checking credits:', { userId, amount });
+        
+        const response = await fetch(`${BACKEND_URL}/api/credits/check?amount=${amount}`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error checking credits: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    // ==========================================
+    // LEADS API (Public - No Auth Required)
+    // ==========================================
+
+    /**
+     * Submit a demo request (B2B sales lead)
+     */
+    async submitDemoRequest(data: {
+        name: string;
+        email: string;
+        company: string;
+        teamSize?: string;
+        useCase?: string;
+    }): Promise<{ status: string; message: string; data?: { id: string } }> {
+        console.log('📧 Submitting demo request:', { email: data.email, company: data.company });
+        
+        const response = await fetch(`${BACKEND_URL}/api/leads/demo-request`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || `Error submitting demo request: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Submit early access signup for B2B modules
+     */
+    async submitEarlyAccess(data: {
+        name: string;
+        email: string;
+        company?: string;
+        phone?: string;
+        interestedModules?: string[];
+    }): Promise<{ status: string; message: string; data?: { id: string } }> {
+        console.log('🚀 Submitting early access request:', { 
+            email: data.email, 
+            modules: data.interestedModules 
+        });
+        
+        const response = await fetch(`${BACKEND_URL}/api/leads/early-access`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || `Error submitting early access request: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    // ==========================================
+    // MULTILINGUAL & PREFERENCES API
+    // ==========================================
+
+    /**
+     * Get user's language and region preferences
+     */
+    async getUserPreferences(userId: string): Promise<{
+        status: string;
+        data: {
+            language: string;
+            languageConfig: {
+                code: string;
+                name: string;
+                englishName: string;
+                flag: string;
+            };
+            region: string;
+            country: string;
+            paymentProvider: 'mercadopago' | 'paypal';
+            timezone?: string;
+        };
+    }> {
+        console.log('🌐 Getting user preferences:', userId);
+        
+        const response = await fetch(`${BACKEND_URL}/api/multilingual/preferences`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error getting preferences: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Update user's language and region preferences
+     */
+    async updateUserPreferences(params: {
+        preferredLanguage?: string;
+        country?: string;
+        timezone?: string;
+        languageSetByUser?: boolean;
+    }): Promise<any> {
+        // This is a placeholder - in production, this would call the backend
+        // For now, we're storing in Clerk metadata via the backend
+        console.log('🌐 Updating user preferences:', params);
+        
+        // The actual implementation would be:
+        // const response = await fetch(`${BACKEND_URL}/api/multilingual/preferences`, {
+        //     method: 'PUT',
+        //     headers: getHeaders(userId),
+        //     body: JSON.stringify({
+        //         language: params.preferredLanguage,
+        //         country: params.country,
+        //         timezone: params.timezone,
+        //     }),
+        // });
+        
+        // For now, just store locally
+        if (params.preferredLanguage) {
+            localStorage.setItem('voxly_language', params.preferredLanguage);
+        }
+        
+        return { status: 'success' };
+    }
+
+    /**
+     * Initialize preferences for new user with auto-detection
+     */
+    async initializeUserPreferences(userId: string): Promise<any> {
+        console.log('🌐 Initializing user preferences:', userId);
+        
+        const response = await fetch(`${BACKEND_URL}/api/multilingual/preferences/initialize`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error initializing preferences: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Get list of supported languages
+     */
+    async getSupportedLanguages(): Promise<{
+        status: string;
+        data: Array<{
+            code: string;
+            name: string;
+            englishName: string;
+            flag: string;
+            hasAgent: boolean;
+        }>;
+    }> {
+        const response = await fetch(`${BACKEND_URL}/api/multilingual/languages`, {
+            method: 'GET',
+            headers: getHeaders(),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error getting languages: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Register a multilingual interview call
+     */
+    async registerMultilingualCall(
+        userId: string,
+        params: {
+            language?: string;
+            metadata: {
+                first_name: string;
+                last_name?: string;
+                job_title: string;
+                company_name: string;
+                job_description: string;
+                interviewee_cv: string;
+                resume_file_name?: string;
+                resume_mime_type?: string;
+                interview_id?: string;
+            };
+        }
+    ): Promise<{
+        status: string;
+        data: {
+            call_id: string;
+            access_token: string;
+            status: string;
+            message: string;
+            language: {
+                code: string;
+                name: string;
+                englishName: string;
+            };
+        };
+    }> {
+        console.log('📞 Registering multilingual call:', { userId, language: params.language });
+        
+        const response = await fetch(`${BACKEND_URL}/api/multilingual/call/register`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+            body: JSON.stringify(params),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error registering call: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    // ==========================================
+    // GEO-PAYMENT API
+    // ==========================================
+
+    /**
+     * Get preferred payment provider based on user's region
+     */
+    async getPreferredPaymentProvider(userId: string): Promise<{
+        status: string;
+        data: {
+            provider: 'mercadopago' | 'paypal';
+            name: string;
+            isFallback: boolean;
+            supportedCurrencies: string[];
+        };
+    }> {
+        console.log('💳 Getting preferred payment provider:', userId);
+        
+        const response = await fetch(`${BACKEND_URL}/api/multilingual/payment/provider`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error getting payment provider: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Get credit packages with localized prices
+     */
+    async getLocalizedPackages(userId: string): Promise<{
+        status: string;
+        data: {
+            packages: Array<{
+                id: string;
+                name: string;
+                credits: number;
+                price: number;
+                priceUSD: number;
+                currency: string;
+                description: string;
+            }>;
+            currency: string;
+            region: string;
+            language: string;
+        };
+    }> {
+        console.log('📦 Getting localized packages:', userId);
+        
+        const response = await fetch(`${BACKEND_URL}/api/multilingual/payment/packages`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error getting packages: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Create payment with automatic provider selection based on region
+     */
+    async createGeoPayment(
+        userId: string,
+        params: {
+            packageId: 'starter' | 'intermediate' | 'professional';
+            language?: string;
+        }
+    ): Promise<{
+        status: string;
+        data: {
+            paymentId: string;
+            redirectUrl: string;
+            provider: 'mercadopago' | 'paypal';
+            sandboxMode: boolean;
+        };
+    }> {
+        console.log('💳 Creating geo-based payment:', { userId, ...params });
+        
+        const response = await fetch(`${BACKEND_URL}/api/multilingual/payment/create`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+            body: JSON.stringify(params),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error creating payment: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Check payment status
+     */
+    async checkPaymentStatus(
+        userId: string,
+        paymentId: string,
+        provider: 'mercadopago' | 'paypal'
+    ): Promise<{
+        status: string;
+        data: {
+            status: 'approved' | 'pending' | 'rejected' | 'cancelled' | 'unknown';
+            statusDetail?: string;
+            paidAt?: string;
+            amount?: number;
+            currency?: string;
+        };
+    }> {
+        console.log('🔍 Checking payment status:', { paymentId, provider });
+        
+        const response = await fetch(
+            `${BACKEND_URL}/api/multilingual/payment/status/${paymentId}?provider=${provider}`,
+            {
+                method: 'GET',
+                headers: getHeaders(userId),
+            }
+        );
+        
+        if (!response.ok) {
+            throw new Error(`Error checking payment status: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    // ==========================================
+    // RESUME REPOSITORY
+    // ==========================================
+
+    /**
+     * Get all resumes from the repository
+     */
+    async getResumes(userId: string): Promise<{
+        status: string;
+        data: ResumeListItem[];
+    }> {
+        const response = await fetch(`${BACKEND_URL}/api/resumes`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error getting resumes: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Get primary resume
+     */
+    async getPrimaryResume(userId: string, includeData = false): Promise<{
+        status: string;
+        data: ResumeDocument | null;
+    }> {
+        const response = await fetch(
+            `${BACKEND_URL}/api/resumes/primary?includeData=${includeData}`,
+            {
+                method: 'GET',
+                headers: getHeaders(userId),
+            }
+        );
+        
+        if (!response.ok) {
+            if (response.status === 404) {
+                return { status: 'success', data: null };
+            }
+            throw new Error(`Error getting primary resume: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Get a specific resume by ID
+     */
+    async getResumeById(
+        userId: string,
+        resumeId: string,
+        includeData = false
+    ): Promise<{
+        status: string;
+        data: ResumeDocument;
+    }> {
+        const response = await fetch(
+            `${BACKEND_URL}/api/resumes/${resumeId}?includeData=${includeData}`,
+            {
+                method: 'GET',
+                headers: getHeaders(userId),
+            }
+        );
+        
+        if (!response.ok) {
+            throw new Error(`Error getting resume: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Create a new resume in the repository
+     */
+    async createResume(
+        userId: string,
+        data: {
+            fileName: string;
+            mimeType: string;
+            base64Data: string;
+            title?: string;
+            description?: string;
+            tags?: string[];
+            isPrimary?: boolean;
+        }
+    ): Promise<{
+        status: string;
+        data: {
+            id: string;
+            title: string;
+            fileName: string;
+            version: number;
+            isPrimary: boolean;
+        };
+    }> {
+        const response = await fetch(`${BACKEND_URL}/api/resumes`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+            body: JSON.stringify(data),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error creating resume: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Update resume metadata
+     */
+    async updateResume(
+        userId: string,
+        resumeId: string,
+        data: {
+            title?: string;
+            description?: string;
+            tags?: string[];
+            isPrimary?: boolean;
+        }
+    ): Promise<{
+        status: string;
+        data: ResumeDocument;
+    }> {
+        const response = await fetch(`${BACKEND_URL}/api/resumes/${resumeId}`, {
+            method: 'PATCH',
+            headers: getHeaders(userId),
+            body: JSON.stringify(data),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error updating resume: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Delete a resume
+     */
+    async deleteResume(userId: string, resumeId: string): Promise<{
+        status: string;
+        message: string;
+    }> {
+        const response = await fetch(`${BACKEND_URL}/api/resumes/${resumeId}`, {
+            method: 'DELETE',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error deleting resume: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Set a resume as primary
+     */
+    async setPrimaryResume(userId: string, resumeId: string): Promise<{
+        status: string;
+        message: string;
+    }> {
+        const response = await fetch(`${BACKEND_URL}/api/resumes/${resumeId}/primary`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error setting primary resume: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Get resume version history
+     */
+    async getResumeVersions(userId: string, resumeId: string): Promise<{
+        status: string;
+        data: ResumeVersion[];
+    }> {
+        const response = await fetch(`${BACKEND_URL}/api/resumes/${resumeId}/versions`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error getting resume versions: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Create a new version of a resume
+     */
+    async createResumeVersion(
+        userId: string,
+        resumeId: string,
+        data: {
+            fileName: string;
+            mimeType: string;
+            base64Data: string;
+        }
+    ): Promise<{
+        status: string;
+        data: {
+            id: string;
+            title: string;
+            fileName: string;
+            version: number;
+        };
+    }> {
+        const response = await fetch(`${BACKEND_URL}/api/resumes/${resumeId}/versions`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+            body: JSON.stringify(data),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error creating resume version: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    // ==========================================
+    // INTERVIEW CLONE & RETRY
+    // ==========================================
+
+    /**
+     * Clone an interview to retry with same job details
+     */
+    async cloneInterview(
+        userId: string,
+        interviewId: string,
+        options?: {
+            useLatestResume?: boolean;
+            resumeId?: string;
+            updateJobDescription?: string;
+        }
+    ): Promise<{
+        status: string;
+        data: {
+            id: string;
+            jobTitle: string;
+            companyName: string;
+            status: string;
+            message: string;
+        };
+    }> {
+        const response = await fetch(`${BACKEND_URL}/api/interviews/${interviewId}/clone`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+            body: JSON.stringify(options || {}),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error cloning interview: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Get suggested interviews to retake
+     */
+    async getSuggestedRetakes(userId: string, limit = 5): Promise<{
+        status: string;
+        data: Array<{
+            id: string;
+            jobTitle: string;
+            companyName: string;
+            score: number;
+            createdAt: string;
+            reason: string;
+        }>;
+    }> {
+        const response = await fetch(
+            `${BACKEND_URL}/api/interviews/suggested-retakes?limit=${limit}`,
+            {
+                method: 'GET',
+                headers: getHeaders(userId),
+            }
+        );
+        
+        if (!response.ok) {
+            throw new Error(`Error getting suggested retakes: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Create interview from resume repository
+     */
+    async createInterviewFromResume(
+        userId: string,
+        resumeId: string,
+        jobDetails: {
+            jobTitle: string;
+            companyName: string;
+            jobDescription: string;
+        }
+    ): Promise<{
+        status: string;
+        data: {
+            id: string;
+            jobTitle: string;
+            companyName: string;
+            status: string;
+            message: string;
+        };
+    }> {
+        const response = await fetch(`${BACKEND_URL}/api/interviews/from-resume`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+            body: JSON.stringify({
+                resumeId,
+                ...jobDetails,
+            }),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error creating interview from resume: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Get interview history for role/company
+     */
+    async getInterviewHistory(
+        userId: string,
+        options?: {
+            jobTitle?: string;
+            companyName?: string;
+        }
+    ): Promise<{
+        status: string;
+        data: {
+            interviews: InterviewSummary[];
+            stats: {
+                totalAttempts: number;
+                averageScore: number | null;
+                scoreImprovement: number | null;
+                bestScore: number | null;
+            };
+        };
+    }> {
+        const params = new URLSearchParams();
+        if (options?.jobTitle) params.append('jobTitle', options.jobTitle);
+        if (options?.companyName) params.append('companyName', options.companyName);
+        
+        const response = await fetch(
+            `${BACKEND_URL}/api/interviews/history?${params.toString()}`,
+            {
+                method: 'GET',
+                headers: getHeaders(userId),
+            }
+        );
+        
+        if (!response.ok) {
+            throw new Error(`Error getting interview history: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    // ==========================================
+    // RECORDING PLAYBACK
+    // ==========================================
+
+    /**
+     * Get complete playback data for an interview
+     */
+    async getPlaybackData(userId: string, interviewId: string): Promise<{
+        status: string;
+        data: PlaybackData;
+    }> {
+        const response = await fetch(`${BACKEND_URL}/api/recordings/${interviewId}`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error getting playback data: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Get synchronized transcript
+     */
+    async getTranscript(userId: string, interviewId: string): Promise<{
+        status: string;
+        data: SynchronizedTranscript;
+    }> {
+        const response = await fetch(
+            `${BACKEND_URL}/api/recordings/${interviewId}/transcript`,
+            {
+                method: 'GET',
+                headers: getHeaders(userId),
+            }
+        );
+        
+        if (!response.ok) {
+            throw new Error(`Error getting transcript: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Search transcript
+     */
+    async searchTranscript(
+        userId: string,
+        interviewId: string,
+        query: string
+    ): Promise<{
+        status: string;
+        data: {
+            query: string;
+            matches: number;
+            segments: TranscriptSegment[];
+        };
+    }> {
+        const response = await fetch(
+            `${BACKEND_URL}/api/recordings/${interviewId}/transcript/search?q=${encodeURIComponent(query)}`,
+            {
+                method: 'GET',
+                headers: getHeaders(userId),
+            }
+        );
+        
+        if (!response.ok) {
+            throw new Error(`Error searching transcript: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Get playback markers
+     */
+    async getPlaybackMarkers(userId: string, interviewId: string): Promise<{
+        status: string;
+        data: PlaybackMarker[];
+    }> {
+        const response = await fetch(
+            `${BACKEND_URL}/api/recordings/${interviewId}/markers`,
+            {
+                method: 'GET',
+                headers: getHeaders(userId),
+            }
+        );
+        
+        if (!response.ok) {
+            throw new Error(`Error getting playback markers: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Save custom playback marker
+     */
+    async savePlaybackMarker(
+        userId: string,
+        interviewId: string,
+        marker: {
+            timestamp: number;
+            label: string;
+            description?: string;
+            color?: string;
+        }
+    ): Promise<{
+        status: string;
+        data: PlaybackMarker;
+    }> {
+        const response = await fetch(
+            `${BACKEND_URL}/api/recordings/${interviewId}/markers`,
+            {
+                method: 'POST',
+                headers: getHeaders(userId),
+                body: JSON.stringify(marker),
+            }
+        );
+        
+        if (!response.ok) {
+            throw new Error(`Error saving playback marker: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    // ==========================================
+    // ENHANCED ANALYTICS
+    // ==========================================
+
+    /**
+     * Get enhanced filter options with counts
+     */
+    async getEnhancedFilterOptions(userId: string): Promise<{
+        status: string;
+        data: {
+            roles: { name: string; count: number }[];
+            companies: { name: string; count: number }[];
+            dateRange: { earliest: string | null; latest: string | null };
+            scoreRange: { min: number; max: number };
+        };
+    }> {
+        const response = await fetch(
+            `${BACKEND_URL}/api/analytics/filters/enhanced`,
+            {
+                method: 'GET',
+                headers: getHeaders(userId),
+            }
+        );
+        
+        if (!response.ok) {
+            throw new Error(`Error getting filter options: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Get filtered analytics
+     */
+    async getFilteredAnalytics(
+        userId: string,
+        filters: AdvancedFilters
+    ): Promise<{
+        status: string;
+        data: FilteredAnalyticsResult;
+    }> {
+        const response = await fetch(`${BACKEND_URL}/api/analytics/filtered`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+            body: JSON.stringify(filters),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error getting filtered analytics: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Compare two interviews
+     */
+    async compareInterviews(
+        userId: string,
+        interview1: string,
+        interview2: string
+    ): Promise<{
+        status: string;
+        data: ComparisonResult;
+    }> {
+        const response = await fetch(
+            `${BACKEND_URL}/api/analytics/compare?interview1=${interview1}&interview2=${interview2}`,
+            {
+                method: 'GET',
+                headers: getHeaders(userId),
+            }
+        );
+        
+        if (!response.ok) {
+            throw new Error(`Error comparing interviews: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Get interview progression
+     */
+    async getInterviewProgression(
+        userId: string,
+        options?: {
+            role?: string;
+            company?: string;
+            limit?: number;
+        }
+    ): Promise<{
+        status: string;
+        data: {
+            interviews: InterviewSummary[];
+            trendLine: { date: string; score: number }[];
+            averageImprovement: number;
+        };
+    }> {
+        const params = new URLSearchParams();
+        if (options?.role) params.append('role', options.role);
+        if (options?.company) params.append('company', options.company);
+        if (options?.limit) params.append('limit', options.limit.toString());
+        
+        const response = await fetch(
+            `${BACKEND_URL}/api/analytics/progression?${params.toString()}`,
+            {
+                method: 'GET',
+                headers: getHeaders(userId),
+            }
+        );
+        
+        if (!response.ok) {
+            throw new Error(`Error getting interview progression: ${response.status}`);
+        }
+        
+        return response.json();
+    }
 }
-const apiService =  new APIService();
+
+// ==========================================
+// TYPES FOR NEW FEATURES
+// ==========================================
+
+export interface ResumeListItem {
+    id: string;
+    title: string;
+    fileName: string;
+    fileSize: number;
+    version: number;
+    qualityScore?: number;
+    isPrimary: boolean;
+    tags: string[];
+    createdAt: string;
+    updatedAt: string;
+    usageCount: number;
+}
+
+export interface ResumeDocument extends ResumeListItem {
+    userId: string;
+    mimeType: string;
+    base64Data?: string;
+    description?: string;
+    parsedText?: string;
+    parsedMetadata?: any;
+    parentVersionId?: string;
+    isLatest: boolean;
+    isActive: boolean;
+}
+
+export interface ResumeVersion {
+    id: string;
+    version: number;
+    createdAt: string;
+    fileName: string;
+    fileSize: number;
+    qualityScore?: number;
+}
+
+export interface TranscriptSegment {
+    id: string;
+    speaker: 'agent' | 'user';
+    text: string;
+    startTime: number;
+    endTime: number;
+    confidence?: number;
+}
+
+export interface SynchronizedTranscript {
+    interviewId: string;
+    segments: TranscriptSegment[];
+    totalDuration: number;
+    speakerBreakdown: {
+        agentDuration: number;
+        userDuration: number;
+        agentWordCount: number;
+        userWordCount: number;
+    };
+}
+
+export interface PlaybackMarker {
+    id: string;
+    type: 'highlight' | 'improvement' | 'question' | 'answer' | 'pause' | 'custom';
+    timestamp: number;
+    label: string;
+    description?: string;
+    color?: string;
+}
+
+export interface PlaybackData {
+    recording: {
+        interviewId: string;
+        retellCallId: string;
+        audioUrl: string | null;
+        audioDuration: number;
+        audioFormat: string;
+        recordingStatus: 'pending' | 'processing' | 'available' | 'unavailable' | 'expired';
+        recordedAt: string;
+        expiresAt?: string;
+    };
+    transcript: SynchronizedTranscript;
+    markers: PlaybackMarker[];
+}
+
+export interface AdvancedFilters {
+    dateRange: {
+        preset?: 'today' | 'last7days' | 'last30days' | 'last90days' | 'thisMonth' | 'lastMonth' | 'thisYear' | 'allTime' | 'custom';
+        startDate?: string;
+        endDate?: string;
+    };
+    roles?: string[];
+    companies?: string[];
+    scoreRange?: {
+        min?: number;
+        max?: number;
+    };
+    sortBy?: 'date' | 'score' | 'duration' | 'company' | 'role';
+    sortOrder?: 'asc' | 'desc';
+}
+
+export interface FilteredAnalyticsResult {
+    interviews: InterviewSummary[];
+    summary: {
+        totalInterviews: number;
+        avgScore: number;
+        bestScore: number;
+        worstScore: number;
+        totalDuration: number;
+        scoreImprovement: number;
+    };
+    charts: {
+        scoreTimeSeries: { date: string; value: number; count?: number }[];
+        scoresByRole: { role: string; avgScore: number; count: number; trend: number }[];
+        scoresByCompany: { company: string; avgScore: number; count: number; trend: number }[];
+    };
+}
+
+export interface ComparisonResult {
+    current: InterviewSummary;
+    comparison: InterviewSummary | null;
+    differences: {
+        overallScore: number;
+        duration: number;
+        communicationScore?: number;
+        technicalScore?: number;
+        confidenceScore?: number;
+    };
+    improvements: string[];
+    regressions: string[];
+}
+
+const apiService = new APIService();
 export default apiService;

@@ -121,7 +121,7 @@ const Interview = () => {
     }
 
     return (
-        <DefaultLayout className="flex flex-col overflow-hidden items-center bg-gradient-to-br from-gray-50 via-white to-gray-100 min-h-screen">
+        <DefaultLayout className="flex flex-col overflow-hidden items-center bg-white min-h-screen">
             {/* Breadcrumbs - hidden during interview but present for flow tracking */}
             <div className="w-full max-w-5xl px-4 sm:px-6 lg:px-8 pt-4">
                 <InterviewBreadcrumbs 

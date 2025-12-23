@@ -71,9 +71,9 @@ export const InterviewBreadcrumbs: React.FC<InterviewBreadcrumbsProps> = ({
                     <div
                       className={cn(
                         'flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium transition-all',
-                        status === 'completed' && 'bg-voxly-purple text-white',
-                        status === 'current' && 'bg-voxly-purple text-white ring-4 ring-purple-100',
-                        status === 'upcoming' && 'bg-gray-200 text-gray-500'
+                        status === 'completed' && 'bg-purple-600 text-white',
+                        status === 'current' && 'bg-purple-600 text-white ring-4 ring-purple-100',
+                        status === 'upcoming' && 'bg-zinc-200 text-zinc-500'
                       )}
                     >
                       {status === 'completed' ? (
@@ -85,9 +85,9 @@ export const InterviewBreadcrumbs: React.FC<InterviewBreadcrumbsProps> = ({
                     <span
                       className={cn(
                         'text-sm font-medium hidden sm:inline',
-                        status === 'current' && 'text-voxly-purple',
-                        status === 'completed' && 'text-gray-700',
-                        status === 'upcoming' && 'text-gray-400'
+                        status === 'current' && 'text-purple-600',
+                        status === 'completed' && 'text-zinc-700',
+                        status === 'upcoming' && 'text-zinc-400'
                       )}
                     >
                       {step.label}
@@ -101,8 +101,8 @@ export const InterviewBreadcrumbs: React.FC<InterviewBreadcrumbsProps> = ({
                         className={cn(
                           'w-5 h-5',
                           status === 'completed' || status === 'current'
-                            ? 'text-voxly-purple'
-                            : 'text-gray-300'
+                            ? 'text-purple-600'
+                            : 'text-zinc-300'
                         )}
                       />
                     </div>
@@ -119,7 +119,7 @@ export const InterviewBreadcrumbs: React.FC<InterviewBreadcrumbsProps> = ({
 
       {/* Mobile step label */}
       <div className="sm:hidden text-center mb-4">
-        <span className="text-sm font-medium text-voxly-purple">
+        <span className="text-sm font-medium text-purple-600">
           Step {currentIndex + 1}: {steps[currentIndex]?.label}
         </span>
       </div>

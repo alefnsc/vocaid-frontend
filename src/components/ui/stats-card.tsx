@@ -28,14 +28,14 @@ const StatsCard: React.FC<StatsCardProps> = ({
   icon,
   size = 'default'
 }) => (
-  <div className="voxly-card flex items-start gap-3 sm:gap-4 p-3 sm:p-4">
+  <div className="p-3 sm:p-4 bg-white border border-zinc-200 rounded-xl flex items-start gap-3 sm:gap-4">
     <div className="inline-flex p-2 sm:p-3 bg-purple-100 rounded-xl flex-shrink-0 text-purple-600 [&>svg]:w-5 [&>svg]:h-5 [&>svg]:sm:w-6 [&>svg]:sm:h-6">
       {icon}
     </div>
     <div className="min-w-0 flex-1">
-      <p className="text-xs sm:text-sm text-gray-500 truncate">{title}</p>
-      <p className={`font-bold text-gray-900 ${size === 'small' ? 'text-sm sm:text-base' : 'text-lg sm:text-2xl'}`}>{value}</p>
-      {subtitle && <p className="text-xs text-gray-400 truncate">{subtitle}</p>}
+      <p className="text-xs sm:text-sm text-zinc-500 truncate">{title}</p>
+      <p className={`font-bold text-zinc-900 ${size === 'small' ? 'text-sm sm:text-base' : 'text-lg sm:text-2xl'}`}>{value}</p>
+      {subtitle && <p className="text-xs text-zinc-400 truncate">{subtitle}</p>}
       {change !== undefined && (
         <p className={`text-xs ${change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
           {change >= 0 ? '↑' : '↓'} {Math.abs(change)}%

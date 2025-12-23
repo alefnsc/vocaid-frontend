@@ -1,14 +1,26 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useUser } from '@clerk/clerk-react'
+import { useTranslation } from 'react-i18next'
 import { DefaultLayout } from 'components/default-layout'
 import Loading from 'components/loading'
 import ContactButton from 'components/contact-button'
 import PurpleButton from 'components/ui/purple-button'
 import StatsCard from 'components/ui/stats-card'
 import apiService, { InterviewDetail } from 'services/APIService'
+import {
+  AnalysisDashboard,
+  TranscriptViewer,
+  ComparativeBenchmark,
+  LearningPath,
+  type TimelineDataPoint,
+  type SoftSkillsData,
+  type TranscriptSegment,
+  type BenchmarkData,
+  type LearningPathData
+} from 'components/analytics'
 import {
   ArrowLeft,
   Briefcase,
@@ -25,9 +37,6 @@ import {
   Mic,
   Award,
   TrendingUp,
-  Hash,
-  Plus,
-  ChevronRight,
   Download
 } from 'lucide-react'
 import InterviewReady from 'components/interview-ready'
@@ -41,22 +50,22 @@ const formatDuration = (ms: number | null | undefined): string => {
   return `${mins}:${secs.toString().padStart(2, '0')}`
 }
 
-// Score progress bar with dark purple theme
+// Score progress bar with purple theme
 const ScoreBar: React.FC<{ label: string; score: number; icon: React.ReactNode }> = ({ label, score, icon }) => {
   return (
     <div className="mb-5 last:mb-0">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-purple-100 rounded-lg">
+          <div className="p-1.5 bg-purple-50 rounded-lg">
             {icon}
           </div>
-          <span className="text-sm font-medium text-gray-700">{label}</span>
+          <span className="text-sm font-medium text-zinc-700">{label}</span>
         </div>
-        <span className="text-sm font-bold text-purple-700">{Math.round(score)}%</span>
+        <span className="text-sm font-bold text-purple-600">{Math.round(score)}%</span>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+      <div className="w-full bg-zinc-200 rounded-full h-2.5 overflow-hidden">
         <div
-          className="h-2.5 rounded-full transition-all duration-700 ease-out bg-gradient-to-r from-purple-700 to-purple-500"
+          className="h-2.5 rounded-full transition-all duration-700 ease-out bg-purple-600"
           style={{ width: `${Math.min(score, 100)}%` }}
         />
       </div>
@@ -68,7 +77,7 @@ const ScoreBar: React.FC<{ label: string; score: number; icon: React.ReactNode }
 const FeedbackItem: React.FC<{ text: string; colorClass: string }> = ({ text, colorClass }) => (
   <li className="flex items-start gap-3 py-2 first:pt-0 last:pb-0">
     <span className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 ${colorClass}`} />
-    <span className="text-gray-700 text-sm sm:text-base">{text}</span>
+    <span className="text-zinc-700 text-sm sm:text-base">{text}</span>
   </li>
 )
 
@@ -76,10 +85,22 @@ export default function InterviewDetails() {
   const { id } = useParams<{ id: string }>()
   const { user, isLoaded, isSignedIn } = useUser()
   const navigate = useNavigate()
+  const { t } = useTranslation()
+  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   const [isLoading, setIsLoading] = useState(true)
   const [interview, setInterview] = useState<InterviewDetail | null>(null)
   const [error, setError] = useState<string | null>(null)
+  
+  // Analytics state
+  const [timelineData, setTimelineData] = useState<TimelineDataPoint[]>([])
+  const [softSkills, setSoftSkills] = useState<SoftSkillsData | null>(null)
+  const [callDuration, setCallDuration] = useState<number>(0)
+  const [transcript, setTranscript] = useState<TranscriptSegment[]>([])
+  const [benchmark, setBenchmark] = useState<BenchmarkData | null>(null)
+  const [learningPathData, setLearningPathData] = useState<LearningPathData | null>(null)
+  const [analyticsLoading, setAnalyticsLoading] = useState(false)
+  const [currentTime, setCurrentTime] = useState<number>(0)
 
   const fetchInterviewDetails = useCallback(async () => {
     if (!user?.id || !id) return
@@ -98,6 +119,79 @@ export default function InterviewDetails() {
     }
   }, [user?.id, id])
 
+  // Fetch analytics data after interview details are loaded
+  const fetchAnalyticsData = useCallback(async () => {
+    if (!user?.id || !id || !interview) return
+    
+    setAnalyticsLoading(true)
+    
+    try {
+      // Fetch all analytics data in parallel
+      const [analyticsRes, transcriptRes, benchmarkRes, recommendationsRes] = await Promise.allSettled([
+        fetch(`${process.env.REACT_APP_API_URL || ''}/api/interviews/${id}/analytics`, {
+          headers: { 'x-user-id': user.id }
+        }),
+        fetch(`${process.env.REACT_APP_API_URL || ''}/api/interviews/${id}/transcript`, {
+          headers: { 'x-user-id': user.id }
+        }),
+        interview.jobTitle ? fetch(`${process.env.REACT_APP_API_URL || ''}/api/benchmarks/${encodeURIComponent(interview.jobTitle)}`, {
+          headers: { 'x-user-id': user.id }
+        }) : Promise.reject('No job title'),
+        fetch(`${process.env.REACT_APP_API_URL || ''}/api/interviews/${id}/recommendations`, {
+          method: 'POST',
+          headers: { 'x-user-id': user.id, 'Content-Type': 'application/json' }
+        })
+      ])
+      
+      // Process analytics response
+      if (analyticsRes.status === 'fulfilled' && analyticsRes.value.ok) {
+        const data = await analyticsRes.value.json()
+        if (data.status === 'success' && data.data) {
+          if (data.data.timelineData) setTimelineData(data.data.timelineData)
+          if (data.data.softSkills) setSoftSkills(data.data.softSkills)
+          if (data.data.callDuration) setCallDuration(data.data.callDuration)
+        }
+      }
+      
+      // Process transcript response
+      if (transcriptRes.status === 'fulfilled' && transcriptRes.value.ok) {
+        const data = await transcriptRes.value.json()
+        if (data.status === 'success' && data.data.segments) {
+          setTranscript(data.data.segments)
+        }
+      }
+      
+      // Process benchmark response
+      if (benchmarkRes.status === 'fulfilled' && benchmarkRes.value.ok) {
+        const data = await benchmarkRes.value.json()
+        if (data.status === 'success') {
+          setBenchmark(data.data)
+        }
+      }
+      
+      // Process recommendations response
+      if (recommendationsRes.status === 'fulfilled' && recommendationsRes.value.ok) {
+        const data = await recommendationsRes.value.json()
+        if (data.status === 'success' && data.data) {
+          setLearningPathData(data.data)
+        }
+      }
+    } catch (err) {
+      console.error('Failed to fetch analytics data:', err)
+    } finally {
+      setAnalyticsLoading(false)
+    }
+  }, [user?.id, id, interview])
+
+  // Handle transcript segment click to seek audio
+  const handleSeek = useCallback((timestamp: number) => {
+    setCurrentTime(timestamp)
+    if (audioRef.current) {
+      audioRef.current.currentTime = timestamp
+      audioRef.current.play()
+    }
+  }, [])
+
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
       navigate('/')
@@ -108,6 +202,13 @@ export default function InterviewDetails() {
       fetchInterviewDetails()
     }
   }, [isLoaded, isSignedIn, user?.id, id, navigate, fetchInterviewDetails])
+
+  // Fetch analytics data when interview is loaded and completed
+  useEffect(() => {
+    if (interview && interview.status === 'COMPLETED') {
+      fetchAnalyticsData()
+    }
+  }, [interview, fetchAnalyticsData])
 
   // Format date for display (includes year)
   const formatDate = (dateString: string) => {
@@ -121,10 +222,10 @@ export default function InterviewDetails() {
 
   // Get performance label
   const getPerformanceLabel = (score: number) => {
-    if (score >= 80) return { text: 'Excellent Performance!', color: 'text-green-600' }
-    if (score >= 60) return { text: 'Good Performance', color: 'text-blue-600' }
-    if (score >= 40) return { text: 'Average Performance', color: 'text-yellow-600' }
-    return { text: 'Needs Improvement', color: 'text-red-600' }
+    if (score >= 80) return { text: t('interviewDetails.performance.excellent'), color: 'text-green-600' }
+    if (score >= 60) return { text: t('interviewDetails.performance.good'), color: 'text-blue-600' }
+    if (score >= 40) return { text: t('interviewDetails.performance.average'), color: 'text-yellow-600' }
+    return { text: t('interviewDetails.performance.needs'), color: 'text-red-600' }
   }
 
   // Download resume
@@ -185,7 +286,7 @@ export default function InterviewDetails() {
 
   if (!isLoaded || isLoading) {
     return (
-      <DefaultLayout className="flex flex-col overflow-hidden bg-gray-50">
+      <DefaultLayout className="flex flex-col overflow-hidden bg-white">
         <div className="flex items-center justify-center min-h-[60vh]">
           <Loading />
         </div>
@@ -195,15 +296,15 @@ export default function InterviewDetails() {
 
   if (error || !interview) {
     return (
-      <DefaultLayout className="flex flex-col overflow-hidden bg-gray-50">
+      <DefaultLayout className="flex flex-col overflow-hidden bg-white">
         <div className="page-container py-6 sm:py-8">
-          <div className="voxly-card text-center py-12">
+          <div className="p-6 bg-white border border-zinc-200 rounded-xl text-center py-12">
             <AlertTriangle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">
-              {error || 'Interview not found'}
+            <h2 className="text-xl font-semibold text-zinc-900 mb-2">
+              {error || t('interviewDetails.notFound')}
             </h2>
-            <p className="text-gray-600 mb-6">
-              We couldn't find the interview you're looking for.
+            <p className="text-zinc-600 mb-6">
+              {t('interviewDetails.notFoundDesc')}
             </p>
             <PurpleButton
               variant="primary"
@@ -211,7 +312,7 @@ export default function InterviewDetails() {
               onClick={() => navigate('/')}
             >
               <ArrowLeft className="w-5 h-5" />
-              Back to Dashboard
+              {t('interviewDetails.backToDashboard')}
             </PurpleButton>
           </div>
         </div>
@@ -230,19 +331,19 @@ export default function InterviewDetails() {
   const displayScore = interview.score ?? interview.feedback?.overallScore ?? null
 
   return (
-    <DefaultLayout className="flex flex-col overflow-hidden bg-gray-50">
+    <DefaultLayout className="flex flex-col overflow-hidden bg-white">
       <div className="page-container py-6 sm:py-8">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6 sm:mb-8">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
-              <ArrowLeft onClick={() => navigate('/')} className="w-5 h-5 text-gray-600 hover:text-gray-900 transition-colors" />
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                Interview <span className="text-voxly-purple">Details</span>
+              <ArrowLeft onClick={() => navigate('/')} className="w-5 h-5 text-zinc-600 hover:text-zinc-900 transition-colors cursor-pointer" />
+              <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900">
+                {t('interviewDetails.title')} <span className="text-purple-600">{t('interviewDetails.titleHighlight')}</span>
               </h1>
             </div>
-            <p className="text-gray-600 mt-1">
-              Review your interview performance and feedback
+            <p className="text-zinc-600 mt-1">
+              {t('interviewDetails.subtitle')}
             </p>
           </div>
 
@@ -255,7 +356,7 @@ export default function InterviewDetails() {
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium transition-colors"
               >
                 <Download className="w-4 h-4" />
-                Resume
+                {t('interviewDetails.resume')}
               </button>
             )}
 
@@ -266,7 +367,7 @@ export default function InterviewDetails() {
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-full text-sm font-medium transition-colors"
               >
                 <Download className="w-4 h-4" />
-                Feedback
+                {t('interviewDetails.feedbackButton')}
               </button>
             )}
 
@@ -276,30 +377,30 @@ export default function InterviewDetails() {
         {/* Interview Info Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-6 sm:mb-8">
           <StatsCard
-            title="Position"
+            title={t('interviewDetails.stats.position')}
             value={displayPosition}
             icon={<Briefcase />}
             size="small"
           />
           <StatsCard
-            title="Company"
+            title={t('interviewDetails.stats.company')}
             value={displayCompany}
             icon={<Building2 />}
             size="small"
           />
           <StatsCard
-            title="Date"
+            title={t('interviewDetails.stats.date')}
             value={formatDate(interview.createdAt)}
             icon={<Calendar />}
             size="small"
           />
           <StatsCard
-            title="Duration"
+            title={t('interviewDetails.stats.duration')}
             value={displayDuration}
             icon={<Clock />}
           />
           <StatsCard
-            title="Score"
+            title={t('interviewDetails.stats.score')}
             value={displayScore !== null ? displayScore : 'N/A'}
             icon={<Award />}
           />
@@ -311,13 +412,13 @@ export default function InterviewDetails() {
             {/* Overall Score Section */}
             <div className="mb-6 sm:mb-8">
               <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                <Award className="w-5 h-5 text-voxly-purple" />
-                <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Performance Score</h2>
+                <Award className="w-5 h-5 text-purple-600" />
+                <h2 className="text-lg sm:text-xl font-semibold text-zinc-900">{t('interviewDetails.performanceScore')}</h2>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
                 {/* Overall Score Card */}
-                <div className="voxly-card flex flex-col items-center justify-center text-center py-8">
+                <div className="p-6 bg-white border border-zinc-200 rounded-xl flex flex-col items-center justify-center text-center py-8">
                   <div className="relative w-36 h-36 mb-4">
                     <svg className="w-full h-full transform -rotate-90" viewBox="0 0 128 128">
                       <circle
@@ -325,7 +426,7 @@ export default function InterviewDetails() {
                         cy="64"
                         r="56"
                         fill="none"
-                        stroke="#e5e7eb"
+                        stroke="#e4e4e7"
                         strokeWidth="12"
                       />
                       <circle
@@ -333,15 +434,15 @@ export default function InterviewDetails() {
                         cy="64"
                         r="56"
                         fill="none"
-                        stroke="#5417C9"
+                        stroke="#9333ea"
                         strokeWidth="12"
                         strokeLinecap="round"
                         strokeDasharray={`${(interview.feedback.overallScore / 100) * 352} 352`}
                       />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-4xl font-bold text-gray-900">{interview.feedback.overallScore}</span>
-                      <span className="text-sm text-gray-500">out of 100</span>
+                      <span className="text-4xl font-bold text-zinc-900">{interview.feedback.overallScore}</span>
+                      <span className="text-sm text-zinc-500">{t('interviewDetails.outOf100')}</span>
                     </div>
                   </div>
                   <p className={`font-semibold ${performance?.color}`}>
@@ -350,36 +451,36 @@ export default function InterviewDetails() {
                 </div>
 
                 {/* Score Breakdown Card */}
-                <div className="voxly-card lg:col-span-2">
+                <div className="p-6 bg-white border border-zinc-200 rounded-xl lg:col-span-2">
                   <div className="flex items-center gap-2 mb-5">
                     <BarChart3 className="w-5 h-5 text-purple-600" />
-                    <h3 className="text-lg font-semibold text-gray-900">Score Breakdown</h3>
+                    <h3 className="text-lg font-semibold text-zinc-900">{t('interviewDetails.scoreBreakdown')}</h3>
                   </div>
                   <ScoreBar
-                    label="Content Quality"
+                    label={t('interviewDetails.scores.content')}
                     score={interview.feedback.contentScore}
                     icon={<FileText className="w-4 h-4 text-purple-600" />}
                   />
                   <ScoreBar
-                    label="Communication"
+                    label={t('interviewDetails.scores.communication')}
                     score={interview.feedback.communicationScore}
                     icon={<MessageSquare className="w-4 h-4 text-purple-600" />}
                   />
                   <ScoreBar
-                    label="Confidence"
+                    label={t('interviewDetails.scores.confidence')}
                     score={interview.feedback.confidenceScore}
                     icon={<TrendingUp className="w-4 h-4 text-purple-600" />}
                   />
                   <ScoreBar
-                    label="Technical Knowledge"
+                    label={t('interviewDetails.scores.technical')}
                     score={interview.feedback.technicalScore}
                     icon={<Target className="w-4 h-4 text-purple-600" />}
                   />
 
                   {/* Score Explanation */}
-                  <div className="mt-6 pt-4 border-t border-gray-100">
-                    <p className="text-xs text-gray-500 leading-relaxed">
-                      <span className="font-medium text-gray-600">How we calculate your score:</span> Our AI analyzes your interview responses across four key dimensions—content quality, communication skills, confidence level, and technical knowledge. Each category is rated on a 0–100% scale based on industry standards and best practices. The overall score is a weighted average reflecting your comprehensive interview performance.
+                  <div className="mt-6 pt-4 border-t border-zinc-100">
+                    <p className="text-xs text-zinc-500 leading-relaxed">
+                      <span className="font-medium text-zinc-600">{t('interviewDetails.scoreExplanation.title')}</span> {t('interviewDetails.scoreExplanation.desc')}
                     </p>
                   </div>
                 </div>
@@ -389,11 +490,11 @@ export default function InterviewDetails() {
             {/* Summary Section */}
             <div className="mb-6 sm:mb-8">
               <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                <Mic className="w-5 h-5 text-voxly-purple" />
-                <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Interview Summary</h2>
+                <Mic className="w-5 h-5 text-purple-600" />
+                <h2 className="text-lg sm:text-xl font-semibold text-zinc-900">{t('interviewDetails.summary')}</h2>
               </div>
-              <div className="voxly-card">
-                <p className="text-gray-700 leading-relaxed">{interview.feedback.summary}</p>
+              <div className="p-6 bg-white border border-zinc-200 rounded-xl">
+                <p className="text-zinc-700 leading-relaxed">{interview.feedback.summary}</p>
               </div>
             </div>
 
@@ -402,19 +503,19 @@ export default function InterviewDetails() {
               {/* Strengths */}
               <div>
                 <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                  <CheckCircle className="w-5 h-5 text-voxly-purple" />
-                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Strengths</h2>
+                  <CheckCircle className="w-5 h-5 text-purple-600" />
+                  <h2 className="text-lg sm:text-xl font-semibold text-zinc-900">{t('interviewDetails.sections.strengths')}</h2>
                 </div>
-                <div className="voxly-card h-full">
+                <div className="p-6 bg-white border border-zinc-200 rounded-xl h-full">
                   {interview.feedback.strengths.length === 0 ? (
                     <div className="text-center py-6">
-                      <CheckCircle className="w-10 h-10 text-gray-300 mx-auto mb-2" />
-                      <p className="text-gray-500 text-sm">No strengths recorded</p>
+                      <CheckCircle className="w-10 h-10 text-zinc-300 mx-auto mb-2" />
+                      <p className="text-zinc-500 text-sm">{t('interviewDetails.noStrengths')}</p>
                     </div>
                   ) : (
-                    <ul className="divide-y divide-gray-100">
+                    <ul className="divide-y divide-zinc-100">
                       {interview.feedback.strengths.map((item, index) => (
-                        <FeedbackItem key={index} text={item} colorClass="bg-voxly-purple" />
+                        <FeedbackItem key={index} text={item} colorClass="bg-purple-600" />
                       ))}
                     </ul>
                   )}
@@ -424,19 +525,19 @@ export default function InterviewDetails() {
               {/* Areas for Improvement */}
               <div>
                 <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                  <AlertTriangle className="w-5 h-5 text-voxly-purple" />
-                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Improvements</h2>
+                  <AlertTriangle className="w-5 h-5 text-purple-600" />
+                  <h2 className="text-lg sm:text-xl font-semibold text-zinc-900">{t('interviewDetails.sections.improvements')}</h2>
                 </div>
-                <div className="voxly-card h-full">
+                <div className="p-6 bg-white border border-zinc-200 rounded-xl h-full">
                   {interview.feedback.improvements.length === 0 ? (
                     <div className="text-center py-6">
-                      <AlertTriangle className="w-10 h-10 text-gray-300 mx-auto mb-2" />
-                      <p className="text-gray-500 text-sm">No improvements needed</p>
+                      <AlertTriangle className="w-10 h-10 text-zinc-300 mx-auto mb-2" />
+                      <p className="text-zinc-500 text-sm">{t('interviewDetails.noImprovements')}</p>
                     </div>
                   ) : (
-                    <ul className="divide-y divide-gray-100">
+                    <ul className="divide-y divide-zinc-100">
                       {interview.feedback.improvements.map((item, index) => (
-                        <FeedbackItem key={index} text={item} colorClass="bg-voxly-purple" />
+                        <FeedbackItem key={index} text={item} colorClass="bg-purple-600" />
                       ))}
                     </ul>
                   )}
@@ -446,25 +547,83 @@ export default function InterviewDetails() {
               {/* Recommendations */}
               <div>
                 <div className="flex items-center gap-2 mb-3 sm:mb-4">
-                  <Lightbulb className="w-5 h-5 text-voxly-purple" />
-                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Recommendations</h2>
+                  <Lightbulb className="w-5 h-5 text-purple-600" />
+                  <h2 className="text-lg sm:text-xl font-semibold text-zinc-900">{t('interviewDetails.sections.recommendations')}</h2>
                 </div>
-                <div className="voxly-card h-full">
+                <div className="p-6 bg-white border border-zinc-200 rounded-xl h-full">
                   {interview.feedback.recommendations.length === 0 ? (
                     <div className="text-center py-6">
-                      <Lightbulb className="w-10 h-10 text-gray-300 mx-auto mb-2" />
-                      <p className="text-gray-500 text-sm">No recommendations</p>
+                      <Lightbulb className="w-10 h-10 text-zinc-300 mx-auto mb-2" />
+                      <p className="text-zinc-500 text-sm">{t('interviewDetails.noRecommendations')}</p>
                     </div>
                   ) : (
-                    <ul className="divide-y divide-gray-100">
+                    <ul className="divide-y divide-zinc-100">
                       {interview.feedback.recommendations.map((item, index) => (
-                        <FeedbackItem key={index} text={item} colorClass="bg-voxly-purple" />
+                        <FeedbackItem key={index} text={item} colorClass="bg-purple-600" />
                       ))}
                     </ul>
                   )}
                 </div>
               </div>
             </div>
+
+            {/* Advanced Analytics Section */}
+            {(softSkills || transcript.length > 0 || benchmark || learningPathData) && (
+              <div className="mt-8 pt-8 border-t border-zinc-200">
+                <h2 className="text-xl sm:text-2xl font-bold text-zinc-900 mb-6">
+                  {t('interviewDetails.analytics.title')} <span className="text-purple-600">{t('interviewDetails.analytics.highlight')}</span>
+                </h2>
+                
+                {/* Analysis Dashboard - Radar + Timeline */}
+                {softSkills && (
+                  <div className="mb-6 sm:mb-8">
+                    <AnalysisDashboard 
+                      timelineData={timelineData}
+                      softSkills={softSkills}
+                      callDuration={callDuration}
+                    />
+                  </div>
+                )}
+
+                {/* Two Column Layout for Transcript and Benchmark */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 sm:mb-8">
+                  {/* Transcript Viewer */}
+                  {transcript.length > 0 && (
+                    <TranscriptViewer
+                      segments={transcript}
+                      currentTime={currentTime}
+                      onSeek={handleSeek}
+                    />
+                  )}
+
+                  {/* Comparative Benchmark */}
+                  {benchmark && (
+                    <ComparativeBenchmark
+                      data={benchmark}
+                    />
+                  )}
+                </div>
+
+                {/* Learning Path - Full Width */}
+                {learningPathData && (
+                  <div className="mb-6 sm:mb-8">
+                    <LearningPath data={learningPathData} />
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Analytics Loading State */}
+            {analyticsLoading && (
+              <div className="mt-8 pt-8 border-t border-zinc-200">
+                <div className="flex items-center justify-center py-12">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="w-8 h-8 border-2 border-purple-600 border-t-transparent rounded-full animate-spin" />
+                    <p className="text-sm text-zinc-500">Loading advanced analytics...</p>
+                  </div>
+                </div>
+              </div>
+            )}
           </>
         )}
 
@@ -472,17 +631,17 @@ export default function InterviewDetails() {
         {!interview.feedback && (
           <div className="mb-6 sm:mb-8">
             <div className="flex items-center gap-2 mb-3 sm:mb-4">
-              <BarChart3 className="w-5 h-5 text-voxly-purple" />
-              <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Performance Feedback</h2>
+              <BarChart3 className="w-5 h-5 text-purple-600" />
+              <h2 className="text-lg sm:text-xl font-semibold text-zinc-900">Performance Feedback</h2>
             </div>
-            <div className="voxly-card text-center py-12">
-              <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-600 mb-2">
+            <div className="p-6 bg-white border border-zinc-200 rounded-xl text-center py-12">
+              <FileText className="w-12 h-12 text-zinc-300 mx-auto mb-4" />
+              <p className="text-zinc-600 mb-2">
                 {interview.status === 'IN_PROGRESS'
                   ? 'Feedback will be available once the interview is completed.'
                   : 'No feedback available for this interview.'}
               </p>
-              <p className="text-sm text-gray-400">
+              <p className="text-sm text-zinc-400">
                 {interview.status === 'IN_PROGRESS'
                   ? 'Please complete your interview session to receive AI-generated feedback.'
                   : 'This interview may have ended early or encountered an issue.'}

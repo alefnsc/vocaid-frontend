@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Button } from 'components/ui/button'
 import { Textarea } from 'components/ui/textarea'
 import { Input } from 'components/ui/input'
@@ -28,6 +29,7 @@ interface FormValues {
 }
 
 const InputForm: React.FC<InputFormProps> = ({ isMobile, credits }) => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     // Form state - firstName and lastName come from Clerk
@@ -229,7 +231,7 @@ const InputForm: React.FC<InputFormProps> = ({ isMobile, credits }) => {
 
     // Show loading state
     if (isLoading) {
-        return <div className="flex justify-center items-center h-40">Loading...</div>;
+        return <div className="flex justify-center items-center h-40">{t('common.loading')}</div>;
     }
 
     // 1. Not authenticated: show login
