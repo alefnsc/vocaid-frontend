@@ -2,7 +2,7 @@
 // This script mocks the API calls and auth functionality
 
 // Mock environment variable
-process.env.REACT_APP_BACKEND_URL = 'https://ai-mock-interview-api.voxlycoding.com/';
+process.env.REACT_APP_BACKEND_URL = 'https://ai-mock-interview-api.Vocaidcoding.com/';
 
 // Mock user data
 const mockUsers = {

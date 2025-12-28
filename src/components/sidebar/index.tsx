@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { BrandMark } from '../shared/Brand';
 import { LanguageSelector } from 'components/language-selector';
 import { CustomAvatar } from 'components/auth/CustomAvatar';
+import { B2C_ROUTES } from 'routes/b2cRoutes';
 
 // ========================================
 // TYPES
@@ -32,18 +33,21 @@ interface NavItem {
 }
 
 // ========================================
-// CONSTANTS
+// CONSTANTS - Updated for merged navigation
+// Dashboard, Interviews, Resumes, Settings for Personal users
+// Using centralized route constants
 // ========================================
 
 const mainNavItems: NavItem[] = [
-  { id: 'home', labelKey: 'nav.home', path: '/' },
-  { id: 'interviews', labelKey: 'interviews.title', path: '/interviews' },
-  { id: 'credits', labelKey: 'nav.credits', path: '/credits' },
+  { id: 'dashboard', labelKey: 'nav.dashboard', path: B2C_ROUTES.DASHBOARD },
+  { id: 'interviews', labelKey: 'nav.interviews', path: B2C_ROUTES.INTERVIEWS },
+  { id: 'resumes', labelKey: 'nav.resumes', path: B2C_ROUTES.RESUMES },
+  { id: 'credits', labelKey: 'nav.credits', path: B2C_ROUTES.BILLING },
 ];
 
 const secondaryNavItems: NavItem[] = [
-  { id: 'about', labelKey: 'nav.about', path: '/about' },
-  { id: 'contact', labelKey: 'nav.contact', path: '/contact' },
+  { id: 'about', labelKey: 'nav.about', path: B2C_ROUTES.ABOUT },
+  { id: 'settings', labelKey: 'nav.settings', path: B2C_ROUTES.ACCOUNT },
 ];
 
 // ========================================

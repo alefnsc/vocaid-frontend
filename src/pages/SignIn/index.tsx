@@ -1,7 +1,7 @@
 /**
  * Sign-In Page
  * 
- * Custom sign-in page using headless Clerk components.
+ * Premium sign-in page using AuthShell layout and headless Clerk components.
  * 
  * @module pages/SignIn
  */
@@ -10,39 +10,22 @@
 
 import React from 'react';
 import { useUser } from '@clerk/clerk-react';
-import { Navigate, Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { CustomSignIn } from 'components/auth';
-import { BrandMark, CopyrightNotice } from 'components/shared/Brand';
+import { Navigate } from 'react-router-dom';
+import { AuthShell, CustomSignIn } from 'components/auth';
+import { B2C_ROUTES } from 'routes/b2cRoutes';
 
 const SignIn: React.FC = () => {
   const { isSignedIn, isLoaded } = useUser();
-  const { t } = useTranslation();
 
   // Redirect if already signed in
   if (isLoaded && isSignedIn) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to={B2C_ROUTES.DASHBOARD} replace />;
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50 flex flex-col">
-      {/* Header */}
-      <header className="py-6 px-4 lg:px-8">
-        <Link to="/" aria-label="Vocaid Home">
-          <BrandMark size="md" />
-        </Link>
-      </header>
-
-      {/* Main Content */}
-      <main className="flex-1 flex items-center justify-center px-4 py-12">
-        <CustomSignIn />
-      </main>
-
-      {/* Footer */}
-      <footer className="py-6 px-4 text-center">
-        <CopyrightNotice />
-      </footer>
-    </div>
+    <AuthShell>
+      <CustomSignIn />
+    </AuthShell>
   );
 };
 

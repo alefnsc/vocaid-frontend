@@ -63,7 +63,7 @@ module.exports = {
           'purple-dark': '#6d28d9',  // purple-700 - active
         },
         // Legacy alias
-        'voxly': '#7c3aed',
+        'Vocaid': '#7c3aed',
         'bgreen': '#2deab1'
       },
       borderRadius: {

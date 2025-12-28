@@ -59,9 +59,9 @@ function collectFingerprint(): string {
       ctx.fillStyle = '#f60';
       ctx.fillRect(125, 1, 62, 20);
       ctx.fillStyle = '#069';
-      ctx.fillText('Voxly FP Test', 2, 15);
+      ctx.fillText('Vocaid FP Test', 2, 15);
       ctx.fillStyle = 'rgba(102, 204, 0, 0.7)';
-      ctx.fillText('Voxly FP Test', 4, 17);
+      ctx.fillText('Vocaid FP Test', 4, 17);
       components.push(`canvas:${canvas.toDataURL()}`);
     }
   } catch (e) {
@@ -107,7 +107,7 @@ function collectFingerprint(): string {
 }
 
 // Cache the fingerprint in sessionStorage to avoid recalculating
-const FINGERPRINT_CACHE_KEY = 'voxly_device_fp';
+const FINGERPRINT_CACHE_KEY = 'Vocaid_device_fp';
 
 /**
  * Get or generate device fingerprint

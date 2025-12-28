@@ -12,7 +12,7 @@ describe('Footer Component', () => {
 
     it('displays the correct copyright text', () => {
         render(<Footer />);
-        const copyrightText = screen.getByText('© voxly  - All Rights Reserved.');
+        const copyrightText = screen.getByText('© Vocaid  - All Rights Reserved.');
         expect(copyrightText).toBeInTheDocument();
     });
 
@@ -34,6 +34,6 @@ describe('Footer Component', () => {
         const footer = screen.getByRole('contentinfo');
         expect(footer.tagName).toBe('FOOTER');
         expect(footer.children.length).toBe(0);
-        expect(footer.textContent).toBe('© voxly  - All Rights Reserved.');
+        expect(footer.textContent).toBe('© Vocaid  - All Rights Reserved.');
     });
 }); 

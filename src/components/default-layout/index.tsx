@@ -4,8 +4,37 @@ import TopBar from 'components/top-bar'
 import Sidebar from 'components/sidebar'
 import BottomNav from 'components/bottom-nav'
 import { cn } from 'lib/utils'
-import React from 'react'
+import React, { createContext, useContext } from 'react'
 import { useUser } from '@clerk/clerk-react'
+
+// ========================================
+// LAYOUT CONTEXT
+// ========================================
+
+/**
+ * Context to detect if we're inside a layout wrapper.
+ * Used to prevent double layout rendering when pages
+ * use DefaultLayout but are also inside LoggedLayout.
+ */
+const LayoutContext = createContext<{ hasParentLayout: boolean }>({ hasParentLayout: false });
+
+/**
+ * Hook to check if we're inside a layout context
+ */
+export const useLayoutContext = () => useContext(LayoutContext);
+
+/**
+ * Mark that a layout is providing context (used by LoggedLayout)
+ */
+export const LayoutProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <LayoutContext.Provider value={{ hasParentLayout: true }}>
+    {children}
+  </LayoutContext.Provider>
+);
+
+// ========================================
+// TYPES
+// ========================================
 
 type DefaultLayoutProps = {
   children: React.ReactNode
@@ -44,6 +73,17 @@ export const DefaultLayout = ({
 }: DefaultLayoutProps) => {
   const { bgClasses, otherClasses } = extractBgClasses(className);
   const { isSignedIn } = useUser();
+  const { hasParentLayout } = useLayoutContext();
+  
+  // If we're inside LoggedLayout, just render children with styling
+  // This prevents double layout rendering
+  if (hasParentLayout) {
+    return (
+      <div className={cn(bgClasses, otherClasses, 'min-h-[calc(100vh-180px)]')}>
+        {children}
+      </div>
+    );
+  }
   
   // Show sidebar layout for authenticated users (unless explicitly hidden)
   const showSidebar = isSignedIn && !hideSidebar;

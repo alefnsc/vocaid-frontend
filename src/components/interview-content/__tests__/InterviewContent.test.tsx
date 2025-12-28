@@ -61,12 +61,12 @@ describe('InterviewContent', () => {
 
     it('shows correct status when agent is talking', () => {
         render(<InterviewContent {...defaultProps} isAgentTalking={true} />);
-        expect(screen.getByText('Voxly is Speaking...')).toBeInTheDocument();
+        expect(screen.getByText('Vocaid is Speaking...')).toBeInTheDocument();
     });
 
     it('shows correct status when agent is listening', () => {
         render(<InterviewContent {...defaultProps} isAgentTalking={false} />);
-        expect(screen.getByText('Voxly is Listening...')).toBeInTheDocument();
+        expect(screen.getByText('Vocaid is Listening...')).toBeInTheDocument();
     });
 
     it('renders the clock with correct time', () => {

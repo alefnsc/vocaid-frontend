@@ -249,7 +249,7 @@ const InputForm: React.FC<InputFormProps> = ({ isMobile, credits }) => {
                          Free Trial Available!
                         </span>
                         <span className="text-xs font-medium">
-                            Get 1 free interview credit when you sign up
+                            Get 5 free interview credits when you sign up
                         </span>
                     </div>
                 </div>

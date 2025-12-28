@@ -15,6 +15,7 @@
     "close": "Close",
     "search": "Search",
     "filter": "Filter",
+    "filters": "Filters",
     "logout": "Log out",
     "login": "Log in",
     "signUp": "Sign up",
@@ -24,7 +25,8 @@
     "optional": "optional",
     "submitting": "Submitting...",
     "gotIt": "Got it",
-    "soon": "Soon"
+    "soon": "Soon",
+    "refreshData": "Refresh data"
   },
   "features": {
     "underConstruction": {
@@ -115,7 +117,8 @@
     "billing": "Billing",
     "account": "Account",
     "main": "Main",
-    "settings": "Settings"
+    "settings": "Settings",
+    "accountSettings": "Account Settings"
   },
   "platform": {
     "b2c": {
@@ -221,12 +224,30 @@
     },
     "whyVocaid": "Why Vocaid?",
     "features": {
-      "realistic": { "title": "Realistic", "desc": "Natural conversation flow" },
-      "analytics": { "title": "Analytics", "desc": "Track your progress" },
-      "practice247": { "title": "Practice 24/7", "desc": "No scheduling needed" },
-      "feedback": { "title": "Feedback", "desc": "Actionable insights" },
-      "roleSpecific": { "title": "Role-Specific", "desc": "Tailored questions" },
-      "payPerUse": { "title": "Pay Per Use", "desc": "No subscriptions" }
+      "realistic": {
+        "title": "Realistic",
+        "desc": "Natural conversation flow"
+      },
+      "analytics": {
+        "title": "Analytics",
+        "desc": "Track your progress"
+      },
+      "practice247": {
+        "title": "Practice 24/7",
+        "desc": "No scheduling needed"
+      },
+      "feedback": {
+        "title": "Feedback",
+        "desc": "Actionable insights"
+      },
+      "roleSpecific": {
+        "title": "Role-Specific",
+        "desc": "Tailored questions"
+      },
+      "payPerUse": {
+        "title": "Pay Per Use",
+        "desc": "No subscriptions"
+      }
     },
     "legal": "Legal",
     "privacyDesc": "How we protect your data",
@@ -276,6 +297,108 @@
     "message": "Your message has been sent successfully. We'll get back to you soon.",
     "redirecting": "Redirecting to home...",
     "goHome": "Go to Home Now"
+  },
+  "contactAssistant": {
+    "title": "Contact Vocaid",
+    "button": "Contact Us",
+    "prompts": {
+      "welcome": "Hi! I'm here to help you get in touch with Vocaid. Let's start with your name.",
+      "name": "What's your name?",
+      "email": "Thanks! What's your email address?",
+      "subject": "What would you like to discuss? Please choose a topic:\n\n• General Inquiry\n• Technical Support\n• Billing Question\n• Feedback\n• Partnership Opportunity\n• Other",
+      "message": "Great! Now, please describe your question or message (50-250 characters).",
+      "review": "Here's a summary of your message. Ready to send? Type \"yes\" to confirm or \"edit [field]\" to make changes.",
+      "submitting": "Sending your message...",
+      "success": "Your message has been sent successfully! We'll get back to you within 24-48 hours.",
+      "error": "Sorry, there was an error sending your message. Would you like to try again?",
+      "invalidSubject": "I didn't recognize that subject. Please choose from:\n• General Inquiry\n• Technical Support\n• Billing Question\n• Feedback\n• Partnership Opportunity\n• Other",
+      "editField": "Sure, let's update that. What would you like to change it to?",
+      "cancelled": "No problem! What would you like to edit? You can say 'edit name', 'edit email', 'edit subject', or 'edit message'.",
+      "confirmHelp": "Please type 'yes' to send your message, or 'edit [field]' to make changes."
+    },
+    "placeholder": {
+      "default": "Type your response...",
+      "message": "Type your message..."
+    }
+  },
+  "betaFeedback": {
+    "title": "Beta Feedback",
+    "bugReportTitle": "🐛 Bug Report",
+    "featureTitle": "💡 Feature Suggestion",
+    "fabLabel": "Send Feedback",
+    "fabText": "Feedback",
+    "reportBugShort": "Report Bug",
+    "suggestFeatureShort": "Suggest Feature",
+    "welcome": "Hi! 👋 I'm here to collect your feedback during our closed beta. What would you like to share?",
+    "reportBug": "🐛 Report a Bug",
+    "suggestFeature": "💡 Suggest a Feature",
+    "bugTitle": "Got it! What's a brief title for this bug?",
+    "featureTitle": "Great! What's a brief title for your feature idea?",
+    "bugTitlePlaceholder": "e.g., Button not working on mobile",
+    "featureTitlePlaceholder": "e.g., Dark mode support",
+    "bugDescription": "Please describe the bug in more detail. What happened?",
+    "featureDescription": "Please describe your feature idea in more detail.",
+    "descriptionPlaceholder": "Provide as much detail as you can...",
+    "severityQuestion": "How severe is this bug?",
+    "severityLow": "🟢 Low - Minor inconvenience",
+    "severityMedium": "🟡 Medium - Affects functionality",
+    "severityHigh": "🟠 High - Major issue",
+    "severityBlocking": "🔴 Blocking - Can't use the app",
+    "stepsQuestion": "What steps lead to this bug? (Enter each step, press Enter, then click 'Done' when finished)",
+    "stepsPlaceholder": "Enter step and press Enter...",
+    "expectedQuestion": "What did you expect to happen?",
+    "expectedPlaceholder": "I expected...",
+    "actualQuestion": "What actually happened instead?",
+    "actualPlaceholder": "Instead, what happened was...",
+    "frequencyQuestion": "How often does this happen?",
+    "frequencyAlways": "Every time",
+    "frequencySometimes": "Sometimes",
+    "frequencyOnce": "Just once",
+    "goalQuestion": "What problem would this feature solve for you?",
+    "goalPlaceholder": "This would help me...",
+    "targetUserQuestion": "Who would benefit from this feature?",
+    "targetSelf": "👤 Just me",
+    "targetRecruiters": "👥 Recruiters/HR",
+    "targetOther": "🌐 Everyone",
+    "priorityQuestion": "How important is this feature to you?",
+    "priorityNice": "💭 Nice to have",
+    "priorityImportant": "⭐ Important",
+    "priorityCritical": "🔥 Critical for my workflow",
+    "alternativesQuestion": "Have you tried any workarounds or alternatives? (optional)",
+    "alternativesPlaceholder": "I tried... (or leave blank)",
+    "emailQuestion": "What's your email so we can follow up if needed?",
+    "emailPlaceholder": "your@email.com",
+    "followUpQuestion": "Can we contact you about this feedback?",
+    "followUpYes": "✅ Yes, please reach out",
+    "followUpNo": "❌ No, just log it",
+    "reviewMessage": "Here's a summary of your feedback:",
+    "submitButton": "📤 Submit Feedback",
+    "editButton": "✏️ Edit",
+    "successMessage": "Thank you! Your feedback has been submitted. 🎉\n\nWe really appreciate you helping us improve Vocaid!",
+    "errorMessage": "Sorry, there was an error submitting your feedback. Please try again.",
+    "retryButton": "🔄 Try Again",
+    "type": "Type",
+    "titleLabel": "Title",
+    "descriptionLabel": "Description",
+    "severityLabel": "Severity",
+    "stepsLabel": "Steps",
+    "expectedLabel": "Expected",
+    "frequencyLabel": "Frequency",
+    "priorityLabel": "Priority",
+    "targetUserLabel": "For",
+    "goalLabel": "Goal",
+    "emailLabel": "Email",
+    "followUpLabel": "Follow-up",
+    "continue": "Continue",
+    "done": "Done",
+    "steps": "steps",
+    "skip": "Skip",
+    "skipped": "(Skipped)",
+    "back": "Go back",
+    "close": "Close",
+    "submitting": "Submitting your feedback...",
+    "submitted": "Feedback submitted!",
+    "powered": "Powered by Vocaid"
   },
   "home": {
     "hero": {
@@ -343,9 +466,9 @@
     },
     "title": "Interview",
     "status": {
-      "connecting": "Connecting to Voxly...",
-      "speaking": "Voxly is Speaking...",
-      "listening": "Voxly is Listening..."
+      "connecting": "Connecting to Vocaid...",
+      "speaking": "Vocaid is Speaking...",
+      "listening": "Vocaid is Listening..."
     },
     "buttons": {
       "quit": "Quit interview"
@@ -398,26 +521,96 @@
           "step3": "Refresh the page after making changes"
         }
       }
+    },
+    "errors": {
+      "noCreditsError": "No credits available. Please purchase credits to continue.",
+      "sessionValidationFailed": "Failed to validate session. Please try again."
     }
   },
   "interviewSetup": {
-    "title": "Interview",
-    "titleHighlight": "Setup",
-    "subtitle": "Fill in the details to start your AI-powered mock interview",
+    "backToDashboard": "← Back to Dashboard",
+    "title": "Start Practice Interview",
+    "subtitle": "Configure your AI-powered mock interview session",
+    "noCredits": {
+      "title": "No credits remaining",
+      "description": "You need at least 1 credit to start a practice interview.",
+      "buyCredits": "Buy credits"
+    },
+    "creditsAvailable": "{{count}} credit available",
+    "creditsAvailable_plural": "{{count}} credits available",
+    "sessionCost": "This session will use 1 credit",
+    "roleSection": {
+      "label": "What role are you practicing for?",
+      "placeholder": "Or type a custom role...",
+      "error": "Please select or enter a role"
+    },
+    "companySection": {
+      "label": "Target company",
+      "optional": "(optional)",
+      "placeholder": "e.g., Google, Nubank, Magazine Luiza...",
+      "hint": "Adding a company helps tailor questions to that company's culture and values."
+    },
+    "languageSection": {
+      "label": "Interview language"
+    },
+    "resumeSection": {
+      "label": "Select resume",
+      "optional": "(optional)",
+      "noResumes": "No resumes uploaded yet",
+      "uploadResume": "Upload a resume",
+      "noResumeOption": "No resume (general interview)",
+      "score": "Score: {{score}}%"
+    },
+    "submit": {
+      "preparing": "Preparing interview...",
+      "start": "Start Interview",
+      "disclaimer": "Your interview will be recorded and analyzed to provide feedback."
+    },
+    "validation": {
+      "invalidFileType": "Please upload a PDF or Word document",
+      "fileTooLarge": "File size must be less than 5MB",
+      "fileReadError": "Failed to read file. Please try again.",
+      "firstNameRequired": "Please set your first name in your profile",
+      "lastNameRequired": "Please set your last name in your profile",
+      "companyNameRequired": "Company name is required",
+      "jobTitleRequired": "Job title is required",
+      "seniorityRequired": "Please select your seniority level",
+      "jobDescriptionRequired": "Job description is required",
+      "jobDescriptionTooShort": "Job description must be at least 200 characters (current: {{count}})",
+      "resumeRequired": "Resume is required",
+      "resumeSelectFromLibrary": "Please select a resume from your library",
+      "resumeLoadFailed": "Failed to load resume. Please try again.",
+      "policyRequired": "You must accept the privacy policy and terms of use",
+      "creditsLoading": "Please wait while credits are loading...",
+      "startFailed": "Failed to start interview. Please try again."
+    },
+    "titleHighlight": "Interview",
     "interviewingAs": "Interviewing as",
     "loadingCredits": "Loading credits...",
     "startInterview": "Start Interview",
-    "helpText": "Your interview will be conducted by our AI interviewer and typically lasts 10-15 minutes.",
+    "helpText": "Your interview will be recorded and analyzed by AI to provide personalized feedback.",
     "form": {
       "companyName": "Company Name",
-      "companyNamePlaceholder": "e.g., Google, Microsoft, Startup Inc.",
+      "companyNamePlaceholder": "Enter company name...",
       "jobTitle": "Job Title",
-      "jobTitlePlaceholder": "e.g., Senior Software Engineer, Product Manager",
+      "jobTitlePlaceholder": "Enter job title...",
+      "seniority": "Seniority Level",
+      "seniorityPlaceholder": "Select seniority level",
+      "seniorityLevels": {
+        "intern": "Intern",
+        "junior": "Junior",
+        "mid": "Mid-Level",
+        "senior": "Senior",
+        "staff": "Staff / Lead",
+        "principal": "Principal / Director"
+      },
       "jobDescription": "Job Description",
-      "jobDescriptionPlaceholder": "Paste the job description here (minimum 200 characters). This helps our AI tailor the interview questions to the specific role.",
+      "jobDescriptionPlaceholder": "Paste the job description here...",
       "charactersMinimum": "characters minimum",
-      "resume": "Resume (PDF)",
-      "uploadResume": "Click to upload your resume",
+      "resume": "Resume",
+      "fromLibrary": "From Library",
+      "uploadNew": "Upload New",
+      "uploadResume": "Upload resume (PDF or Word)",
       "acceptPolicy": "I accept the",
       "privacyPolicy": "Privacy Policy",
       "termsOfUse": "Terms of Use"
@@ -498,15 +691,27 @@
     "purchaseToSeeHistory": "Purchase credits to see your transaction history",
     "creditUsage": "Credit Usage",
     "noInterviewsYet": "No interviews yet",
-    "completeInterviewsToSee": "Complete interviews to see your usage history"
+    "completeInterviewsToSee": "Complete interviews to see your usage history",
+    "dateLabels": {
+      "today": "Today",
+      "yesterday": "Yesterday"
+    },
+    "creditsUsed": "credit used",
+    "creditsUsedPlural": "credits used"
   },
   "dashboard": {
     "title": "Dashboard",
-    "welcome": "Welcome back, {{name}}!",
+    "welcome": "Welcome back,",
     "welcomeSubtitle": "Here's an overview of your interview practice progress.",
     "readyToPractice": "Ready to practice your next interview?",
     "startNewInterview": "Start New Interview",
     "startInterview": "Start Interview",
+    "filters": {
+      "role": "Filter by Role",
+      "seniority": "Filter by Level",
+      "allRoles": "All Roles",
+      "allSeniorities": "All Levels"
+    },
     "stats": {
       "credits": "Credits",
       "interviews": "Interviews",
@@ -523,9 +728,9 @@
       "performanceTrend": "Performance Trend",
       "scoreEvolution": "Score Evolution",
       "monthlySpending": "Monthly Spending",
-      "noScoreData": "No Score Data",
+      "noScoreData": "No score data available",
       "noScoreDataDesc": "Complete interviews to track your progress",
-      "noSpendingData": "No Spending Data",
+      "noSpendingData": "No spending data available",
       "noSpendingDataDesc": "Purchase credits to see your history"
     },
     "quickActions": {
@@ -551,10 +756,17 @@
     "lowCredits": {
       "title": "Running low on credits?",
       "buyMore": "Buy More Credits"
-    }
+    },
+    "fromLastMonth": "from last month",
+    "noFilteredResults": "No interviews match the selected filters",
+    "tooltips": {
+      "score": "Score",
+      "spent": "Spent"
+    },
+    "viewInsights": "View insights"
   },
   "interviews": {
-    "title": "Your Interviews",
+    "title": "Interviews",
     "subtitle": "View your interview history and track your progress over time.",
     "startNew": "Start New Interview",
     "startFirst": "Start Your First Interview",
@@ -564,46 +776,74 @@
     "date": "Date",
     "duration": "Duration",
     "score": "Score",
-    "new": "New"
-  },
-  "interviewSetup": {
-    "backToDashboard": "← Back to Dashboard",
-    "title": "Start Practice Interview",
-    "subtitle": "Configure your AI-powered mock interview session",
-    "noCredits": {
-      "title": "No credits remaining",
-      "description": "You need at least 1 credit to start a practice interview.",
-      "buyCredits": "Buy credits"
-    },
-    "creditsAvailable": "{{count}} credit available",
-    "creditsAvailable_plural": "{{count}} credits available",
-    "sessionCost": "This session will use 1 credit",
-    "roleSection": {
-      "label": "What role are you practicing for?",
-      "placeholder": "Or type a custom role...",
-      "error": "Please select or enter a role"
-    },
-    "companySection": {
-      "label": "Target company",
-      "optional": "(optional)",
-      "placeholder": "e.g., Google, Nubank, Magazine Luiza...",
-      "hint": "Adding a company helps tailor questions to that company's culture and values."
-    },
-    "languageSection": {
-      "label": "Interview language"
-    },
-    "resumeSection": {
-      "label": "Select resume",
-      "optional": "(optional)",
-      "noResumes": "No resumes uploaded yet",
-      "uploadResume": "Upload a resume",
-      "noResumeOption": "No resume (general interview)",
-      "score": "Score: {{score}}%"
-    },
-    "submit": {
-      "preparing": "Preparing interview...",
-      "start": "Start Interview",
-      "disclaimer": "Your interview will be recorded and analyzed to provide feedback."
+    "new": "New",
+    "repository": {
+      "title": "Interview",
+      "titleHighlight": "Repository",
+      "subtitle": "Browse, filter, and analyze all your interview sessions in one place.",
+      "description": "Your complete interview history with advanced filtering and analytics.",
+      "filters": {
+        "all": "All Interviews",
+        "dateRange": "Date Range",
+        "role": "Role",
+        "seniority": "Seniority Level",
+        "status": "Status",
+        "score": "Score Range",
+        "company": "Company",
+        "last7Days": "Last 7 Days",
+        "last30Days": "Last 30 Days",
+        "last90Days": "Last 90 Days",
+        "allTime": "All Time",
+        "clearFilters": "Clear Filters",
+        "activeFilters": "{{count}} active filter(s)"
+      },
+      "sort": {
+        "newest": "Newest First",
+        "oldest": "Oldest First",
+        "highestScore": "Highest Score",
+        "lowestScore": "Lowest Score"
+      },
+      "status": {
+        "completed": "Completed",
+        "pending": "Pending",
+        "inProgress": "In Progress",
+        "failed": "Failed"
+      },
+      "actions": {
+        "viewDetails": "View Details",
+        "downloadPdf": "Download PDF",
+        "reanalyze": "Re-analyze",
+        "reanalyzing": "Analyzing...",
+        "compare": "Compare",
+        "share": "Share"
+      },
+      "empty": {
+        "title": "No Interviews Found",
+        "description": "No interviews match your current filters. Try adjusting your search criteria.",
+        "noInterviews": "You haven't completed any interviews yet.",
+        "startFirst": "Complete your first interview to start building your repository."
+      },
+      "card": {
+        "score": "Score",
+        "duration": "Duration",
+        "date": "Date",
+        "status": "Status",
+        "seniority": "Level",
+        "language": "Language",
+        "hasFeedback": "Feedback Available"
+      },
+      "stats": {
+        "total": "Total Interviews",
+        "avgScore": "Average Score",
+        "totalTime": "Total Practice Time",
+        "improvement": "Improvement"
+      },
+      "analysis": {
+        "provider": "Analysis Provider",
+        "openai": "OpenAI GPT-4",
+        "gemini": "Google Gemini",
+        "lastAnalyzed": "Last analyzed {{date}}"
+      }
     }
   },
   "errors": {
@@ -678,13 +918,50 @@
       "admin": "Admin",
       "employee": "Employee"
     },
+    "tagline": "Interview Practice. Feedback. Progress.",
+    "divider": "or",
+    "features": {
+      "feedbackPdf": "Feedback PDF",
+      "scoreEvolution": "Score Evolution",
+      "multilingual": "Multilingual"
+    },
+    "oauth": {
+      "google": "Continue with Google",
+      "apple": "Continue with Apple",
+      "microsoft": "Continue with Microsoft",
+      "linkedin": "Continue with LinkedIn",
+      "connecting": "Connecting...",
+      "notReady": "Authentication service not ready. Please try again.",
+      "failed": "Authentication failed. Please try again."
+    },
+    "legal": {
+      "byContinuing": "By continuing, you agree to the",
+      "agreeToTerms": "I agree to the",
+      "termsOfUse": "Terms of Use",
+      "privacyPolicy": "Privacy Policy",
+      "and": "and",
+      "marketingOptIn": "Send me tips and updates about improving my interview skills"
+    },
+    "errors": {
+      "unexpected": "An unexpected error occurred. Please try again.",
+      "invalidCredentials": "Invalid email or password. Please try again.",
+      "verificationFailed": "Verification failed. Please try again.",
+      "invalidCode": "Invalid verification code. Please try again.",
+      "emailFirst": "Please enter your email first",
+      "resetFailed": "Failed to send reset email. Please try again.",
+      "signUpFailed": "An error occurred during sign-up. Please try again.",
+      "verificationIncomplete": "Verification incomplete. Please try again.",
+      "resendFailed": "Failed to resend code. Please try again.",
+      "termsRequired": "You must accept the Terms of Use and Privacy Policy"
+    },
     "accessDenied": "Access Denied",
     "insufficientPermissions": "You do not have permission to access this page.",
     "requiredRoles": "Required: {{roles}}",
     "createAccount": "Sign up"
   },
   "account": {
-    "title": "Account Settings",
+    "title": "Account",
+    "titleHighlight": "Settings",
     "subtitle": "Manage your profile and preferences",
     "profileUpdated": "Profile updated successfully",
     "passwordChanged": "Password changed successfully",
@@ -715,6 +992,14 @@
       "confirmLabel": "Type DELETE to confirm",
       "deleteButton": "Permanently Delete Account",
       "deleting": "Deleting..."
+    },
+    "validation": {
+      "failedToUpdateProfile": "Failed to update profile",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "passwordTooShort": "Password must be at least 8 characters",
+      "failedToChangePassword": "Failed to change password",
+      "typeDeleteToConfirm": "Please type DELETE to confirm",
+      "failedToDeleteAccount": "Failed to delete account"
     }
   },
   "workspace": {
@@ -744,7 +1029,32 @@
     "sections": {
       "summary": "Summary",
       "detailed": "Detailed Feedback",
-      "jobDescription": "Job Description"
+      "jobDescription": "Job Description",
+      "competencies": "Competency Breakdown",
+      "communication": "Communication Analysis",
+      "studyPlan": "Personalized Study Plan"
+    },
+    "communication": {
+      "overall": "Overall",
+      "wpm": "Words/min",
+      "fillers": "Filler words",
+      "clarity": "Clarity",
+      "frameworks": "Frameworks used"
+    },
+    "studyPlan": {
+      "exercises": "Suggested exercises",
+      "priority": {
+        "high": "High Priority",
+        "medium": "Medium Priority",
+        "low": "Lower Priority"
+      },
+      "hours": "~{{hours}}h estimated"
+    },
+    "competencies": {
+      "excellent": "Excellent",
+      "good": "Good",
+      "needsWork": "Needs improvement",
+      "score": "{{score}}/5"
     },
     "noSummary": "No summary available",
     "noFeedback": "No detailed feedback available",
@@ -754,7 +1064,14 @@
       "newInterview": "New Interview",
       "newInterviewAria": "Start new interview",
       "backToDashboard": "Back to Dashboard"
-    }
+    },
+    "pdf": {
+      "title": "Interview Feedback Report",
+      "candidate": "Candidate",
+      "score": "Score"
+    },
+    "noData": "No interview data found. Please complete an interview first.",
+    "retry": "Retry"
   },
   "payment": {
     "redirecting": "Redirecting...",
@@ -939,7 +1256,13 @@
     "analytics": {
       "title": "Advanced",
       "highlight": "Analytics"
-    }
+    },
+    "performanceFeedback": "Performance Feedback",
+    "feedbackPending": "Feedback will be available once the interview is completed.",
+    "noFeedback": "No feedback available",
+    "completeToProceed": "Please complete your interview session to receive AI-generated feedback.",
+    "interviewIssue": "This interview may have ended early or encountered an issue.",
+    "loadingAnalytics": "Loading analytics..."
   },
   "hrChat": {
     "title": "HR Intelligence Chat",
@@ -1004,11 +1327,30 @@
   "legal": {
     "privacy": {
       "title": "Privacy",
-      "titleHighlight": "Policy"
+      "titleHighlight": "Policy",
+      "sections": {
+        "introduction": "Introduction",
+        "dataCollected": "Data We Collect",
+        "howWeUse": "How We Use Your Data",
+        "dataSecurity": "Data Security",
+        "thirdParty": "Third-Party Services",
+        "yourRights": "Your Rights",
+        "contactUs": "Contact Us"
+      }
     },
     "terms": {
       "title": "Terms of",
-      "titleHighlight": "Use"
+      "titleHighlight": "Use",
+      "sections": {
+        "acceptance": "Acceptance of Terms",
+        "services": "Description of Services",
+        "userAccounts": "User Accounts",
+        "prohibited": "Prohibited Uses",
+        "intellectualProperty": "Intellectual Property",
+        "limitation": "Limitation of Liability",
+        "changes": "Changes to Terms",
+        "contactUs": "Contact Us"
+      }
     }
   },
   "howItWorks": {
@@ -1209,45 +1551,37 @@
       "title": "Frequently asked questions",
       "subtitle": "Everything you need to know about Vocaid.",
       "items": {
+        "whatIsVocaid": {
+          "question": "What is Vocaid?",
+          "answer": "Vocaid is an AI-powered interview platform. Today, we offer B2C Interview Practice—practice interviews with AI, get instant feedback, and track your progress. Coming soon: our B2B Recruiter Platform for structured candidate evaluations and an HR Employee Hub for AI-powered HR support."
+        },
         "howCreditsWork": {
           "question": "How do credits work?",
-          "answer": "New users receive free credits to get started. Each completed practice interview uses 1 credit. You can purchase more credits anytime through our billing page. Credits never expire, so use them at your own pace."
-        },
-        "difference": {
-          "question": "What's the difference between B2C and B2B?",
-          "answer": "B2C (Interview Practice) is for individual candidates who want to practice and improve their interview skills. B2B (Recruiter Platform) is for organizations that want to evaluate candidates with structured interviews and scorecards. Both are powered by the same AI technology."
-        },
-        "multiTenancy": {
-          "question": "How does multi-tenancy work?",
-          "answer": "Vocaid is built with enterprise-grade multi-tenancy from the ground up. Each organization gets isolated data storage, separate API credentials, and configurable permissions. Your data never mixes with other customers, and you can set up sub-tenants for different departments or business units."
-        },
-        "whiteLabel": {
-          "question": "Can we white-label the interview experience?",
-          "answer": "Absolutely. Our white-label controls let you customize the interview interface with your brand colors, logo, fonts, and messaging. Candidates see your brand throughout the entire experience. Enterprise plans include advanced theming options and custom domain support."
-        },
-        "billing": {
-          "question": "How does billing work?",
-          "answer": "For B2C users, we use a credit-based system. Purchase credit packs via Mercado Pago — the more you buy, the more you save. For B2B organizations, we offer flexible plans with volume discounts and custom billing arrangements."
-        },
-        "compliance": {
-          "question": "What about GDPR and LGPD compliance?",
-          "answer": "Vocaid is designed with privacy regulations in mind. We support data subject requests, provide data export functionality, and offer data residency options for EU and Brazil. Our processing agreements and security certifications are available upon request for compliance review."
-        },
-        "atsIntegration": {
-          "question": "Can we export interview data to our ATS?",
-          "answer": "Yes. Vocaid integrates with major ATS platforms through our SDK and webhooks. You can automatically push scorecards, transcripts, and evaluation data to your existing systems. We also provide a REST API for custom integrations with any platform."
+          "answer": "New users receive free credits to get started. Each completed practice interview uses 1 credit. You can purchase more credits anytime through our billing page. Credits never expire, so use them at your own pace. Subscription plans may be offered in the future."
         },
         "multilingual": {
-          "question": "Do you support multilingual interviews?",
-          "answer": "Yes, Vocaid supports interviews in multiple languages. Our AI can conduct interviews and generate scorecards in English, Spanish, Portuguese, French, German, and more. Language detection happens automatically, or you can specify the interview language upfront."
+          "question": "Which languages are supported?",
+          "answer": "Vocaid supports interviews in 7 languages: English, Chinese, Hindi, Spanish, Portuguese, French, and Russian. The AI conducts the entire interview and generates feedback in your chosen language. You can select your preferred language before each interview."
         },
-        "security": {
-          "question": "How secure is the interview data?",
-          "answer": "All data is encrypted at rest and in transit using AES-256 and TLS 1.3. We maintain SOC 2 Type II compliance, conduct regular penetration testing, and provide detailed audit logs. Enterprise customers can enable additional security controls including IP allowlisting and SSO."
+        "resumeRepository": {
+          "question": "Can I upload multiple resumes and choose one per interview?",
+          "answer": "Yes! Vocaid includes a Resume Repository where you can upload and store multiple resumes. Before each interview, you can select which resume to use, and our AI will tailor questions based on your experience. This is perfect if you're targeting different roles or industries."
         },
-        "trial": {
-          "question": "Is there a free trial available?",
-          "answer": "Yes! All new users get free credits to try Vocaid with no credit card required. Use them to experience AI-powered interviews before purchasing more. For B2B organizations, we offer extended trials with custom terms."
+        "linkedinImport": {
+          "question": "Can I import my LinkedIn profile?",
+          "answer": "LinkedIn import is available in supported regions. Where available, you can quickly import your professional experience from LinkedIn to create a resume in Vocaid. Alternatively, you can upload your resume as a PDF or DOCX file."
+        },
+        "privacy": {
+          "question": "How do you handle my data and privacy?",
+          "answer": "We take your privacy seriously. Your resumes and interview responses are stored securely and encrypted. You have full control over your data—you can view, export, or request deletion at any time from your account settings. We never share your personal data with third parties without your consent."
+        },
+        "support": {
+          "question": "How do I get support?",
+          "answer": "Use the in-app feedback button to report a bug or request a feature. For account or billing help, contact us at support@vocaid.ai. During closed beta, response times may be limited."
+        },
+        "rubrics": {
+          "question": "Can recruiters customize interview rubrics and scorecards?",
+          "answer": "Yes—Vocaid's Recruiter Platform (coming soon) will let organizations configure rubrics, competencies, and structured scorecards with evidence timestamps for consistent, auditable evaluations."
         }
       }
     },
@@ -1297,6 +1631,40 @@
       "success": {
         "title": "Thank you!",
         "message": "We'll be in touch within 24 hours to schedule your demo."
+      }
+    },
+    "waitlist": {
+      "title": "Join the Waitlist",
+      "description": "Be among the first to access our B2B platforms when they launch.",
+      "labels": {
+        "fullName": "Full name",
+        "email": "Email",
+        "company": "Company",
+        "module": "Platform interest"
+      },
+      "placeholders": {
+        "fullName": "John Smith",
+        "email": "john@company.com",
+        "company": "Acme Inc.",
+        "module": "Select platform"
+      },
+      "modules": {
+        "recruiter": "Recruiter Platform (B2B)",
+        "hr": "Employee Hub (HR)",
+        "both": "Both platforms"
+      },
+      "validation": {
+        "nameRequired": "Name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Please enter a valid email",
+        "moduleRequired": "Please select a platform",
+        "submitFailed": "Failed to submit. Please try again."
+      },
+      "submitButton": "Join waitlist",
+      "disclaimer": "We'll notify you when early access opens. No spam, ever.",
+      "success": {
+        "title": "You're on the list!",
+        "message": "We'll notify you as soon as early access opens."
       }
     },
     "finalCta": {
@@ -1375,14 +1743,17 @@
       }
     },
     "platformShowcase": {
-      "badge": "Three Platforms, One Mission",
-      "title": "Built for every stage of the interview journey",
-      "subtitle": "From practicing for your next interview to building world-class hiring teams, Vocaid adapts to your needs.",
+      "badge": "Three Platforms",
+      "titleBlack": "What Vocaid",
+      "titlePurple": "Delivers",
+      "subtitle": "Interview tools built for individuals, recruiters, and HR teams. One live today, two launching soon.",
+      "liveBadge": "Live Now",
+      "comingSoonBadge": "Coming Soon",
       "mostPopular": "Most Popular",
       "b2c": {
         "forLabel": "For Candidates",
         "title": "Interview Practice",
-        "description": "Practice AI-powered mock interviews, get instant feedback, and track your improvement.",
+        "description": "Practice role-specific interviews. Track progress. Store resumes. Repeat across languages.",
         "performanceTrend": "Performance Trend",
         "improvement": "+17% this month",
         "stats": {
@@ -1390,32 +1761,46 @@
           "avgScore": "Avg Score",
           "resumes": "Resumes"
         },
+        "features": {
+          "aiPractice": "AI-powered voice interviews",
+          "resumeRepo": "Resume repository with role reuse",
+          "dashboard": "Dashboard: trends, skills, activity",
+          "multilingual": "Multilingual interview languages",
+          "history": "Full interview history + scoring"
+        },
         "actions": {
           "startPractice": "Start Practice",
           "uploadResume": "Upload Resume"
         },
-        "cta": "Start Free"
+        "cta": "Start practicing"
       },
       "b2b": {
         "forLabel": "For Organizations",
         "title": "Recruiter Platform",
-        "description": "Create interview kits, evaluate candidates consistently, and make data-driven hiring decisions.",
+        "description": "Structured interviews with configurable rubrics, evidence timestamps, and team analytics.",
         "candidatePipeline": "Candidate Pipeline",
-        "thisWeek": "12 this week",
+        "thisWeek": "This week",
         "recommended": "Recommended",
         "underReview": "Under Review",
+        "features": {
+          "rubrics": "Configurable interview rubrics",
+          "evidence": "Timestamped evidence capture",
+          "analytics": "Team analytics dashboard",
+          "dynamic": "Dynamic prompt injection per role",
+          "audit": "Audit-ready, multi-org support"
+        },
         "actions": {
           "interviewKits": "Interview Kits",
           "analytics": "Analytics"
         },
-        "cta": "Get Early Access"
+        "cta": "Join waitlist"
       },
       "hr": {
         "forLabel": "For Internal Teams",
         "title": "Employee Hub",
-        "description": "Deflect HR tickets with policy-aware answers and streamline employee onboarding.",
+        "description": "Policy-aware answers from your org knowledge base. Escalate when humans are needed.",
         "recentQueries": "Recent Queries",
-        "resolved": "95% resolved",
+        "resolved": "Resolved",
         "mockQueries": [
           "How do I request PTO?",
           "What are the health benefits?",
@@ -1425,11 +1810,18 @@
           "ticketsDeflected": "Tickets Deflected",
           "avgResponse": "Avg Response"
         },
+        "features": {
+          "rag": "RAG-powered policy answers",
+          "escalation": "Human escalation workflows",
+          "automation": "Routine automation (PTO, payslips)",
+          "tenant": "Per-org knowledge isolation",
+          "compliance": "Role-based access + compliance"
+        },
         "actions": {
           "askHR": "Ask HR",
           "policies": "Policies"
         },
-        "cta": "Get Early Access"
+        "cta": "Join waitlist"
       }
     },
     "dashboardPreview": {
@@ -1495,6 +1887,279 @@
         "distributedSystems": "Deep knowledge of distributed systems",
         "articulation": "Clear articulation of complex concepts",
         "clarifying": "Asked clarifying questions effectively"
+      }
+    }
+  },
+  "consent": {
+    "loading": "Loading...",
+    "loadError": "Failed to load consent requirements. Please refresh the page.",
+    "userNotAuth": "User not authenticated. Please sign in again.",
+    "recordFailed": "Failed to record consent. Please try again.",
+    "genericError": "An error occurred. Please try again.",
+    "mustAcceptBoth": "You must accept both Terms of Use and Privacy Policy to continue.",
+    "step1": {
+      "title": "Before you start",
+      "subtitle": "We need your agreement to continue using Vocaid.",
+      "agreeToTerms": "I agree to the",
+      "termsOfUse": "Terms of Use",
+      "privacyPolicy": "Privacy Policy",
+      "continue": "Continue"
+    },
+    "step2": {
+      "title": "Communication preferences",
+      "subtitle": "Choose how you'd like to hear from us.",
+      "essential": {
+        "title": "Essential transactional emails",
+        "description": "Receipts, security alerts, and account notifications. Required to use Vocaid."
+      },
+      "marketing": {
+        "title": "Product updates and offers",
+        "description": "Tips, new features, and occasional promotions. You can unsubscribe anytime."
+      },
+      "back": "Back",
+      "saving": "Saving...",
+      "getStarted": "Get started"
+    },
+    "footer": {
+      "notice": "By continuing, you agree to receive essential transactional emails."
+    }
+  },
+  "billing": {
+    "retry": "Retry",
+    "loading": "Loading...",
+    "refreshing": "Refreshing...",
+    "refresh": "Refresh",
+    "paymentMethod": "Payment Method",
+    "recommendedForRegion": "Recommended for your region",
+    "manuallySelected": "Manually selected",
+    "cancel": "Cancel",
+    "change": "Change",
+    "bestValue": "Best Value",
+    "interviewCredits": "{{count}} interview credits",
+    "practiceInterviews": "{{count}} practice interviews",
+    "aiFeedback": "AI-powered feedback",
+    "performanceAnalytics": "Performance analytics",
+    "processing": "Processing...",
+    "buyNow": "Buy Now",
+    "securePaymentVia": "Secure payment via",
+    "credits": "credits",
+    "balance": "Balance",
+    "loadMore": "Load More",
+    "needHelp": "Need Help?",
+    "contactUsAt": "Contact us at",
+    "failedToLoadPackages": "Failed to load credit packages",
+    "paymentFailed": "Payment failed. Please try again."
+  },
+  "resumeLibrary": {
+    "title": "Resume",
+    "titleHighlight": "Library",
+    "subtitle": "Manage your resumes for quick interview setup",
+    "errors": {
+      "invalidFileType": "Please upload a PDF or Word document",
+      "fileTooLarge": "File size must be less than 5MB",
+      "loadFailed": "Failed to load resumes",
+      "setPrimaryFailed": "Failed to set as primary",
+      "deleteFailed": "Failed to delete resume",
+      "updateFailed": "Failed to update resume",
+      "uploadFailed": "Failed to upload resume",
+      "readFailed": "Failed to read file"
+    }
+  },
+  "scoreDisplay": {
+    "excellent": "Excellent",
+    "good": "Good",
+    "average": "Average",
+    "needsImprovement": "Needs Improvement"
+  },
+  "pricing": {
+    "badge": "Pricing",
+    "titleFirst": "Pricing",
+    "subtitle": "Start free, upgrade when you're ready. Clear plans, predictable usage, no surprises.",
+    "microcopy": "Built for individuals today — ready for teams and internal HR tomorrow.",
+    "viewFullPricing": "View full pricing",
+    "talkToSales": "Talk to sales",
+    "tabs": {
+      "b2c": "Personal",
+      "b2b": "Recruiter Hub",
+      "hr": "Employee Hub"
+    },
+    "badges": {
+      "bestValue": "Best Value",
+      "mostPopular": "Most Popular",
+      "save": "Save vs Monthly",
+      "comingSoon": "Coming Soon"
+    },
+    "disclaimers": {
+      "beta": "During closed beta, some plans may display Coming Soon while core Personal features remain available.",
+      "usage": "Usage limits (minutes/credits) and add-ons will be finalized prior to public launch.",
+      "enterprise": "Enterprise options may include security reviews and contractual terms."
+    },
+    "b2c": {
+      "intro": "Practice faster. Improve smarter. Track progress across roles, resumes, and languages.",
+      "toggle": {
+        "credits": "Credits",
+        "subscription": "Subscription",
+        "creditsHelper": "Best if you interview occasionally or prefer full control.",
+        "subscriptionHelper": "Best if you're practicing weekly and want predictable access."
+      },
+      "footnote": {
+        "credits": "Credits are used per interview session. Taxes may apply.",
+        "subscription": "Subscription availability and included credits may vary during closed beta."
+      },
+      "credits": {
+        "starter": {
+          "title": "Starter",
+          "tagline": "One-off practice, quick feedback.",
+          "cta": "Buy credits",
+          "features": [
+            "Credits for interview sessions",
+            "Resume-based questions",
+            "Score + key improvement points",
+            "Interview history"
+          ]
+        },
+        "pro": {
+          "title": "Pro",
+          "tagline": "More practice, better progress tracking.",
+          "cta": "Get Pro credits",
+          "features": [
+            "More credits per purchase",
+            "Resume scoring by role",
+            "Stronger analytics on trends & skills",
+            "Faster feedback delivery"
+          ]
+        },
+        "max": {
+          "title": "Max",
+          "tagline": "Intensive prep for active job searching.",
+          "cta": "Get Max credits",
+          "features": [
+            "Largest credit pack",
+            "Built for repeated role iterations",
+            "Best per-session price",
+            "Priority processing"
+          ]
+        }
+      },
+      "subscription": {
+        "monthly": {
+          "title": "Monthly",
+          "tagline": "Consistent practice without thinking about it.",
+          "cta": "Start monthly",
+          "features": [
+            "Monthly credit allowance",
+            "Resume repository + reuse per interview",
+            "Dashboard metrics (skills, trend, activity)",
+            "Email support"
+          ]
+        },
+        "plus": {
+          "title": "Plus",
+          "tagline": "More reps, deeper insights, faster iteration.",
+          "cta": "Start Plus",
+          "features": [
+            "Higher monthly credit allowance",
+            "Enhanced feedback + stronger scoring view",
+            "Better role/resume comparison",
+            "Priority support"
+          ]
+        },
+        "annual": {
+          "title": "Annual",
+          "tagline": "Best value for ongoing career growth.",
+          "cta": "Go annual",
+          "features": [
+            "Annual plan pricing advantage",
+            "Everything in Plus",
+            "Long-term progress tracking"
+          ]
+        }
+      }
+    },
+    "b2b": {
+      "intro": "Consistent, auditable interviews at scale — with configurable rubrics, scorecards, and evidence.",
+      "note": "Coming soon — join the waitlist to get early access.",
+      "customText": "Need a custom plan? We'll tailor Vocaid to your workflow, security posture, and hiring volume.",
+      "starter": {
+        "title": "Starter",
+        "tagline": "For small teams getting started with AI interviews.",
+        "cta": "Join waitlist",
+        "features": [
+          "Up to 5 team seats",
+          "100 interview minutes/month",
+          "Basic scorecards",
+          "Email support",
+          "Standard integrations"
+        ]
+      },
+      "growth": {
+        "title": "Growth",
+        "tagline": "For teams scaling hiring with more control and insight.",
+        "cta": "Join waitlist",
+        "features": [
+          "Up to 25 team seats",
+          "500 interview minutes/month",
+          "Advanced scorecards with evidence + timestamps",
+          "Priority support",
+          "All integrations + webhooks",
+          "Custom rubrics",
+          "Analytics dashboard"
+        ]
+      },
+      "enterprise": {
+        "title": "Enterprise",
+        "tagline": "For orgs with security, compliance, and governance needs.",
+        "cta": "Talk to sales",
+        "features": [
+          "Unlimited seats",
+          "Custom minute allocations",
+          "SSO & SCIM provisioning",
+          "Dedicated support",
+          "Custom integrations",
+          "Audit logs & compliance",
+          "Data residency options",
+          "SLA guarantees"
+        ]
+      }
+    },
+    "hr": {
+      "intro": "Deflect repetitive HR tickets with AI answers grounded in your policies — and escalate to humans when it matters.",
+      "note": "Coming soon — designed for multi-org, permissioned knowledge bases (RAG).",
+      "customText": "Need a tailored solution? We can adapt Vocaid to your internal policies, workflows, and compliance requirements.",
+      "starter": {
+        "title": "HR Starter",
+        "tagline": "Launch an AI helpdesk for common HR questions.",
+        "cta": "Join waitlist",
+        "features": [
+          "HR policy knowledge base (RAG)",
+          "Instant answers on benefits & policies",
+          "Basic analytics (usage + deflection signals)",
+          "Admin controls (roles & access)"
+        ]
+      },
+      "growth": {
+        "title": "HR Growth",
+        "tagline": "Expand coverage with smarter routing and automation.",
+        "cta": "Join waitlist",
+        "features": [
+          "Everything in Starter",
+          "Human escalation workflows (rules-based)",
+          "Automation routines (vacation, payslip, address change)",
+          "Organization-level knowledge separation"
+        ]
+      },
+      "enterprise": {
+        "title": "HR Enterprise",
+        "tagline": "Enterprise-grade governance, security, and scale.",
+        "cta": "Talk to sales",
+        "features": [
+          "Everything in Growth",
+          "SSO & SCIM provisioning",
+          "Audit logs & compliance",
+          "Data residency options",
+          "Custom integrations",
+          "SLA guarantees"
+        ]
       }
     }
   }

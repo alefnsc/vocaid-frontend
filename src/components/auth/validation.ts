@@ -41,6 +41,29 @@ export const SENIORITY_LEVELS = [
 
 export type SeniorityLevel = typeof SENIORITY_LEVELS[number];
 
+// Supported countries for B2C (all enabled)
+// ID verification is only available for Brazil users
+export const SUPPORTED_COUNTRIES = [
+  { code: 'BR', name: 'Brazil', flag: '🇧🇷', enabled: true, idVerificationAvailable: true },
+  { code: 'US', name: 'United States', flag: '🇺🇸', enabled: true, idVerificationAvailable: false },
+  { code: 'GB', name: 'United Kingdom', flag: '🇬🇧', enabled: true, idVerificationAvailable: false },
+  { code: 'CA', name: 'Canada', flag: '🇨🇦', enabled: true, idVerificationAvailable: false },
+  { code: 'MX', name: 'Mexico', flag: '🇲🇽', enabled: true, idVerificationAvailable: false },
+  { code: 'AR', name: 'Argentina', flag: '🇦🇷', enabled: true, idVerificationAvailable: false },
+  { code: 'CO', name: 'Colombia', flag: '🇨🇴', enabled: true, idVerificationAvailable: false },
+  { code: 'CL', name: 'Chile', flag: '🇨🇱', enabled: true, idVerificationAvailable: false },
+  { code: 'PT', name: 'Portugal', flag: '🇵🇹', enabled: true, idVerificationAvailable: false },
+  { code: 'ES', name: 'Spain', flag: '🇪🇸', enabled: true, idVerificationAvailable: false },
+] as const;
+
+// Helper to check if ID verification is available for a country
+export function isIdVerificationAvailable(countryCode: string): boolean {
+  const country = SUPPORTED_COUNTRIES.find(c => c.code === countryCode);
+  return country?.idVerificationAvailable ?? false;
+}
+
+export type CountryCode = typeof SUPPORTED_COUNTRIES[number]['code'];
+
 // Sign-up form validation schema
 export const signUpSchema = z.object({
   firstName: z
@@ -72,6 +95,8 @@ export const signUpSchema = z.object({
   }),
   
   preferredLanguage: z.string().min(1, 'Please select a language'),
+  
+  countryCode: z.string().length(2, 'Please select a country').default('BR'),
 });
 
 // Sign-in form validation schema

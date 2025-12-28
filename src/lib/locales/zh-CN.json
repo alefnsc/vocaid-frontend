@@ -24,7 +24,9 @@
     "submitting": "提交中...",
     "gotIt": "知道了",
     "soon": "即将",
-    "goBack": "Go Back"
+    "goBack": "Go Back",
+    "filters": "筛选",
+    "refreshData": "刷新数据"
   },
   "features": {
     "badge": "为什么选择Vocaid",
@@ -115,7 +117,8 @@
     "billing": "账单",
     "account": "账户",
     "main": "主要",
-    "settings": "设置"
+    "settings": "设置",
+    "accountSettings": "账户设置"
   },
   "sidebar": {
     "menu": "菜单",
@@ -347,9 +350,9 @@
     },
     "title": "面试",
     "status": {
-      "connecting": "正在连接Voxly...",
-      "speaking": "Voxly正在说话...",
-      "listening": "Voxly正在听..."
+      "connecting": "正在连接Vocaid...",
+      "speaking": "Vocaid正在说话...",
+      "listening": "Vocaid正在听..."
     },
     "buttons": {
       "quit": "退出面试"
@@ -402,6 +405,10 @@
           "step3": "更改后刷新页面"
         }
       }
+    },
+    "errors": {
+      "noCreditsError": "没有可用积分。请购买积分以继续。",
+      "sessionValidationFailed": "会话验证失败，请重试。"
     }
   },
   "interviewSetup": {
@@ -442,6 +449,55 @@
       "preparing": "准备面试中...",
       "start": "开始面试",
       "disclaimer": "您的面试将被录制并分析以提供反馈。"
+    },
+    "validation": {
+      "invalidFileType": "请上传 PDF 或 Word 文档",
+      "fileTooLarge": "文件大小必须小于 5MB",
+      "fileReadError": "读取文件失败，请重试。",
+      "firstNameRequired": "请在您的个人资料中设置名字",
+      "lastNameRequired": "请在您的个人资料中设置姓氏",
+      "companyNameRequired": "公司名称为必填项",
+      "jobTitleRequired": "职位名称为必填项",
+      "seniorityRequired": "请选择您的资历级别",
+      "jobDescriptionRequired": "职位描述为必填项",
+      "jobDescriptionTooShort": "职位描述至少需要 200 个字符（当前：{{count}}）",
+      "resumeRequired": "简历为必填项",
+      "resumeSelectFromLibrary": "请从您的简历库中选择",
+      "resumeLoadFailed": "加载简历失败，请重试。",
+      "policyRequired": "您必须接受隐私政策和使用条款",
+      "creditsLoading": "请稍候，正在加载积分...",
+      "startFailed": "面试开始失败，请重试。"
+    },
+    "titleHighlight": "面试",
+    "interviewingAs": "面试身份",
+    "loadingCredits": "正在加载积分...",
+    "startInterview": "开始面试",
+    "helpText": "您的面试将被录制并由AI分析，以提供个性化反馈。",
+    "form": {
+      "companyName": "公司名称",
+      "companyNamePlaceholder": "输入公司名称...",
+      "jobTitle": "职位名称",
+      "jobTitlePlaceholder": "输入职位名称...",
+      "seniority": "资历级别",
+      "seniorityPlaceholder": "选择资历级别",
+      "seniorityLevels": {
+        "intern": "实习生",
+        "junior": "初级",
+        "mid": "中级",
+        "senior": "高级",
+        "staff": "主管 / 负责人",
+        "principal": "首席 / 总监"
+      },
+      "jobDescription": "职位描述",
+      "jobDescriptionPlaceholder": "在此粘贴职位描述...",
+      "charactersMinimum": "最少字符数",
+      "resume": "简历",
+      "fromLibrary": "从库中选择",
+      "uploadNew": "上传新文件",
+      "uploadResume": "上传简历（PDF或Word）",
+      "acceptPolicy": "我接受",
+      "privacyPolicy": "隐私政策",
+      "termsOfUse": "使用条款"
     }
   },
   "credits": {
@@ -519,7 +575,13 @@
     "purchaseToSeeHistory": "购买积分以查看交易记录",
     "creditUsage": "积分使用",
     "noInterviewsYet": "暂无面试",
-    "completeInterviewsToSee": "完成面试以查看使用记录"
+    "completeInterviewsToSee": "完成面试以查看使用记录",
+    "dateLabels": {
+      "today": "今天",
+      "yesterday": "昨天"
+    },
+    "creditsUsed": "积分已使用",
+    "creditsUsedPlural": "积分已使用"
   },
   "dashboard": {
     "title": "控制面板",
@@ -541,7 +603,7 @@
     "charts": {
       "scoreEvolution": "分数变化",
       "monthlySpending": "月度消费",
-      "noScoreData": "暂无分数数据",
+      "noScoreData": "暂无评分数据",
       "noScoreDataDesc": "完成面试以跟踪您的进度",
       "noSpendingData": "暂无消费数据",
       "noSpendingDataDesc": "购买积分以查看您的历史记录",
@@ -572,10 +634,23 @@
     "lowCredits": {
       "title": "Running low on credits?",
       "buyMore": "Buy More Credits"
-    }
+    },
+    "filters": {
+      "role": "按角色筛选",
+      "seniority": "按级别筛选",
+      "allRoles": "所有角色",
+      "allSeniorities": "所有级别"
+    },
+    "fromLastMonth": "与上月相比",
+    "noFilteredResults": "没有与所选过滤器匹配的面试",
+    "tooltips": {
+      "score": "分数",
+      "spent": "花费"
+    },
+    "viewInsights": "查看分析"
   },
   "interviews": {
-    "title": "您的面试",
+    "title": "面试",
     "subtitle": "查看您的面试历史并跟踪进度。",
     "startNew": "开始新面试",
     "startFirst": "开始您的第一次面试",
@@ -620,7 +695,32 @@
     "sections": {
       "summary": "总结",
       "detailed": "详细反馈",
-      "jobDescription": "职位描述"
+      "jobDescription": "职位描述",
+      "competencies": "能力分析",
+      "communication": "沟通分析",
+      "studyPlan": "个性化学习计划"
+    },
+    "communication": {
+      "overall": "总体",
+      "wpm": "每分钟字数",
+      "fillers": "填充词",
+      "clarity": "清晰度",
+      "frameworks": "使用的框架"
+    },
+    "studyPlan": {
+      "exercises": "建议练习",
+      "priority": {
+        "high": "高优先级",
+        "medium": "中优先级",
+        "low": "低优先级"
+      },
+      "hours": "~{{hours}}小时预计"
+    },
+    "competencies": {
+      "excellent": "优秀",
+      "good": "良好",
+      "needsWork": "需改进",
+      "score": "{{score}}/5"
     },
     "noSummary": "暂无总结",
     "noFeedback": "暂无详细反馈",
@@ -630,7 +730,14 @@
       "newInterview": "新面试",
       "newInterviewAria": "开始新面试",
       "backToDashboard": "返回仪表盘"
-    }
+    },
+    "pdf": {
+      "title": "面试反馈报告",
+      "candidate": "候选人",
+      "score": "分数"
+    },
+    "noData": "未找到面试数据。请先完成一次面试。",
+    "retry": "重试"
   },
   "payment": {
     "redirecting": "正在重定向...",
@@ -872,17 +979,43 @@
     "analytics": {
       "title": "高级",
       "highlight": "分析"
-    }
+    },
+    "performanceFeedback": "绩效反馈",
+    "feedbackPending": "面试完成后将提供反馈。",
+    "noFeedback": "暂无反馈",
+    "completeToProceed": "请完成面试以接收AI生成的反馈。",
+    "interviewIssue": "此面试可能提前结束或遇到问题。",
+    "loadingAnalytics": "正在加载分析..."
   },
   "legal": {
     "privacy": {
       "title": "隐私",
-      "titleHighlight": "政策"
+      "titleHighlight": "政策",
+      "sections": {
+        "introduction": "简介",
+        "dataCollected": "我们收集的数据",
+        "howWeUse": "我们如何使用您的数据",
+        "dataSecurity": "数据安全",
+        "thirdParty": "第三方服务",
+        "yourRights": "您的权利",
+        "contactUs": "联系我们"
+      }
     },
     "terms": {
       "title": "使用",
-      "titleHighlight": "条款"
-    }
+      "titleHighlight": "条款",
+      "sections": {
+        "acceptance": "条款接受",
+        "services": "服务描述",
+        "userAccounts": "用户账户",
+        "prohibited": "禁止使用",
+        "intellectualProperty": "知识产权",
+        "limitation": "责任限制",
+        "changes": "条款变更",
+        "contactUs": "联系我们"
+      }
+    },
+    "disclaimer": "这是一份礼貌性翻译。如有差异，以英文文本为准。"
   },
   "howItWorks": {
     "badge": "简单流程",
@@ -1065,53 +1198,37 @@
       "title": "常见问题解答",
       "subtitle": "关于Vocaid您需要了解的一切。",
       "items": {
-        "multiTenancy": {
-          "question": "多租户如何工作？",
-          "answer": "Vocaid从一开始就采用企业级多租户架构。每个组织都有隔离的数据存储、独立的API凭证和可配置的权限。"
-        },
-        "whiteLabel": {
-          "question": "我们可以使用自己的品牌吗？",
-          "answer": "当然可以。我们的白标控制允许您使用品牌颜色、徽标、字体和消息自定义面试界面。"
-        },
-        "billing": {
-          "question": "计费如何工作？",
-          "answer": "我们使用简单的按使用付费模式，基于消耗的面试分钟数。您可以购买分钟包或设置自动充值。"
-        },
-        "compliance": {
-          "question": "关于GDPR合规呢？",
-          "answer": "Vocaid在设计时考虑了隐私法规。我们支持数据主体请求、提供数据导出功能和数据驻留选项。"
-        },
-        "atsIntegration": {
-          "question": "我们可以将数据导出到ATS吗？",
-          "answer": "可以。Vocaid通过我们的SDK和webhooks与主要ATS平台集成。您可以自动推送评分卡、转录和评估数据。"
-        },
-        "multilingual": {
-          "question": "你们支持多语言面试吗？",
-          "answer": "是的，Vocaid支持多种语言的面试。我们的AI可以用英语、西班牙语、葡萄牙语、法语、德语等进行面试并生成评分卡。"
-        },
-        "security": {
-          "question": "面试数据有多安全？",
-          "answer": "所有数据在静态和传输过程中都使用AES-256和TLS 1.3加密。我们保持SOC 2 Type II合规并提供详细的审计日志。"
-        },
-        "support": {
-          "question": "你们提供什么样的支持？",
-          "answer": "入门计划包括24小时响应时间的邮件支持。成长计划获得更快响应的优先支持。"
-        },
-        "rubrics": {
-          "question": "我们可以自定义评估标准吗？",
-          "answer": "成长和企业计划包括完整的评估标准自定义。您可以定义自己的能力框架和评分标准。"
-        },
-        "trial": {
-          "question": "有免费试用吗？",
-          "answer": "是的，我们在入门和成长计划上提供14天免费试用，无需信用卡。您可以完全访问所有功能。"
+        "whatIsVocaid": {
+          "question": "什么是Vocaid？",
+          "answer": "Vocaid是一个由AI驱动的面试平台。对于个人用户（B2C），它提供真实的模拟面试和即时反馈。对于企业用户（B2B），我们正在开发招聘人员平台用于结构化评估，以及员工中心用于政策问答——两者即将推出。"
         },
         "howCreditsWork": {
-          "question": "How do credits work?",
-          "answer": "New users receive free credits to get started. Each completed practice interview uses 1 credit. You can purchase more credits anytime through our billing page. Credits never expire, so use them at your own pace."
+          "question": "积分如何使用？",
+          "answer": "新用户会收到免费积分以开始使用。每次完成的模拟面试消耗1个积分。您可以随时通过账单页面购买更多积分。积分永不过期，按您自己的节奏使用。"
         },
-        "difference": {
-          "question": "What's the difference between B2C and B2B?",
-          "answer": "B2C (Interview Practice) is for individual candidates who want to practice and improve their interview skills. B2B (Recruiter Platform) is for organizations that want to evaluate candidates with structured interviews and scorecards. Both are powered by the same AI technology."
+        "languages": {
+          "question": "Vocaid支持哪些语言？",
+          "answer": "我们目前支持7种语言：英语、葡萄牙语、西班牙语、法语、中文（普通话）、印地语和俄语。您可以用这些语言中的任何一种进行模拟面试，并随时切换。"
+        },
+        "resumes": {
+          "question": "简历库如何工作？",
+          "answer": "您可以上传多份简历，并设置一份主简历用于模拟面试。AI将使用您简历的内容生成与您的经验和职业目标相关的问题。"
+        },
+        "linkedin": {
+          "question": "我可以导入LinkedIn个人资料吗？",
+          "answer": "即将推出！我们正在开发LinkedIn集成，让您可以直接导入经验和技能数据作为简历的起点。"
+        },
+        "privacy": {
+          "question": "你们如何处理我的数据？",
+          "answer": "您的隐私很重要。我们绝不与第三方分享您的面试录音、转录或简历。所有数据都经过加密，您可以随时删除账户和所有相关数据。"
+        },
+        "support": {
+          "question": "如何获得支持？",
+          "answer": "使用应用内反馈按钮报告问题或提出改进建议。如需账户或账单帮助，请发送邮件至support@vocaid.ai。在封闭测试期间，响应时间可能有限。"
+        },
+        "rubrics": {
+          "question": "招聘人员可以自定义面试评分标准和记分卡吗？",
+          "answer": "可以——Vocaid的招聘人员平台（即将推出）将允许组织配置评分标准、能力框架和结构化记分卡，并附带证据时间戳，以实现一致且可审计的评估。"
         }
       }
     },
@@ -1528,19 +1645,55 @@
       "button": "Verify"
     },
     "sso": {
-      "completing": "Completing sign in..."
+      "completing": "正在完成登录..."
     },
     "roles": {
-      "recruiter": "Recruiter",
-      "candidate": "Candidate",
-      "manager": "Manager",
-      "admin": "Admin",
-      "employee": "Employee"
+      "recruiter": "招聘者",
+      "candidate": "候选人",
+      "manager": "经理",
+      "admin": "管理员",
+      "employee": "员工"
     },
-    "accessDenied": "Access Denied",
-    "insufficientPermissions": "You do not have permission to access this page.",
-    "requiredRoles": "Required: {{roles}}",
-    "createAccount": "Sign up"
+    "tagline": "面试练习。反馈。进步。",
+    "divider": "或",
+    "features": {
+      "feedbackPdf": "反馈PDF",
+      "scoreEvolution": "分数演变",
+      "multilingual": "多语言"
+    },
+    "oauth": {
+      "google": "使用Google继续",
+      "apple": "使用Apple继续",
+      "microsoft": "使用Microsoft继续",
+      "linkedin": "使用LinkedIn继续",
+      "connecting": "连接中...",
+      "notReady": "认证服务不可用。请重试。",
+      "failed": "认证失败。请重试。"
+    },
+    "legal": {
+      "byContinuing": "继续即表示您同意",
+      "agreeToTerms": "我同意",
+      "termsOfUse": "使用条款",
+      "privacyPolicy": "隐私政策",
+      "and": "和",
+      "marketingOptIn": "向我发送改进面试技能的提示和更新"
+    },
+    "errors": {
+      "unexpected": "发生意外错误。请重试。",
+      "invalidCredentials": "邮箱或密码无效。请重试。",
+      "verificationFailed": "验证失败。请重试。",
+      "invalidCode": "验证码无效。请重试。",
+      "emailFirst": "请先输入您的邮箱",
+      "resetFailed": "发送重置邮件失败。请重试。",
+      "signUpFailed": "注册时发生错误。请重试。",
+      "verificationIncomplete": "验证未完成。请重试。",
+      "resendFailed": "重新发送验证码失败。请重试。",
+      "termsRequired": "您必须接受使用条款和隐私政策"
+    },
+    "accessDenied": "访问被拒绝",
+    "insufficientPermissions": "您没有访问此页面的权限。",
+    "requiredRoles": "需要: {{roles}}",
+    "createAccount": "注册"
   },
   "account": {
     "title": "Account Settings",
@@ -1574,6 +1727,14 @@
       "confirmLabel": "Type DELETE to confirm",
       "deleteButton": "Permanently Delete Account",
       "deleting": "Deleting..."
+    },
+    "validation": {
+      "failedToUpdateProfile": "更新个人资料失败",
+      "passwordsDoNotMatch": "密码不匹配",
+      "passwordTooShort": "密码至少需要8个字符",
+      "failedToChangePassword": "修改密码失败",
+      "typeDeleteToConfirm": "请输入 DELETE 以确认",
+      "failedToDeleteAccount": "删除账户失败"
     }
   },
   "workspace": {
@@ -1583,5 +1744,185 @@
   },
   "footer": {
     "copyright": "© 2024 Vocaid. All rights reserved."
+  },
+  "contactAssistant": {
+    "title": "联系 Vocaid",
+    "button": "联系我们",
+    "prompts": {
+      "welcome": "您好！我在这里帮助您联系 Vocaid。让我们从您的姓名开始。",
+      "name": "您叫什么名字？",
+      "email": "谢谢！您的电子邮箱地址是什么？",
+      "subject": "您想讨论什么？请选择一个主题：\n\n• 一般咨询\n• 技术支持\n• 账单问题\n• 反馈\n• 合作机会\n• 其他",
+      "message": "太好了！现在，请描述您的问题或消息（50-250个字符）。",
+      "review": "这是您消息的摘要。准备好发送了吗？输入\"是\"确认或\"编辑 [字段]\"进行修改。",
+      "submitting": "正在发送您的消息...",
+      "success": "您的消息已成功发送！我们将在24-48小时内回复您。",
+      "error": "抱歉，发送消息时出错。您想再试一次吗？",
+      "invalidSubject": "我无法识别该主题。请从以下选项中选择：\n• 一般咨询\n• 技术支持\n• 账单问题\n• 反馈\n• 合作机会\n• 其他",
+      "editField": "当然，让我们更新一下。您想更改什么？",
+      "cancelled": "没问题！您想编辑什么？您可以说\"编辑姓名\"、\"编辑邮箱\"、\"编辑主题\"或\"编辑消息\"。",
+      "confirmHelp": "请输入\"是\"发送消息，或\"编辑 [字段]\"进行修改。"
+    },
+    "placeholder": {
+      "default": "输入您的回复...",
+      "message": "输入您的消息..."
+    }
+  },
+  "consent": {
+    "loading": "加载中...",
+    "loadError": "加载同意要求失败。请刷新页面。",
+    "userNotAuth": "用户未认证。请重新登录。",
+    "recordFailed": "记录同意失败。请重试。",
+    "genericError": "发生错误。请重试。",
+    "mustAcceptBoth": "您必须同意使用条款和隐私政策才能继续。",
+    "step1": {
+      "title": "开始之前",
+      "subtitle": "我们需要您的同意才能继续使用 Vocaid。",
+      "agreeToTerms": "我同意",
+      "termsOfUse": "使用条款",
+      "privacyPolicy": "隐私政策",
+      "continue": "继续"
+    },
+    "step2": {
+      "title": "通信偏好",
+      "subtitle": "选择您希望如何收到我们的消息。",
+      "essential": {
+        "title": "必要的交易邮件",
+        "description": "收据、安全提醒和账户通知。使用 Vocaid 必需。"
+      },
+      "marketing": {
+        "title": "产品更新和优惠",
+        "description": "技巧、新功能和偶尔的促销活动。您可以随时取消订阅。"
+      },
+      "back": "返回",
+      "saving": "保存中...",
+      "getStarted": "开始使用"
+    },
+    "footer": {
+      "notice": "继续即表示您同意接收必要的交易邮件。"
+    }
+  },
+  "billing": {
+    "retry": "重试",
+    "loading": "加载中...",
+    "refreshing": "刷新中...",
+    "refresh": "刷新",
+    "paymentMethod": "支付方式",
+    "recommendedForRegion": "推荐用于您所在的地区",
+    "manuallySelected": "手动选择",
+    "cancel": "取消",
+    "change": "更改",
+    "bestValue": "最佳价值",
+    "interviewCredits": "{{count}} 面试积分",
+    "practiceInterviews": "{{count}} 次练习面试",
+    "aiFeedback": "AI驱动反馈",
+    "performanceAnalytics": "性能分析",
+    "processing": "处理中...",
+    "buyNow": "立即购买",
+    "securePaymentVia": "安全支付通过",
+    "credits": "积分",
+    "balance": "余额",
+    "loadMore": "加载更多",
+    "needHelp": "需要帮助？",
+    "contactUsAt": "联系我们",
+    "failedToLoadPackages": "加载积分套餐失败",
+    "paymentFailed": "支付失败，请重试。"
+  },
+  "resumeLibrary": {
+    "errors": {
+      "invalidFileType": "请上传 PDF 或 Word 文档",
+      "fileTooLarge": "文件大小必须小于 5MB",
+      "loadFailed": "加载简历失败",
+      "setPrimaryFailed": "设置为主要失败",
+      "deleteFailed": "删除简历失败",
+      "updateFailed": "更新简历失败",
+      "uploadFailed": "上传简历失败",
+      "readFailed": "读取文件失败"
+    }
+  },
+  "scoreDisplay": {
+    "excellent": "优秀",
+    "good": "良好",
+    "average": "一般",
+    "needsImprovement": "需要改进"
+  },
+  "betaFeedback": {
+    "title": "测试反馈",
+    "bugReportTitle": "🐛 报告错误",
+    "featureTitle": "💡 功能建议",
+    "fabLabel": "发送反馈",
+    "fabText": "反馈",
+    "reportBugShort": "报告错误",
+    "suggestFeatureShort": "建议功能",
+    "welcome": "您好！👋 我在这里收集您在封闭测试期间的反馈。您想分享什么？",
+    "reportBug": "🐛 报告错误",
+    "suggestFeature": "💡 建议功能",
+    "bugTitle": "明白了！请简要描述这个错误的标题？",
+    "featureTitle": "太好了！请简要描述您的想法？",
+    "bugTitlePlaceholder": "例如：移动端按钮无法点击",
+    "featureTitlePlaceholder": "例如：深色模式支持",
+    "bugDescription": "请详细描述这个错误。发生了什么？",
+    "featureDescription": "请详细描述您的功能想法。",
+    "descriptionPlaceholder": "请提供尽可能多的细节...",
+    "severityQuestion": "这个错误有多严重？",
+    "severityLow": "🟢 低 - 小问题",
+    "severityMedium": "🟡 中 - 影响功能",
+    "severityHigh": "🟠 高 - 严重问题",
+    "severityBlocking": "🔴 阻塞 - 无法使用应用",
+    "stepsQuestion": "什么步骤会导致这个错误？（输入每个步骤后按回车，完成后点击'完成'）",
+    "stepsPlaceholder": "输入步骤并按回车...",
+    "expectedQuestion": "您期望发生什么？",
+    "expectedPlaceholder": "我期望...",
+    "actualQuestion": "实际发生了什么？",
+    "actualPlaceholder": "实际上发生的是...",
+    "frequencyQuestion": "这种情况发生的频率如何？",
+    "frequencyAlways": "每次都发生",
+    "frequencySometimes": "有时发生",
+    "frequencyOnce": "只发生过一次",
+    "goalQuestion": "这个功能会为您解决什么问题？",
+    "goalPlaceholder": "这会帮助我...",
+    "targetUserQuestion": "谁会从这个功能中受益？",
+    "targetSelf": "👤 只有我",
+    "targetRecruiters": "👥 招聘人员/人力资源",
+    "targetOther": "🌐 所有人",
+    "priorityQuestion": "这个功能对您有多重要？",
+    "priorityNice": "💭 有就好",
+    "priorityImportant": "⭐ 重要",
+    "priorityCritical": "🔥 对我的工作至关重要",
+    "alternativesQuestion": "您尝试过任何替代方案吗？（可选）",
+    "alternativesPlaceholder": "我尝试过...（或留空）",
+    "emailQuestion": "您的邮箱地址是什么，以便我们跟进？",
+    "emailPlaceholder": "your@email.com",
+    "followUpQuestion": "我们可以就此反馈联系您吗？",
+    "followUpYes": "✅ 是的，请联系我",
+    "followUpNo": "❌ 不用，只记录下来",
+    "reviewMessage": "这是您反馈的摘要：",
+    "submitButton": "📤 提交反馈",
+    "editButton": "✏️ 编辑",
+    "successMessage": "谢谢！您的反馈已提交。🎉\n\n非常感谢您帮助我们改进Vocaid！",
+    "errorMessage": "抱歉，提交反馈时出错。请重试。",
+    "retryButton": "🔄 重试",
+    "type": "类型",
+    "titleLabel": "标题",
+    "descriptionLabel": "描述",
+    "severityLabel": "严重程度",
+    "stepsLabel": "步骤",
+    "expectedLabel": "预期",
+    "frequencyLabel": "频率",
+    "priorityLabel": "优先级",
+    "targetUserLabel": "受益者",
+    "goalLabel": "目标",
+    "emailLabel": "邮箱",
+    "followUpLabel": "跟进",
+    "continue": "继续",
+    "done": "完成",
+    "steps": "步骤",
+    "skip": "跳过",
+    "skipped": "（已跳过）",
+    "back": "返回",
+    "close": "关闭",
+    "submitting": "正在提交您的反馈...",
+    "submitted": "反馈已提交！",
+    "powered": "由Vocaid提供支持"
   }
 }

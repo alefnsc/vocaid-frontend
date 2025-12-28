@@ -27,7 +27,7 @@ describe('BodyCopy', () => {
     it('renders the main heading', () => {
         render(<BodyCopy {...defaultProps} />);
         expect(screen.getByText(/Unlock Your Next/i)).toBeInTheDocument();
-        expect(screen.getByText(/Voxly/i)).toBeInTheDocument();
+        expect(screen.getByText(/Vocaid/i)).toBeInTheDocument();
     });
 
     it('renders all section headings', () => {

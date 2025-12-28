@@ -1,30 +1,70 @@
 /**
  * Environment Configuration
  * 
+ * Single source of truth for all frontend environment variables.
  * Handles environment-based configuration switching for:
  * - Backend API URL
  * - MercadoPago Public Key
+ * - PayPal Client ID
+ * - Feature flags
  * 
  * Usage:
  *   import { config } from 'lib/config';
  *   const apiUrl = config.backendUrl;
  *   const mpKey = config.mercadoPagoPublicKey;
+ * 
+ * @module lib/config
  */
 
-// Determine if we're in production mode
-const isProduction = process.env.REACT_APP_ENV === 'production';
+// ========================================
+// ENVIRONMENT DETECTION
+// ========================================
+
+type AppEnv = 'development' | 'staging' | 'production';
+
+const appEnv = (process.env.REACT_APP_ENV || 'development') as AppEnv;
+const isProduction = appEnv === 'production';
+const isStaging = appEnv === 'staging';
+const isDevelopment = appEnv === 'development';
+
+// ========================================
+// URL RESOLVERS
+// ========================================
 
 /**
  * Get the appropriate backend URL based on environment
+ * 
+ * Priority in development:
+ * 1. REACT_APP_BACKEND_URL_DEV (if set and not ngrok, or ngrok explicitly intended)
+ * 2. REACT_APP_BACKEND_URL (if explicitly local)
+ * 3. Default: http://localhost:3001 (safest for local dev)
  */
 function getBackendUrl(): string {
   if (isProduction) {
-    return process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+    return process.env.REACT_APP_BACKEND_URL || 'https://vocaid-backend.azurewebsites.net';
   }
-  // Development: prefer DEV URL, fallback to main URL
-  return process.env.REACT_APP_BACKEND_URL_DEV || 
-         process.env.REACT_APP_BACKEND_URL || 
-         'http://localhost:3001';
+  if (isStaging) {
+    return process.env.REACT_APP_BACKEND_URL_STAGING || 
+           process.env.REACT_APP_BACKEND_URL || 
+           'http://localhost:3001';
+  }
+  
+  // Development: prefer DEV URL, fallback to main URL, then localhost
+  const devUrl = process.env.REACT_APP_BACKEND_URL_DEV || 
+                 process.env.REACT_APP_BACKEND_URL || 
+                 'http://localhost:3001';
+  
+  // Warn if using ngrok (common source of CORS issues)
+  if (devUrl.includes('ngrok') || devUrl.includes('ngrok-free.app')) {
+    console.warn(
+      '⚠️ BACKEND_URL is using ngrok tunnel:', devUrl,
+      '\n   This may cause CORS issues if the ngrok URL is stale.',
+      '\n   For local development, use http://localhost:3001 instead.',
+      '\n   Set REACT_APP_BACKEND_URL_DEV=http://localhost:3001 in .env'
+    );
+  }
+  
+  return devUrl;
 }
 
 /**
@@ -58,9 +98,11 @@ function getPayPalClientId(): string {
  */
 export const config = {
   // Environment
-  env: process.env.REACT_APP_ENV || 'development',
+  appEnv,
+  env: appEnv, // alias for compatibility
   isProduction,
-  isDevelopment: !isProduction,
+  isStaging,
+  isDevelopment,
 
   // Backend API
   backendUrl: getBackendUrl(),
@@ -80,17 +122,31 @@ export const config = {
   // Interview duration thresholds (in milliseconds)
   minInterviewDurationMs: parseInt(process.env.REACT_APP_MIN_INTERVIEW_DURATION_MS || '30000', 10),
   creditRestorationThresholdMs: parseInt(process.env.REACT_APP_CREDIT_RESTORATION_THRESHOLD_MS || '15000', 10),
+  
+  // Feature flags
+  useMockData: process.env.REACT_APP_USE_MOCK_DATA === 'true',
+  closedBetaFeedback: process.env.REACT_APP_CLOSED_BETA_FEEDBACK === 'true',
+  
+  // App version
+  version: process.env.REACT_APP_VERSION || '0.0.0',
 } as const;
 
+// ========================================
+// DIAGNOSTICS (DEV ONLY)
+// ========================================
+
 // Log configuration in development (but hide sensitive parts)
-if (!isProduction) {
-  console.log('🔧 App Configuration:', {
-    env: config.env,
-    isProduction: config.isProduction,
-    backendUrl: config.backendUrl,
-    mercadoPagoKey: config.mercadoPagoPublicKey ? `${config.mercadoPagoPublicKey.slice(0, 20)}...` : 'NOT SET',
-    paypalClientId: config.paypalClientId ? `${config.paypalClientId.slice(0, 20)}...` : 'NOT SET',
-  });
+if (isDevelopment) {
+  console.log('');
+  console.log('═══════════════════════════════════════════════════════════');
+  console.log('  🔧 FRONTEND ENVIRONMENT DIAGNOSTICS');
+  console.log('═══════════════════════════════════════════════════════════');
+  console.log(`  APP_ENV:          ${config.appEnv}`);
+  console.log(`  BACKEND_URL:      ${config.backendUrl}`);
+  console.log(`  MOCK_DATA:        ${config.useMockData}`);
+  console.log(`  VERSION:          ${config.version}`);
+  console.log('═══════════════════════════════════════════════════════════');
+  console.log('');
 }
 
 export default config;

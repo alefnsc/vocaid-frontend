@@ -65,6 +65,6 @@
 //   it('should show timer and agent speaking or listening', () => {
 //     cy.get('.clock').should('exist');
 
-//     cy.get('.flex').contains('Voxly is Speaking...').should('exist');
+//     cy.get('.flex').contains('Vocaid is Speaking...').should('exist');
 //   });
 // });

@@ -11,7 +11,9 @@ import {
 } from 'components/ui/dialog'
 import { Button } from 'components/ui/button'
 import { Input } from 'components/ui/input'
-import apiService from 'services/APIService'
+
+const FORMSPREE_FORM_ID = process.env.REACT_APP_FORMSPREE_ID || 'mqaregzo'
+const FORMSPREE_ENDPOINT = `https://formspree.io/f/${FORMSPREE_FORM_ID}`
 
 interface DemoModalProps {
   open: boolean
@@ -71,13 +73,27 @@ export const DemoModal: React.FC<DemoModalProps> = ({ open, onOpenChange }) => {
     setIsSubmitting(true)
     
     try {
-      await apiService.submitDemoRequest({
+      const payload = {
         name: formData.name,
         email: formData.email,
         company: formData.company,
-        teamSize: formData.teamSize || undefined,
-        useCase: formData.useCase || undefined,
+        teamSize: formData.teamSize || 'Not specified',
+        useCase: formData.useCase || 'Not specified',
+        _subject: `[Demo] ${formData.company} - ${formData.email}`,
+      }
+
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(payload),
       })
+
+      if (!response.ok) {
+        throw new Error('Submission failed')
+      }
       
       setIsSubmitted(true)
       

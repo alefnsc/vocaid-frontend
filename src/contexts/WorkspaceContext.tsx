@@ -46,8 +46,8 @@ export interface WorkspaceContextType {
 const WorkspaceContext = createContext<WorkspaceContextType | undefined>(undefined);
 
 // Storage key for persisted workspace
-const WORKSPACE_STORAGE_KEY = 'voxly_current_workspace';
-const VIEW_CONTEXT_STORAGE_KEY = 'voxly_view_context';
+const WORKSPACE_STORAGE_KEY = 'Vocaid_current_workspace';
+const VIEW_CONTEXT_STORAGE_KEY = 'Vocaid_view_context';
 
 // ========================================
 // UTILITY FUNCTIONS

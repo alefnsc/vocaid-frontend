@@ -139,8 +139,13 @@ export const AccountMenu: React.FC<AccountMenuProps> = ({
     ? `${user.firstName}${user.lastName ? ` ${user.lastName}` : ''}`
     : user.primaryEmailAddress?.emailAddress || 'User';
   
+  // When user has no workspace, show "Personal" as both role and mode
+  // When in an organization, show the org name and actual role
+  const isPersonalMode = !currentWorkspace;
   const workspaceName = currentWorkspace?.name || t('account.personal', 'Personal');
-  const roleName = t(`auth.roles.${userRole}`, userRole);
+  const roleName = isPersonalMode 
+    ? t('account.personal', 'Personal') 
+    : t(`auth.roles.${userRole}`, userRole);
   const hasMultipleWorkspaces = workspaces.length > 1;
 
   return (
@@ -214,9 +219,12 @@ export const AccountMenu: React.FC<AccountMenuProps> = ({
                 <span className="text-xs font-medium text-purple-600 bg-purple-50 px-2 py-0.5 rounded">
                   {roleName}
                 </span>
-                <span className="text-xs text-zinc-400">
-                  {workspaceName}
-                </span>
+                {/* Only show workspace name when in an organization (avoid "Personal Personal") */}
+                {!isPersonalMode && (
+                  <span className="text-xs text-zinc-400">
+                    {workspaceName}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -284,7 +292,11 @@ export const AccountDisplay: React.FC<AccountDisplayProps> = ({
     ? `${user.firstName}${user.lastName ? ` ${user.lastName}` : ''}`
     : user.primaryEmailAddress?.emailAddress || 'User';
   
-  const roleName = t(`auth.roles.${userRole}`, userRole);
+  // When user has no workspace, show "Personal" instead of "Candidate"
+  const isPersonalMode = !currentWorkspace;
+  const roleName = isPersonalMode 
+    ? t('account.personal', 'Personal') 
+    : t(`auth.roles.${userRole}`, userRole);
 
   return (
     <div className={cn('space-y-3', className)}>

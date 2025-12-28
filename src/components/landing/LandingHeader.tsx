@@ -111,7 +111,7 @@ export const LandingHeader: React.FC<LandingHeaderProps> = ({ onDemoClick }) => 
 
       {/* Mobile Menu Dialog */}
       <Dialog open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="w-[calc(100vw-2rem)] max-w-md mx-auto">
           <DialogHeader>
             <DialogTitle>
               <BrandMark size="md" linkToHome={false} />

@@ -1,10 +1,10 @@
 /**
  * Platform Showcase Component
  * 
- * Displays the three Vocaid platforms with animated mock dashboard previews:
- * - B2C: Interview Practice & Performance
- * - B2B: Recruiter Interview Platform  
- * - HR: Employee Hub
+ * Displays the three Vocaid platforms with proper iconography:
+ * - B2C: Interview Practice & Performance (LIVE)
+ * - B2B: Recruiter Interview Platform (Coming Soon)
+ * - HR: Employee Hub (Coming Soon)
  */
 
 'use client'
@@ -12,32 +12,32 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, useReducedMotion } from 'framer-motion'
-import {
-  User,
-  Building2,
-  Users,
-  PlayCircle,
-  FileText,
-  TrendingUp,
-  Package,
-  BarChart3,
-  MessageSquare,
-  CheckCircle2,
-  ArrowRight,
-} from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from 'components/ui/button'
-import { FEATURES } from 'config/features'
-import { EarlyAccessModal, type ModuleInterest } from './EarlyAccessModal'
+import { WaitlistModal, type WaitlistModule } from './WaitlistModal'
 import {
   LineChart,
   Line,
-  RadarChart,
-  Radar,
-  PolarGrid,
-  PolarAngleAxis,
   ResponsiveContainer,
 } from 'recharts'
+import {
+  User,
+  Users,
+  Building2,
+  Mic,
+  FileText,
+  BarChart3,
+  Globe,
+  History,
+  ClipboardCheck,
+  Timer,
+  Shield,
+  Puzzle,
+  MessageSquare,
+  Workflow,
+  Lock,
+  Zap,
+} from 'lucide-react'
 
 // Mock data for charts
 const MOCK_PERFORMANCE_DATA = [
@@ -48,24 +48,10 @@ const MOCK_PERFORMANCE_DATA = [
   { week: 'W5', score: 82 },
 ]
 
-const MOCK_SKILLS_DATA = [
-  { skill: 'Communication', value: 85 },
-  { skill: 'Technical', value: 72 },
-  { skill: 'Problem Solving', value: 78 },
-  { skill: 'Leadership', value: 65 },
-  { skill: 'Culture Fit', value: 88 },
-]
-
 const MOCK_CANDIDATES = [
   { name: 'Sarah Chen', role: 'Software Engineer', score: 92, status: 'Recommended' },
   { name: 'Marcus Johnson', role: 'Product Manager', score: 78, status: 'Under Review' },
   { name: 'Ana Silva', role: 'Data Analyst', score: 85, status: 'Recommended' },
-]
-
-const MOCK_HR_QUERIES = [
-  { question: 'How do I request PTO?', answered: true },
-  { question: 'What are the health benefits?', answered: true },
-  { question: 'Remote work policy', answered: true },
 ]
 
 export const PlatformShowcase: React.FC = () => {
@@ -73,13 +59,13 @@ export const PlatformShowcase: React.FC = () => {
   const navigate = useNavigate()
   const prefersReducedMotion = useReducedMotion()
   
-  // Early access modal state
-  const [earlyAccessOpen, setEarlyAccessOpen] = useState(false)
-  const [preselectedModule, setPreselectedModule] = useState<ModuleInterest | undefined>()
+  // Waitlist modal state
+  const [waitlistOpen, setWaitlistOpen] = useState(false)
+  const [preselectedModule, setPreselectedModule] = useState<WaitlistModule | undefined>()
 
-  const openEarlyAccess = (module: ModuleInterest) => {
+  const openWaitlist = (module: WaitlistModule) => {
     setPreselectedModule(module)
-    setEarlyAccessOpen(true)
+    setWaitlistOpen(true)
   }
 
   const containerVariants = {
@@ -101,6 +87,33 @@ export const PlatformShowcase: React.FC = () => {
     },
   }
 
+  // B2C Features with icons
+  const b2cFeatures = [
+    { icon: Mic, text: t('landing.platformShowcase.b2c.features.aiPractice') },
+    { icon: FileText, text: t('landing.platformShowcase.b2c.features.resumeRepo') },
+    { icon: BarChart3, text: t('landing.platformShowcase.b2c.features.dashboard') },
+    { icon: Globe, text: t('landing.platformShowcase.b2c.features.multilingual') },
+    { icon: History, text: t('landing.platformShowcase.b2c.features.history') },
+  ]
+
+  // B2B Features with icons
+  const b2bFeatures = [
+    { icon: ClipboardCheck, text: t('landing.platformShowcase.b2b.features.rubrics') },
+    { icon: Timer, text: t('landing.platformShowcase.b2b.features.evidence') },
+    { icon: BarChart3, text: t('landing.platformShowcase.b2b.features.analytics') },
+    { icon: Puzzle, text: t('landing.platformShowcase.b2b.features.dynamic') },
+    { icon: Shield, text: t('landing.platformShowcase.b2b.features.audit') },
+  ]
+
+  // HR Features with icons
+  const hrFeatures = [
+    { icon: MessageSquare, text: t('landing.platformShowcase.hr.features.rag') },
+    { icon: Workflow, text: t('landing.platformShowcase.hr.features.escalation') },
+    { icon: Zap, text: t('landing.platformShowcase.hr.features.automation') },
+    { icon: Lock, text: t('landing.platformShowcase.hr.features.tenant') },
+    { icon: Shield, text: t('landing.platformShowcase.hr.features.compliance') },
+  ]
+
   return (
     <section className="py-24 bg-zinc-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -114,8 +127,9 @@ export const PlatformShowcase: React.FC = () => {
           <span className="inline-block px-3 py-1 text-xs font-semibold text-purple-700 bg-purple-100 rounded-full mb-4">
             {t('landing.platformShowcase.badge')}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-zinc-900 mb-4">
-            {t('landing.platformShowcase.title')}
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+            <span className="text-zinc-900">{t('landing.platformShowcase.titleBlack')}</span>{' '}
+            <span className="text-purple-600">{t('landing.platformShowcase.titlePurple')}</span>
           </h2>
           <p className="text-lg text-zinc-600 max-w-2xl mx-auto">
             {t('landing.platformShowcase.subtitle')}
@@ -129,27 +143,38 @@ export const PlatformShowcase: React.FC = () => {
           viewport={{ once: true }}
           className="grid lg:grid-cols-3 gap-8"
         >
-          {/* B2C: Interview Practice - First on mobile, Center on desktop */}
+          {/* B2C: Interview Practice - First on mobile, Center on desktop - LIVE */}
           <motion.div
             variants={itemVariants}
-            className="order-first lg:order-2 bg-white rounded-2xl shadow-lg border border-zinc-200 overflow-hidden group hover:shadow-xl transition-shadow lg:scale-105 ring-2 ring-purple-600"
+            className="order-first lg:order-2 bg-white rounded-2xl shadow-xl border-2 border-purple-600 overflow-hidden group hover:shadow-2xl transition-shadow"
           >
-            <div className="bg-purple-600 text-white text-center py-1 text-xs font-semibold">
-              {t('landing.platformShowcase.mostPopular')}
+            <div className="bg-purple-600 text-white text-center py-1.5 text-xs font-semibold uppercase tracking-wide flex items-center justify-center gap-2">
+              <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
+              {t('landing.platformShowcase.liveBadge')}
             </div>
             <div className="p-6 border-b border-zinc-100">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <User className="h-6 w-6 text-purple-600" />
+                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <User className="w-5 h-5 text-purple-600" />
                 </div>
                 <div>
                   <p className="text-sm text-zinc-500">{t('landing.platformShowcase.b2c.forLabel')}</p>
                   <h3 className="font-bold text-zinc-900">{t('landing.platformShowcase.b2c.title')}</h3>
                 </div>
               </div>
-              <p className="text-zinc-600 text-sm">
+              <p className="text-zinc-600 text-sm font-medium">
                 {t('landing.platformShowcase.b2c.description')}
               </p>
+              
+              {/* Feature bullets */}
+              <ul className="mt-4 space-y-2">
+                {b2cFeatures.map((feature, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm text-zinc-700">
+                    <feature.icon className="w-4 h-4 text-purple-600 shrink-0" />
+                    <span>{feature.text}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* Mock Dashboard Preview */}
@@ -193,11 +218,11 @@ export const PlatformShowcase: React.FC = () => {
               {/* Quick Actions */}
               <div className="mt-3 flex gap-2">
                 <div className="flex-1 flex items-center gap-2 px-3 py-2 bg-purple-50 rounded-lg text-xs">
-                  <PlayCircle className="h-4 w-4 text-purple-600" />
+                  <span className="w-2 h-2 rounded-full bg-purple-600 shrink-0" />
                   <span className="text-purple-700 font-medium">{t('landing.platformShowcase.b2c.actions.startPractice')}</span>
                 </div>
                 <div className="flex-1 flex items-center gap-2 px-3 py-2 bg-zinc-100 rounded-lg text-xs">
-                  <FileText className="h-4 w-4 text-zinc-500" />
+                  <span className="w-2 h-2 rounded-full bg-zinc-400 shrink-0" />
                   <span className="text-zinc-600">{t('landing.platformShowcase.b2c.actions.uploadResume')}</span>
                 </div>
               </div>
@@ -209,32 +234,42 @@ export const PlatformShowcase: React.FC = () => {
                 onClick={() => navigate('/sign-up')}
                 className="w-full bg-purple-600 hover:bg-purple-700 text-white"
               >
-                {t('landing.platformShowcase.b2c.cta')} <ArrowRight className="h-4 w-4 ml-1" />
+                {t('landing.platformShowcase.b2c.cta')} <span className="ml-1">→</span>
               </Button>
             </div>
           </motion.div>
 
-          {/* B2B: Recruiter Platform - Second on mobile, First on desktop */}
+          {/* B2B: Recruiter Platform - Second on mobile, First on desktop - COMING SOON */}
           <motion.div
             variants={itemVariants}
             className="order-2 lg:order-1 bg-white rounded-2xl shadow-lg border border-zinc-200 overflow-hidden group hover:shadow-xl transition-shadow"
           >
-            <div className="bg-zinc-500 text-white text-center py-1 text-xs font-semibold">
-              {t('features.comingSoon')}
+            <div className="bg-purple-100 text-purple-700 text-center py-1.5 text-xs font-semibold uppercase tracking-wide">
+              {t('landing.platformShowcase.comingSoonBadge')}
             </div>
             <div className="p-6 border-b border-zinc-100">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Building2 className="h-6 w-6 text-purple-600" />
+                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <Users className="w-5 h-5 text-purple-600" />
                 </div>
                 <div>
                   <p className="text-sm text-zinc-500">{t('landing.platformShowcase.b2b.forLabel')}</p>
                   <h3 className="font-bold text-zinc-900">{t('landing.platformShowcase.b2b.title')}</h3>
                 </div>
               </div>
-              <p className="text-zinc-600 text-sm">
+              <p className="text-zinc-600 text-sm font-medium">
                 {t('landing.platformShowcase.b2b.description')}
               </p>
+
+              {/* Feature bullets */}
+              <ul className="mt-4 space-y-2">
+                {b2bFeatures.map((feature, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm text-zinc-700">
+                    <feature.icon className="w-4 h-4 text-purple-600 shrink-0" />
+                    <span>{feature.text}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* Mock Dashboard Preview */}
@@ -276,11 +311,11 @@ export const PlatformShowcase: React.FC = () => {
               {/* Quick Actions */}
               <div className="mt-3 flex gap-2">
                 <div className="flex-1 flex items-center gap-2 px-3 py-2 bg-purple-50 rounded-lg text-xs">
-                  <Package className="h-4 w-4 text-purple-600" />
+                  <span className="w-2 h-2 rounded-full bg-purple-600 shrink-0" />
                   <span className="text-purple-700 font-medium">{t('landing.platformShowcase.b2b.actions.interviewKits')}</span>
                 </div>
                 <div className="flex-1 flex items-center gap-2 px-3 py-2 bg-zinc-100 rounded-lg text-xs">
-                  <BarChart3 className="h-4 w-4 text-zinc-500" />
+                  <span className="w-2 h-2 rounded-full bg-zinc-400 shrink-0" />
                   <span className="text-zinc-600">{t('landing.platformShowcase.b2b.actions.analytics')}</span>
                 </div>
               </div>
@@ -290,35 +325,45 @@ export const PlatformShowcase: React.FC = () => {
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => openEarlyAccess('recruiter_platform')}
+                onClick={() => openWaitlist('recruiter_platform')}
                 className="w-full border-purple-200 text-purple-700 hover:bg-purple-50"
               >
-                {t('landing.platformShowcase.b2b.cta')} <ArrowRight className="h-4 w-4 ml-1" />
+                {t('landing.platformShowcase.b2b.cta')} <span className="ml-1">→</span>
               </Button>
             </div>
           </motion.div>
 
-          {/* HR: Employee Hub - Third on both mobile and desktop */}
+          {/* HR: Employee Hub - Third on both mobile and desktop - COMING SOON */}
           <motion.div
             variants={itemVariants}
             className="order-3 lg:order-3 bg-white rounded-2xl shadow-lg border border-zinc-200 overflow-hidden group hover:shadow-xl transition-shadow"
           >
-            <div className="bg-zinc-500 text-white text-center py-1 text-xs font-semibold">
-              {t('features.comingSoon')}
+            <div className="bg-purple-100 text-purple-700 text-center py-1.5 text-xs font-semibold uppercase tracking-wide">
+              {t('landing.platformShowcase.comingSoonBadge')}
             </div>
             <div className="p-6 border-b border-zinc-100">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Users className="h-6 w-6 text-purple-600" />
+                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <Building2 className="w-5 h-5 text-purple-600" />
                 </div>
                 <div>
                   <p className="text-sm text-zinc-500">{t('landing.platformShowcase.hr.forLabel')}</p>
                   <h3 className="font-bold text-zinc-900">{t('landing.platformShowcase.hr.title')}</h3>
                 </div>
               </div>
-              <p className="text-zinc-600 text-sm">
+              <p className="text-zinc-600 text-sm font-medium">
                 {t('landing.platformShowcase.hr.description')}
               </p>
+
+              {/* Feature bullets */}
+              <ul className="mt-4 space-y-2">
+                {hrFeatures.map((feature, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm text-zinc-700">
+                    <feature.icon className="w-4 h-4 text-purple-600 shrink-0" />
+                    <span>{feature.text}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             {/* Mock Dashboard Preview */}
@@ -333,34 +378,26 @@ export const PlatformShowcase: React.FC = () => {
                 <div className="space-y-2">
                   {(t('landing.platformShowcase.hr.mockQueries', { returnObjects: true }) as string[]).map((query, i) => (
                     <div key={i} className="flex items-center gap-2 py-2 border-b border-zinc-50 last:border-0">
-                      <CheckCircle2 className="h-4 w-4 text-purple-500" />
+                      <span className="w-4 h-4 rounded-full bg-purple-100 flex items-center justify-center">
+                        <svg className="w-2.5 h-2.5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </span>
                       <span className="text-xs text-zinc-700">{query}</span>
                     </div>
                   ))}
                 </div>
 
-                {/* Stats */}
+                {/* Stats - removed specific numbers */}
                 <div className="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-zinc-100">
                   <div className="text-center">
-                    <p className="text-lg font-bold text-zinc-900">847</p>
+                    <p className="text-lg font-bold text-zinc-900">—</p>
                     <p className="text-xs text-zinc-500">{t('landing.platformShowcase.hr.stats.ticketsDeflected')}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-lg font-bold text-zinc-900">4.8s</p>
+                    <p className="text-lg font-bold text-zinc-900">—</p>
                     <p className="text-xs text-zinc-500">{t('landing.platformShowcase.hr.stats.avgResponse')}</p>
                   </div>
-                </div>
-              </div>
-
-              {/* Quick Actions */}
-              <div className="mt-3 flex gap-2">
-                <div className="flex-1 flex items-center gap-2 px-3 py-2 bg-purple-50 rounded-lg text-xs">
-                  <MessageSquare className="h-4 w-4 text-purple-600" />
-                  <span className="text-purple-700 font-medium">{t('landing.platformShowcase.hr.actions.askHR')}</span>
-                </div>
-                <div className="flex-1 flex items-center gap-2 px-3 py-2 bg-zinc-100 rounded-lg text-xs">
-                  <FileText className="h-4 w-4 text-zinc-500" />
-                  <span className="text-zinc-600">{t('landing.platformShowcase.hr.actions.policies')}</span>
                 </div>
               </div>
             </div>
@@ -369,20 +406,20 @@ export const PlatformShowcase: React.FC = () => {
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => openEarlyAccess('employee_hub')}
+                onClick={() => openWaitlist('employee_hub')}
                 className="w-full border-purple-200 text-purple-700 hover:bg-purple-50"
               >
-                {t('landing.platformShowcase.hr.cta')} <ArrowRight className="h-4 w-4 ml-1" />
+                {t('landing.platformShowcase.hr.cta')} <span className="ml-1">→</span>
               </Button>
             </div>
           </motion.div>
         </motion.div>
       </div>
       
-      {/* Early Access Modal */}
-      <EarlyAccessModal
-        open={earlyAccessOpen}
-        onOpenChange={setEarlyAccessOpen}
+      {/* Waitlist Modal */}
+      <WaitlistModal
+        open={waitlistOpen}
+        onOpenChange={setWaitlistOpen}
         preselectedModule={preselectedModule}
       />
     </section>

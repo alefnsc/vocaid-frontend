@@ -69,7 +69,7 @@ export function LanguageSelector({
   const handleLanguageChange = async (language: SupportedLanguageCode) => {
     await changeLanguage(language);
     setIsOpen(false);
-    localStorage.setItem('voxly_language_manual', 'true');
+    localStorage.setItem('Vocaid_language_manual', 'true');
   };
 
   // Dropdown animation variants

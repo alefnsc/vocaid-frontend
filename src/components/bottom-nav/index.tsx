@@ -14,6 +14,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useUser } from '@clerk/clerk-react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { B2C_ROUTES } from 'routes/b2cRoutes';
 
 // ========================================
 // TYPES
@@ -27,13 +28,16 @@ interface NavItem {
 
 // ========================================
 // CONSTANTS
+// For authenticated users, "home" goes to B2C dashboard
+// Using centralized route constants
 // ========================================
 
 const navItems: NavItem[] = [
-  { id: 'home', labelKey: 'nav.home', path: '/' },
-  { id: 'interviews', labelKey: 'interviews.title', path: '/interviews' },
-  { id: 'credits', labelKey: 'nav.credits', path: '/credits' },
-  { id: 'about', labelKey: 'nav.about', path: '/about' },
+  { id: 'dashboard', labelKey: 'nav.dashboard', path: B2C_ROUTES.DASHBOARD },
+  { id: 'interviews', labelKey: 'nav.interviews', path: B2C_ROUTES.INTERVIEWS },
+  { id: 'credits', labelKey: 'nav.credits', path: B2C_ROUTES.BILLING },
+  { id: 'about', labelKey: 'nav.about', path: B2C_ROUTES.ABOUT },
+  { id: 'settings', labelKey: 'nav.settings', path: B2C_ROUTES.ACCOUNT },
 ];
 
 // ========================================

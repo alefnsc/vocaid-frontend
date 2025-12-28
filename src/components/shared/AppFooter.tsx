@@ -31,7 +31,6 @@ const footerLinks = {
   ],
   company: [
     { label: 'About', href: '/about' },
-    { label: 'Contact', href: '/contact' },
   ],
   legal: [
     { label: 'Privacy Policy', href: '/privacy-policy' },
@@ -221,16 +220,18 @@ function AppShellFooter({ isSignedIn, className = '' }: { isSignedIn?: boolean; 
     }
   };
 
+  // Footer spans full width - no sidebar offset needed since it's inside the main content area
+  // which already has the sidebar offset applied
   return (
     <footer 
       className={`
         bg-white border-t border-zinc-200
-        ${isSignedIn ? 'lg:ml-[260px]' : ''}
+        w-full
         ${className}
       `}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-8 lg:gap-12">
           {/* Brand & Description */}
           <div className="col-span-2 md:col-span-1">
             <div className="mb-4">
@@ -240,34 +241,6 @@ function AppShellFooter({ isSignedIn, className = '' }: { isSignedIn?: boolean; 
               AI-powered interview intelligence for candidates, recruiters, and HR teams.
             </p>
             <CopyrightNotice className="text-xs" />
-          </div>
-
-          {/* Product Links */}
-          <div>
-            <h3 className="text-sm font-semibold text-zinc-900 uppercase tracking-wider mb-4">
-              Product
-            </h3>
-            <ul className="space-y-3">
-              {footerLinks.product.map((link) => (
-                <li key={link.label}>
-                  {link.href.startsWith('#') ? (
-                    <button
-                      onClick={() => scrollToSection(link.href)}
-                      className="text-sm text-zinc-600 hover:text-purple-600 transition-colors"
-                    >
-                      {link.label}
-                    </button>
-                  ) : (
-                    <Link
-                      to={link.href}
-                      className="text-sm text-zinc-600 hover:text-purple-600 transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                  )}
-                </li>
-              ))}
-            </ul>
           </div>
 
           {/* Company Links */}

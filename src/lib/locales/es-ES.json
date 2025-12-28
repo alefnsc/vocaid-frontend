@@ -24,18 +24,20 @@
     "submitting": "Enviando...",
     "gotIt": "Entendido",
     "soon": "Pronto",
-    "goBack": "Volver"
+    "goBack": "Volver",
+    "filters": "Filtros",
+    "refreshData": "Actualizar datos"
   },
   "features": {
     "underConstruction": {
-      "title": "En Construcción",
-      "message": "Esta función estará disponible en la próxima versión. ¡Mantente atento!",
-      "patience": "Estamos trabajando para traerte esta función. ¡Gracias por tu paciencia!"
+      "title": "Under Construction",
+      "message": "This feature is coming in the next release. Stay tuned!",
+      "patience": "We're working hard to bring you this feature. Thank you for your patience!"
     },
-    "comingSoon": "Próximamente",
-    "nextRelease": "Próxima Versión",
-    "joinWaitlist": "Unirse a la Lista de Espera",
-    "notifyMe": "Notificarme",
+    "comingSoon": "Coming Soon",
+    "nextRelease": "Next Release",
+    "joinWaitlist": "Join Waitlist",
+    "notifyMe": "Notify Me",
     "badge": "Por Qué Elegir Vocaid",
     "heading": "Todo lo que necesitas para triunfar",
     "subheading": "Nuestra plataforma con IA proporciona herramientas integrales para ayudarte a preparar, practicar y destacar en tus entrevistas.",
@@ -71,16 +73,7 @@
     "privacy": {
       "title": "Privacidad Primero",
       "description": "Tus datos están encriptados y nunca se comparten. Practica con total confianza."
-    },
-    "underConstruction": {
-      "title": "Under Construction",
-      "message": "This feature is coming in the next release. Stay tuned!",
-      "patience": "We're working hard to bring you this feature. Thank you for your patience!"
-    },
-    "comingSoon": "Coming Soon",
-    "nextRelease": "Next Release",
-    "joinWaitlist": "Join Waitlist",
-    "notifyMe": "Notify Me"
+    }
   },
   "pages": {
     "underConstruction": {
@@ -124,7 +117,8 @@
     "billing": "Facturación",
     "account": "Cuenta",
     "main": "Principal",
-    "settings": "Configuración"
+    "settings": "Configuración",
+    "accountSettings": "Configuración de Cuenta"
   },
   "sidebar": {
     "menu": "Menú",
@@ -356,9 +350,9 @@
     },
     "title": "Entrevista",
     "status": {
-      "connecting": "Conectando a Voxly...",
-      "speaking": "Voxly está Hablando...",
-      "listening": "Voxly está Escuchando..."
+      "connecting": "Conectando a Vocaid...",
+      "speaking": "Vocaid está Hablando...",
+      "listening": "Vocaid está Escuchando..."
     },
     "buttons": {
       "quit": "Salir de la entrevista"
@@ -411,6 +405,10 @@
           "step3": "Actualiza la página después de hacer los cambios"
         }
       }
+    },
+    "errors": {
+      "noCreditsError": "Sin créditos disponibles. Por favor, compre créditos para continuar.",
+      "sessionValidationFailed": "Error al validar la sesión. Por favor, inténtalo de nuevo."
     }
   },
   "interviewSetup": {
@@ -451,6 +449,55 @@
       "preparing": "Preparando entrevista...",
       "start": "Iniciar Entrevista",
       "disclaimer": "Tu entrevista será grabada y analizada para proporcionar retroalimentación."
+    },
+    "validation": {
+      "invalidFileType": "Por favor, sube un documento PDF o Word",
+      "fileTooLarge": "El archivo debe tener menos de 5MB",
+      "fileReadError": "Error al leer el archivo. Por favor, inténtalo de nuevo.",
+      "firstNameRequired": "Por favor, establece tu nombre en tu perfil",
+      "lastNameRequired": "Por favor, establece tu apellido en tu perfil",
+      "companyNameRequired": "El nombre de la empresa es obligatorio",
+      "jobTitleRequired": "El cargo es obligatorio",
+      "seniorityRequired": "Por favor, selecciona tu nivel de experiencia",
+      "jobDescriptionRequired": "La descripción del puesto es obligatoria",
+      "jobDescriptionTooShort": "La descripción del puesto debe tener al menos 200 caracteres (actual: {{count}})",
+      "resumeRequired": "El currículum es obligatorio",
+      "resumeSelectFromLibrary": "Por favor, selecciona un currículum de tu biblioteca",
+      "resumeLoadFailed": "Error al cargar el currículum. Por favor, inténtalo de nuevo.",
+      "policyRequired": "Debes aceptar la política de privacidad y los términos de uso",
+      "creditsLoading": "Por favor, espera mientras se cargan los créditos...",
+      "startFailed": "Error al iniciar la entrevista. Por favor, inténtalo de nuevo."
+    },
+    "titleHighlight": "Entrevista",
+    "interviewingAs": "Entrevistando como",
+    "loadingCredits": "Cargando créditos...",
+    "startInterview": "Iniciar Entrevista",
+    "helpText": "Tu entrevista será grabada y analizada por IA para proporcionar retroalimentación personalizada.",
+    "form": {
+      "companyName": "Nombre de la Empresa",
+      "companyNamePlaceholder": "Ingrese el nombre de la empresa...",
+      "jobTitle": "Título del Puesto",
+      "jobTitlePlaceholder": "Ingrese el título del puesto...",
+      "seniority": "Nivel de Experiencia",
+      "seniorityPlaceholder": "Seleccione el nivel de experiencia",
+      "seniorityLevels": {
+        "intern": "Pasante",
+        "junior": "Junior",
+        "mid": "Nivel Medio",
+        "senior": "Senior",
+        "staff": "Staff / Líder",
+        "principal": "Principal / Director"
+      },
+      "jobDescription": "Descripción del Puesto",
+      "jobDescriptionPlaceholder": "Pegue la descripción del puesto aquí...",
+      "charactersMinimum": "caracteres mínimos",
+      "resume": "Currículum",
+      "fromLibrary": "De la Biblioteca",
+      "uploadNew": "Subir Nuevo",
+      "uploadResume": "Subir currículum (PDF o Word)",
+      "acceptPolicy": "Acepto la",
+      "privacyPolicy": "Política de Privacidad",
+      "termsOfUse": "Términos de Uso"
     }
   },
   "credits": {
@@ -528,13 +575,21 @@
     "purchaseToSeeHistory": "Compra créditos para ver tu historial de transacciones",
     "creditUsage": "Uso de Créditos",
     "noInterviewsYet": "Sin entrevistas aún",
-    "completeInterviewsToSee": "Completa entrevistas para ver tu historial de uso"
+    "completeInterviewsToSee": "Completa entrevistas para ver tu historial de uso",
+    "dateLabels": {
+      "today": "Hoy",
+      "yesterday": "Ayer"
+    },
+    "creditsUsed": "crédito usado",
+    "creditsUsedPlural": "créditos usados"
   },
   "dashboard": {
     "title": "Panel",
-    "welcome": "¡Bienvenido de nuevo, {{name}}!",
+    "welcome": "¡Bienvenido de nuevo,",
     "welcomeSubtitle": "Aquí tienes un resumen de tu progreso en las prácticas de entrevistas.",
+    "readyToPractice": "¿Listo para practicar tu próxima entrevista?",
     "startNewInterview": "Iniciar Nueva Entrevista",
+    "startInterview": "Iniciar Entrevista",
     "stats": {
       "totalInterviews": "Total de Entrevistas",
       "averageScore": "Puntuación Promedio",
@@ -542,17 +597,17 @@
       "creditsRemaining": "Créditos Restantes",
       "totalSpent": "Total Gastado",
       "thisMonth": "este mes",
-      "credits": "Credits",
-      "interviews": "Interviews",
-      "avgScore": "Avg. Score",
+      "credits": "Créditos",
+      "interviews": "Entrevistas",
+      "avgScore": "Prom. Puntuación",
       "resumes": "Resumes"
     },
     "charts": {
       "scoreEvolution": "Evolución de Puntuación",
       "monthlySpending": "Gastos Mensuales",
-      "noScoreData": "Sin Datos de Puntuación",
+      "noScoreData": "No hay datos de puntuación disponibles",
       "noScoreDataDesc": "Completa entrevistas para seguir tu progreso",
-      "noSpendingData": "Sin Datos de Gastos",
+      "noSpendingData": "No hay datos de gastos disponibles",
       "noSpendingDataDesc": "Compra créditos para ver tu historial",
       "performanceTrend": "Performance Trend"
     },
@@ -581,10 +636,23 @@
     "lowCredits": {
       "title": "Running low on credits?",
       "buyMore": "Buy More Credits"
-    }
+    },
+    "filters": {
+      "role": "Filtrar por Rol",
+      "seniority": "Filtrar por Nivel",
+      "allRoles": "Todos los Roles",
+      "allSeniorities": "Todos los Niveles"
+    },
+    "fromLastMonth": "del mes pasado",
+    "noFilteredResults": "Ninguna entrevista coincide con los filtros seleccionados",
+    "tooltips": {
+      "score": "Puntuación",
+      "spent": "Gastado"
+    },
+    "viewInsights": "Ver análisis"
   },
   "interviews": {
-    "title": "Tus Entrevistas",
+    "title": "Entrevistas",
     "subtitle": "Ve tu historial de entrevistas y sigue tu progreso.",
     "startNew": "Iniciar Nueva Entrevista",
     "startFirst": "Iniciar Tu Primera Entrevista",
@@ -594,7 +662,75 @@
     "date": "Fecha",
     "duration": "Duración",
     "score": "Puntuación",
-    "new": "Nueva"
+    "new": "Nueva",
+    "repository": {
+      "title": "Repositorio de",
+      "titleHighlight": "Entrevistas",
+      "subtitle": "Explora, filtra y analiza todas tus sesiones de entrevista en un solo lugar.",
+      "description": "Tu historial completo de entrevistas con filtros avanzados y análisis.",
+      "filters": {
+        "all": "Todas las Entrevistas",
+        "dateRange": "Rango de Fechas",
+        "role": "Rol",
+        "seniority": "Nivel de Experiencia",
+        "status": "Estado",
+        "score": "Rango de Puntuación",
+        "company": "Empresa",
+        "last7Days": "Últimos 7 Días",
+        "last30Days": "Últimos 30 Días",
+        "last90Days": "Últimos 90 Días",
+        "allTime": "Todo el Tiempo",
+        "clearFilters": "Limpiar Filtros",
+        "activeFilters": "{{count}} filtro(s) activo(s)"
+      },
+      "sort": {
+        "newest": "Más Recientes",
+        "oldest": "Más Antiguas",
+        "highestScore": "Mayor Puntuación",
+        "lowestScore": "Menor Puntuación"
+      },
+      "status": {
+        "completed": "Completada",
+        "pending": "Pendiente",
+        "inProgress": "En Progreso",
+        "failed": "Fallida"
+      },
+      "actions": {
+        "viewDetails": "Ver Detalles",
+        "downloadPdf": "Descargar PDF",
+        "reanalyze": "Re-analizar",
+        "reanalyzing": "Analizando...",
+        "compare": "Comparar",
+        "share": "Compartir"
+      },
+      "empty": {
+        "title": "No se Encontraron Entrevistas",
+        "description": "Ninguna entrevista coincide con tus filtros actuales. Intenta ajustar tus criterios de búsqueda.",
+        "noInterviews": "Aún no has completado ninguna entrevista.",
+        "startFirst": "Completa tu primera entrevista para comenzar a construir tu repositorio."
+      },
+      "card": {
+        "score": "Puntuación",
+        "duration": "Duración",
+        "date": "Fecha",
+        "status": "Estado",
+        "seniority": "Nivel",
+        "language": "Idioma",
+        "hasFeedback": "Feedback Disponible"
+      },
+      "stats": {
+        "total": "Total de Entrevistas",
+        "avgScore": "Puntuación Promedio",
+        "totalTime": "Tiempo Total de Práctica",
+        "improvement": "Mejora"
+      },
+      "analysis": {
+        "provider": "Proveedor de Análisis",
+        "openai": "OpenAI GPT-4",
+        "gemini": "Google Gemini",
+        "lastAnalyzed": "Último análisis {{date}}"
+      }
+    }
   },
   "errors": {
     "generic": "Algo salió mal. Por favor, intenta de nuevo.",
@@ -629,7 +765,32 @@
     "sections": {
       "summary": "Resumen",
       "detailed": "Feedback Detallado",
-      "jobDescription": "Descripción del Puesto"
+      "jobDescription": "Descripción del Puesto",
+      "competencies": "Desglose de Competencias",
+      "communication": "Análisis de Comunicación",
+      "studyPlan": "Plan de Estudio Personalizado"
+    },
+    "communication": {
+      "overall": "General",
+      "wpm": "Palabras/min",
+      "fillers": "Muletillas",
+      "clarity": "Claridad",
+      "frameworks": "Frameworks utilizados"
+    },
+    "studyPlan": {
+      "exercises": "Ejercicios sugeridos",
+      "priority": {
+        "high": "Alta Prioridad",
+        "medium": "Prioridad Media",
+        "low": "Prioridad Baja"
+      },
+      "hours": "~{{hours}}h estimado"
+    },
+    "competencies": {
+      "excellent": "Excelente",
+      "good": "Bueno",
+      "needsWork": "Necesita mejora",
+      "score": "{{score}}/5"
     },
     "noSummary": "No hay resumen disponible",
     "noFeedback": "No hay feedback detallado disponible",
@@ -639,7 +800,14 @@
       "newInterview": "Nueva Entrevista",
       "newInterviewAria": "Iniciar nueva entrevista",
       "backToDashboard": "Volver al Panel"
-    }
+    },
+    "pdf": {
+      "title": "Informe de Retroalimentación de Entrevista",
+      "candidate": "Candidato",
+      "score": "Puntuación"
+    },
+    "noData": "No se encontraron datos de entrevista. Complete una entrevista primero.",
+    "retry": "Reintentar"
   },
   "payment": {
     "redirecting": "Redirigiendo...",
@@ -824,7 +992,13 @@
     "analytics": {
       "title": "Análisis",
       "highlight": "Avanzado"
-    }
+    },
+    "performanceFeedback": "Retroalimentación de Desempeño",
+    "feedbackPending": "El feedback estará disponible una vez completada la entrevista.",
+    "noFeedback": "No hay retroalimentación disponible",
+    "completeToProceed": "Complete su sesión de entrevista para recibir comentarios generados por IA.",
+    "interviewIssue": "Esta entrevista puede haber terminado temprano o encontrado un problema.",
+    "loadingAnalytics": "Cargando análisis..."
   },
   "hrChat": {
     "title": "Chat de Inteligencia HR",
@@ -927,12 +1101,32 @@
   "legal": {
     "privacy": {
       "title": "Política de",
-      "titleHighlight": "Privacidad"
+      "titleHighlight": "Privacidad",
+      "sections": {
+        "introduction": "Introducción",
+        "dataCollected": "Datos que Recopilamos",
+        "howWeUse": "Cómo Usamos sus Datos",
+        "dataSecurity": "Seguridad de Datos",
+        "thirdParty": "Servicios de Terceros",
+        "yourRights": "Sus Derechos",
+        "contactUs": "Contáctenos"
+      }
     },
     "terms": {
       "title": "Términos de",
-      "titleHighlight": "Uso"
-    }
+      "titleHighlight": "Uso",
+      "sections": {
+        "acceptance": "Aceptación de los Términos",
+        "services": "Descripción de los Servicios",
+        "userAccounts": "Cuentas de Usuario",
+        "prohibited": "Usos Prohibidos",
+        "intellectualProperty": "Propiedad Intelectual",
+        "limitation": "Limitación de Responsabilidad",
+        "changes": "Cambios en los Términos",
+        "contactUs": "Contáctenos"
+      }
+    },
+    "disclaimer": "Esta es una traducción de cortesía. El texto en inglés prevalece en caso de discrepancias."
   },
   "landing": {
     "nav": {
@@ -1071,56 +1265,40 @@
     },
     "faq": {
       "badge": "FAQ",
-      "title": "Preguntas frecuentes",
+      "title": "Preguntas Frecuentes",
       "subtitle": "Todo lo que necesitas saber sobre Vocaid.",
       "items": {
-        "multiTenancy": {
-          "question": "¿Cómo funciona el multi-tenancy?",
-          "answer": "Vocaid está construido con multi-tenancy de nivel empresarial desde cero. Cada organización recibe almacenamiento de datos aislado, credenciales de API separadas y permisos configurables."
-        },
-        "whiteLabel": {
-          "question": "¿Podemos personalizar la experiencia con nuestra marca?",
-          "answer": "Absolutamente. Nuestros controles de marca blanca te permiten personalizar la interfaz de entrevista con los colores, logo, fuentes y mensajes de tu marca."
-        },
-        "billing": {
-          "question": "¿Cómo funciona la facturación?",
-          "answer": "Usamos un modelo simple de pago por uso basado en minutos de entrevista consumidos. Puedes comprar paquetes de minutos o configurar recargas automáticas."
-        },
-        "compliance": {
-          "question": "¿Qué hay del cumplimiento GDPR?",
-          "answer": "Vocaid está diseñado con las regulaciones de privacidad en mente. Ofrecemos soporte para solicitudes de titulares de datos, funcionalidad de exportación de datos y opciones de residencia de datos."
-        },
-        "atsIntegration": {
-          "question": "¿Podemos exportar datos a nuestro ATS?",
-          "answer": "Sí. Vocaid se integra con las principales plataformas ATS a través de nuestro SDK y webhooks. Puedes enviar automáticamente scorecards, transcripciones y datos de evaluación."
-        },
-        "multilingual": {
-          "question": "¿Soportan entrevistas multilingües?",
-          "answer": "Sí, Vocaid soporta entrevistas en múltiples idiomas. Nuestra IA puede conducir entrevistas y generar scorecards en inglés, español, portugués, francés, alemán y más."
-        },
-        "security": {
-          "question": "¿Qué tan seguros son los datos de la entrevista?",
-          "answer": "Todos los datos están encriptados en reposo y en tránsito usando AES-256 y TLS 1.3. Mantenemos cumplimiento SOC 2 Tipo II y proporcionamos logs de auditoría detallados."
-        },
-        "support": {
-          "question": "¿Qué tipo de soporte ofrecen?",
-          "answer": "Los planes Starter incluyen soporte por email con tiempos de respuesta de 24 horas. Los planes Growth reciben soporte prioritario con respuestas más rápidas."
-        },
-        "rubrics": {
-          "question": "¿Podemos personalizar las rúbricas de evaluación?",
-          "answer": "Los planes Growth y Enterprise incluyen personalización completa de rúbricas. Puedes definir tus propios frameworks de competencia y criterios de puntuación."
-        },
-        "trial": {
-          "question": "¿Hay una prueba gratuita disponible?",
-          "answer": "Sí, ofrecemos una prueba gratuita de 14 días en los planes Starter y Growth sin necesidad de tarjeta de crédito. Tienes acceso completo a todas las funciones."
+        "whatIsVocaid": {
+          "question": "¿Qué es Vocaid?",
+          "answer": "Vocaid es una plataforma de entrevistas potenciada por IA. Para individuos (B2C), ofrece entrevistas de práctica realistas con retroalimentación instantánea. Para organizaciones (B2B), estamos construyendo una Plataforma de Reclutadores para evaluaciones estructuradas y un Hub de Empleados para preguntas sobre políticas—ambos próximamente."
         },
         "howCreditsWork": {
-          "question": "How do credits work?",
-          "answer": "New users receive free credits to get started. Each completed practice interview uses 1 credit. You can purchase more credits anytime through our billing page. Credits never expire, so use them at your own pace."
+          "question": "¿Cómo funcionan los créditos?",
+          "answer": "Los nuevos usuarios reciben créditos gratis para comenzar. Cada entrevista de práctica completada usa 1 crédito. Puedes comprar más créditos en cualquier momento desde nuestra página de facturación. Los créditos nunca expiran, así que úsalos a tu propio ritmo."
         },
-        "difference": {
-          "question": "What's the difference between B2C and B2B?",
-          "answer": "B2C (Interview Practice) is for individual candidates who want to practice and improve their interview skills. B2B (Recruiter Platform) is for organizations that want to evaluate candidates with structured interviews and scorecards. Both are powered by the same AI technology."
+        "languages": {
+          "question": "¿Qué idiomas soporta Vocaid?",
+          "answer": "Actualmente soportamos 7 idiomas: inglés, portugués, español, francés, chino (mandarín), hindi y ruso. Puedes practicar entrevistas en cualquiera de estos idiomas y cambiar entre ellos en cualquier momento."
+        },
+        "resumes": {
+          "question": "¿Cómo funciona el repositorio de currículums?",
+          "answer": "Puedes subir múltiples currículums y asignar un currículum principal para usarlo en entrevistas de práctica. La IA usará el contenido de tu currículum para generar preguntas relevantes a tu experiencia y objetivos de carrera."
+        },
+        "linkedin": {
+          "question": "¿Puedo importar mi perfil de LinkedIn?",
+          "answer": "¡Próximamente! Estamos desarrollando la integración con LinkedIn para que puedas importar directamente tus datos de experiencia y habilidades como punto de partida para tu currículum."
+        },
+        "privacy": {
+          "question": "¿Cómo manejan mis datos?",
+          "answer": "Tu privacidad es importante. Nunca compartimos tus grabaciones de entrevistas, transcripciones ni currículums con terceros. Todos los datos están encriptados y puedes eliminar tu cuenta y todos los datos asociados en cualquier momento."
+        },
+        "support": {
+          "question": "¿Cómo obtengo soporte?",
+          "answer": "Usa el botón de feedback en la app para reportar errores o sugerir mejoras. Para ayuda con cuenta o facturación, escríbenos a support@vocaid.ai. Durante la beta cerrada, los tiempos de respuesta pueden ser limitados."
+        },
+        "rubrics": {
+          "question": "¿Pueden los reclutadores personalizar rúbricas de entrevista y scorecards?",
+          "answer": "Sí—la Plataforma de Reclutadores de Vocaid (próximamente) permitirá a las organizaciones configurar rúbricas, competencias y scorecards estructurados con marcas de tiempo de evidencia para evaluaciones consistentes y auditables."
         }
       }
     },
@@ -1540,49 +1718,94 @@
       "completing": "Completing sign in..."
     },
     "roles": {
-      "recruiter": "Recruiter",
-      "candidate": "Candidate",
-      "manager": "Manager",
-      "admin": "Admin",
-      "employee": "Employee"
+      "recruiter": "Reclutador",
+      "candidate": "Candidato",
+      "manager": "Gerente",
+      "admin": "Administrador",
+      "employee": "Empleado"
     },
-    "accessDenied": "Access Denied",
-    "insufficientPermissions": "You do not have permission to access this page.",
-    "requiredRoles": "Required: {{roles}}",
-    "createAccount": "Sign up"
+    "tagline": "Práctica de Entrevistas. Retroalimentación. Progreso.",
+    "divider": "o",
+    "features": {
+      "feedbackPdf": "PDF de Retroalimentación",
+      "scoreEvolution": "Evolución de Puntuación",
+      "multilingual": "Multilingüe"
+    },
+    "oauth": {
+      "google": "Continuar con Google",
+      "apple": "Continuar con Apple",
+      "microsoft": "Continuar con Microsoft",
+      "linkedin": "Continuar con LinkedIn",
+      "connecting": "Conectando...",
+      "notReady": "Servicio de autenticación no disponible. Por favor, inténtalo de nuevo.",
+      "failed": "Autenticación fallida. Por favor, inténtalo de nuevo."
+    },
+    "legal": {
+      "byContinuing": "Al continuar, aceptas los",
+      "agreeToTerms": "Acepto los",
+      "termsOfUse": "Términos de Uso",
+      "privacyPolicy": "Política de Privacidad",
+      "and": "y",
+      "marketingOptIn": "Envíame consejos y actualizaciones para mejorar mis habilidades de entrevista"
+    },
+    "errors": {
+      "unexpected": "Ocurrió un error inesperado. Por favor, inténtalo de nuevo.",
+      "invalidCredentials": "Email o contraseña inválidos. Por favor, inténtalo de nuevo.",
+      "verificationFailed": "Verificación fallida. Por favor, inténtalo de nuevo.",
+      "invalidCode": "Código de verificación inválido. Por favor, inténtalo de nuevo.",
+      "emailFirst": "Por favor, ingresa tu email primero",
+      "resetFailed": "Error al enviar email de recuperación. Por favor, inténtalo de nuevo.",
+      "signUpFailed": "Ocurrió un error durante el registro. Por favor, inténtalo de nuevo.",
+      "verificationIncomplete": "Verificación incompleta. Por favor, inténtalo de nuevo.",
+      "resendFailed": "Error al reenviar código. Por favor, inténtalo de nuevo.",
+      "termsRequired": "Debes aceptar los Términos de Uso y la Política de Privacidad"
+    },
+    "accessDenied": "Acceso Denegado",
+    "insufficientPermissions": "No tienes permiso para acceder a esta página.",
+    "requiredRoles": "Requerido: {{roles}}",
+    "createAccount": "Registrarse"
   },
   "account": {
-    "title": "Account Settings",
-    "subtitle": "Manage your profile and preferences",
-    "profileUpdated": "Profile updated successfully",
-    "passwordChanged": "Password changed successfully",
+    "title": "Configuración de",
+    "titleHighlight": "Cuenta",
+    "subtitle": "Administra tu perfil y preferencias",
+    "profileUpdated": "Perfil actualizado correctamente",
+    "passwordChanged": "Contraseña cambiada correctamente",
     "personal": "Personal",
-    "switchWorkspace": "Switch Workspace",
-    "selectWorkspace": "Select Workspace",
+    "switchWorkspace": "Cambiar Espacio de Trabajo",
+    "selectWorkspace": "Seleccionar Espacio de Trabajo",
     "sections": {
-      "profile": "Profile",
-      "security": "Security",
-      "danger": "Danger Zone"
+      "profile": "Perfil",
+      "security": "Seguridad",
+      "danger": "Zona de Peligro"
     },
     "profile": {
-      "title": "Profile Information",
-      "avatar": "Profile Picture",
-      "avatarHint": "Managed through your OAuth provider",
-      "save": "Save Changes"
+      "title": "Información del Perfil",
+      "avatar": "Foto de Perfil",
+      "avatarHint": "Administrado a través de tu proveedor OAuth",
+      "save": "Guardar Cambios"
     },
     "security": {
-      "title": "Change Password",
-      "currentPassword": "Current Password",
-      "newPassword": "New Password",
-      "confirmPassword": "Confirm New Password",
-      "changePassword": "Change Password"
+      "title": "Cambiar Contraseña",
+      "currentPassword": "Contraseña Actual",
+      "newPassword": "Nueva Contraseña",
+      "confirmPassword": "Confirmar Nueva Contraseña",
+      "changePassword": "Cambiar Contraseña"
     },
     "danger": {
-      "title": "Delete Account",
-      "warning": "This action is permanent and cannot be undone. All your data will be permanently deleted.",
+      "title": "Eliminar Cuenta",
+      "warning": "Esta acción es permanente y no se puede deshacer. Todos tus datos serán eliminados permanentemente.",
       "confirmLabel": "Type DELETE to confirm",
       "deleteButton": "Permanently Delete Account",
       "deleting": "Deleting..."
+    },
+    "validation": {
+      "failedToUpdateProfile": "Error al actualizar el perfil",
+      "passwordsDoNotMatch": "Las contraseñas no coinciden",
+      "passwordTooShort": "La contraseña debe tener al menos 8 caracteres",
+      "failedToChangePassword": "Error al cambiar la contraseña",
+      "typeDeleteToConfirm": "Por favor, escribe DELETE para confirmar",
+      "failedToDeleteAccount": "Error al eliminar la cuenta"
     }
   },
   "workspace": {
@@ -1592,5 +1815,188 @@
   },
   "footer": {
     "copyright": "© 2024 Vocaid. All rights reserved."
+  },
+  "contactAssistant": {
+    "title": "Contactar Vocaid",
+    "button": "Contáctanos",
+    "prompts": {
+      "welcome": "¡Hola! Estoy aquí para ayudarte a contactar a Vocaid. Empecemos con tu nombre.",
+      "name": "¿Cuál es tu nombre?",
+      "email": "¡Gracias! ¿Cuál es tu correo electrónico?",
+      "subject": "¿De qué te gustaría hablar? Por favor, elige un tema:\n\n• Consulta General\n• Soporte Técnico\n• Pregunta de Facturación\n• Retroalimentación\n• Oportunidad de Asociación\n• Otro",
+      "message": "¡Genial! Ahora, describe tu pregunta o mensaje (50-250 caracteres).",
+      "review": "Aquí está el resumen de tu mensaje. ¿Listo para enviar? Escribe \"sí\" para confirmar o \"editar [campo]\" para hacer cambios.",
+      "submitting": "Enviando tu mensaje...",
+      "success": "¡Tu mensaje ha sido enviado exitosamente! Te responderemos en 24-48 horas.",
+      "error": "Lo sentimos, hubo un error al enviar tu mensaje. ¿Te gustaría intentar de nuevo?",
+      "invalidSubject": "No reconocí ese tema. Por favor elige entre:\n• Consulta General\n• Soporte Técnico\n• Pregunta de Facturación\n• Retroalimentación\n• Oportunidad de Asociación\n• Otro",
+      "editField": "Claro, actualicemos eso. ¿Qué te gustaría cambiar?",
+      "cancelled": "¡Sin problema! ¿Qué te gustaría editar? Puedes decir \"editar nombre\", \"editar correo\", \"editar tema\" o \"editar mensaje\".",
+      "confirmHelp": "Por favor escribe \"sí\" para enviar tu mensaje, o \"editar [campo]\" para hacer cambios."
+    },
+    "placeholder": {
+      "default": "Escribe tu respuesta...",
+      "message": "Escribe tu mensaje..."
+    }
+  },
+  "betaFeedback": {
+    "title": "Feedback Beta",
+    "bugReportTitle": "🐛 Reportar Error",
+    "featureTitle": "💡 Sugerir Función",
+    "fabLabel": "Enviar Feedback",
+    "fabText": "Feedback",
+    "reportBugShort": "Reportar Error",
+    "suggestFeatureShort": "Sugerir Función",
+    "welcome": "¡Hola! 👋 Estoy aquí para recoger tus comentarios durante nuestra beta cerrada. ¿Qué te gustaría compartir?",
+    "reportBug": "🐛 Reportar un Error",
+    "suggestFeature": "💡 Sugerir una Función",
+    "bugTitle": "¡Entendido! ¿Cuál es el título breve de este error?",
+    "featureTitle": "¡Genial! ¿Cuál es el título breve de tu idea?",
+    "bugTitlePlaceholder": "ej: El botón no funciona en móvil",
+    "featureTitlePlaceholder": "ej: Modo oscuro",
+    "bugDescription": "Por favor describe el error con más detalle. ¿Qué pasó?",
+    "featureDescription": "Por favor describe tu idea con más detalle.",
+    "descriptionPlaceholder": "Proporciona todos los detalles posibles...",
+    "severityQuestion": "¿Qué tan grave es este error?",
+    "severityLow": "🟢 Bajo - Pequeña molestia",
+    "severityMedium": "🟡 Medio - Afecta funcionalidad",
+    "severityHigh": "🟠 Alto - Problema importante",
+    "severityBlocking": "🔴 Bloqueante - No puedo usar la app",
+    "stepsQuestion": "¿Qué pasos llevan a este error? (Escribe cada paso, presiona Enter, haz clic en 'Listo' al terminar)",
+    "stepsPlaceholder": "Escribe el paso y presiona Enter...",
+    "expectedQuestion": "¿Qué esperabas que pasara?",
+    "expectedPlaceholder": "Esperaba...",
+    "actualQuestion": "¿Qué pasó en realidad?",
+    "actualPlaceholder": "En cambio, lo que pasó fue...",
+    "frequencyQuestion": "¿Con qué frecuencia ocurre esto?",
+    "frequencyAlways": "Siempre",
+    "frequencySometimes": "A veces",
+    "frequencyOnce": "Solo una vez",
+    "goalQuestion": "¿Qué problema resolvería esta función para ti?",
+    "goalPlaceholder": "Esto me ayudaría a...",
+    "targetUserQuestion": "¿Quién se beneficiaría de esta función?",
+    "targetSelf": "👤 Solo yo",
+    "targetRecruiters": "👥 Reclutadores/RRHH",
+    "targetOther": "🌐 Todos",
+    "priorityQuestion": "¿Qué tan importante es esta función para ti?",
+    "priorityNice": "💭 Sería bueno tenerlo",
+    "priorityImportant": "⭐ Importante",
+    "priorityCritical": "🔥 Crítico para mi trabajo",
+    "alternativesQuestion": "¿Has probado alguna alternativa? (opcional)",
+    "alternativesPlaceholder": "Intenté... (o deja en blanco)",
+    "emailQuestion": "¿Cuál es tu email para contacto?",
+    "emailPlaceholder": "tu@email.com",
+    "followUpQuestion": "¿Podemos contactarte sobre este feedback?",
+    "followUpYes": "✅ Sí, por favor contáctenme",
+    "followUpNo": "❌ No, solo regístrenlo",
+    "reviewMessage": "Aquí está el resumen de tu feedback:",
+    "submitButton": "📤 Enviar Feedback",
+    "editButton": "✏️ Editar",
+    "successMessage": "¡Gracias! Tu feedback ha sido enviado. 🎉\n\n¡Agradecemos mucho que nos ayudes a mejorar Vocaid!",
+    "errorMessage": "Lo sentimos, hubo un error al enviar tu feedback. Por favor, intenta de nuevo.",
+    "retryButton": "🔄 Intentar de Nuevo",
+    "type": "Tipo",
+    "titleLabel": "Título",
+    "descriptionLabel": "Descripción",
+    "severityLabel": "Gravedad",
+    "stepsLabel": "Pasos",
+    "expectedLabel": "Esperado",
+    "frequencyLabel": "Frecuencia",
+    "priorityLabel": "Prioridad",
+    "targetUserLabel": "Para",
+    "goalLabel": "Objetivo",
+    "emailLabel": "Email",
+    "followUpLabel": "Contacto",
+    "continue": "Continuar",
+    "done": "Listo",
+    "steps": "pasos",
+    "skip": "Saltar",
+    "skipped": "(Saltado)",
+    "back": "Volver",
+    "close": "Cerrar",
+    "submitting": "Enviando tu feedback...",
+    "submitted": "¡Feedback enviado!",
+    "powered": "Desarrollado por Vocaid"
+  },
+  "consent": {
+    "loading": "Cargando...",
+    "loadError": "Error al cargar los requisitos de consentimiento. Por favor, actualiza la página.",
+    "userNotAuth": "Usuario no autenticado. Por favor, inicia sesión nuevamente.",
+    "recordFailed": "Error al registrar el consentimiento. Por favor, intenta de nuevo.",
+    "genericError": "Ocurrió un error. Por favor, intenta de nuevo.",
+    "mustAcceptBoth": "Debes aceptar los Términos de Uso y la Política de Privacidad para continuar.",
+    "step1": {
+      "title": "Antes de empezar",
+      "subtitle": "Necesitamos tu acuerdo para continuar usando Vocaid.",
+      "agreeToTerms": "Acepto los",
+      "termsOfUse": "Términos de Uso",
+      "privacyPolicy": "Política de Privacidad",
+      "continue": "Continuar"
+    },
+    "step2": {
+      "title": "Preferencias de comunicación",
+      "subtitle": "Elige cómo te gustaría recibir noticias de nosotros.",
+      "essential": {
+        "title": "Correos transaccionales esenciales",
+        "description": "Recibos, alertas de seguridad y notificaciones de cuenta. Requerido para usar Vocaid."
+      },
+      "marketing": {
+        "title": "Actualizaciones de productos y ofertas",
+        "description": "Consejos, nuevas funciones y promociones ocasionales. Puedes cancelar en cualquier momento."
+      },
+      "back": "Volver",
+      "saving": "Guardando...",
+      "getStarted": "Comenzar"
+    },
+    "footer": {
+      "notice": "Al continuar, aceptas recibir correos transaccionales esenciales."
+    }
+  },
+  "billing": {
+    "retry": "Reintentar",
+    "loading": "Cargando...",
+    "refreshing": "Actualizando...",
+    "refresh": "Actualizar",
+    "paymentMethod": "Método de Pago",
+    "recommendedForRegion": "Recomendado para tu región",
+    "manuallySelected": "Seleccionado manualmente",
+    "cancel": "Cancelar",
+    "change": "Cambiar",
+    "bestValue": "Mejor Valor",
+    "interviewCredits": "{{count}} créditos de entrevista",
+    "practiceInterviews": "{{count}} entrevistas de práctica",
+    "aiFeedback": "Retroalimentación con IA",
+    "performanceAnalytics": "Análisis de rendimiento",
+    "processing": "Procesando...",
+    "buyNow": "Comprar Ahora",
+    "securePaymentVia": "Pago seguro vía",
+    "credits": "créditos",
+    "balance": "Saldo",
+    "loadMore": "Cargar Más",
+    "needHelp": "¿Necesitas Ayuda?",
+    "contactUsAt": "Contáctanos en",
+    "failedToLoadPackages": "Error al cargar paquetes de créditos",
+    "paymentFailed": "El pago falló. Por favor, inténtalo de nuevo."
+  },
+  "resumeLibrary": {
+    "title": "Biblioteca de",
+    "titleHighlight": "Currículums",
+    "subtitle": "Administra tus currículums para una configuración rápida de entrevistas",
+    "errors": {
+      "invalidFileType": "Por favor, suba un documento PDF o Word",
+      "fileTooLarge": "El tamaño del archivo debe ser menor a 5MB",
+      "loadFailed": "Error al cargar currículums",
+      "setPrimaryFailed": "Error al establecer como principal",
+      "deleteFailed": "Error al eliminar currículum",
+      "updateFailed": "Error al actualizar currículum",
+      "uploadFailed": "Error al subir currículum",
+      "readFailed": "Error al leer archivo"
+    }
+  },
+  "scoreDisplay": {
+    "excellent": "Excelente",
+    "good": "Bueno",
+    "average": "Promedio",
+    "needsImprovement": "Necesita Mejorar"
   }
 }

@@ -1,11 +1,12 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion, useReducedMotion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from 'components/ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle } from 'components/ui/card'
+import { Copy, Check, Eye, EyeOff } from 'lucide-react'
 import {
   LineChart,
   Line,
@@ -19,6 +20,10 @@ import {
   YAxis,
   Tooltip,
 } from 'recharts'
+
+// Mock API key for demo
+const MOCK_API_KEY = 'voc_live_sk_7f8d9e2a1b4c3d5e6f7a8b9c0d1e2f3a'
+const MASKED_API_KEY = 'voc_live_••••••••••••••••••••••••'
 
 // Mock data for the dashboard preview - Uses translation keys for localization
 const getPipelineData = (t: (key: string) => string) => [
@@ -122,6 +127,24 @@ export const DashboardPreviewTabs: React.FC = () => {
     threshold: 0.1,
   })
 
+  // API key reveal/copy state
+  const [isKeyRevealed, setIsKeyRevealed] = useState(false)
+  const [isCopied, setIsCopied] = useState(false)
+
+  const handleCopyKey = async () => {
+    try {
+      await navigator.clipboard.writeText(MOCK_API_KEY)
+      setIsCopied(true)
+      setTimeout(() => setIsCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }
+
+  const toggleReveal = () => {
+    setIsKeyRevealed(!isKeyRevealed)
+  }
+
   // Get localized data
   const pipelineData = getPipelineData(t)
   const competencyData = getCompetencyData(t)
@@ -206,11 +229,11 @@ export const DashboardPreviewTabs: React.FC = () => {
               </div>
               
               <Tabs defaultValue="pipeline" className="w-full">
-                <div className="border-b border-zinc-200 bg-white px-4 sm:px-6 py-4">
-                  <TabsList className="w-full sm:w-auto justify-start">
-                    <TabsTrigger value="pipeline" className="text-sm">{t('landing.dashboardPreview.tabs.pipeline')}</TabsTrigger>
-                    <TabsTrigger value="scorecard" className="text-sm">{t('landing.dashboardPreview.tabs.scorecard')}</TabsTrigger>
-                    <TabsTrigger value="developer" className="text-sm">{t('landing.dashboardPreview.tabs.developer')}</TabsTrigger>
+                <div className="border-b border-zinc-200 bg-white px-4 sm:px-6 py-4 overflow-x-auto">
+                  <TabsList className="w-max sm:w-auto justify-start whitespace-nowrap">
+                    <TabsTrigger value="pipeline" className="text-xs sm:text-sm">{t('landing.dashboardPreview.tabs.pipeline')}</TabsTrigger>
+                    <TabsTrigger value="scorecard" className="text-xs sm:text-sm">{t('landing.dashboardPreview.tabs.scorecard')}</TabsTrigger>
+                    <TabsTrigger value="developer" className="text-xs sm:text-sm">{t('landing.dashboardPreview.tabs.developer')}</TabsTrigger>
                   </TabsList>
                 </div>
 
@@ -225,22 +248,22 @@ export const DashboardPreviewTabs: React.FC = () => {
                             <h3 className="font-semibold text-zinc-900">{t('landing.dashboardPreview.pipeline.activeCandidates')}</h3>
                           </div>
                           <div className="overflow-x-auto">
-                            <table className="w-full">
+                            <table className="w-full min-w-[500px]">
                               <thead className="bg-zinc-50 border-b border-zinc-200">
                                 <tr>
-                                  <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600 uppercase">{t('landing.dashboardPreview.pipeline.tableHeaders.name')}</th>
-                                  <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600 uppercase">{t('landing.dashboardPreview.pipeline.tableHeaders.stage')}</th>
-                                  <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600 uppercase">{t('landing.dashboardPreview.pipeline.tableHeaders.fitScore')}</th>
-                                  <th className="px-4 py-3 text-left text-xs font-semibold text-zinc-600 uppercase">{t('landing.dashboardPreview.pipeline.tableHeaders.updated')}</th>
+                                  <th className="px-3 sm:px-4 py-3 text-left text-[10px] sm:text-xs font-semibold text-zinc-600 uppercase whitespace-nowrap">{t('landing.dashboardPreview.pipeline.tableHeaders.name')}</th>
+                                  <th className="px-3 sm:px-4 py-3 text-left text-[10px] sm:text-xs font-semibold text-zinc-600 uppercase whitespace-nowrap">{t('landing.dashboardPreview.pipeline.tableHeaders.stage')}</th>
+                                  <th className="px-3 sm:px-4 py-3 text-left text-[10px] sm:text-xs font-semibold text-zinc-600 uppercase whitespace-nowrap">{t('landing.dashboardPreview.pipeline.tableHeaders.fitScore')}</th>
+                                  <th className="px-3 sm:px-4 py-3 text-left text-[10px] sm:text-xs font-semibold text-zinc-600 uppercase whitespace-nowrap">{t('landing.dashboardPreview.pipeline.tableHeaders.updated')}</th>
                                 </tr>
                               </thead>
                               <tbody className="divide-y divide-zinc-100">
                                 {pipelineData.map((candidate, idx) => (
                                   <tr key={idx} className="hover:bg-zinc-50 transition-colors">
-                                    <td className="px-4 py-3 text-sm font-medium text-zinc-900">{candidate.name}</td>
-                                    <td className="px-4 py-3"><StageBadge stage={candidate.stage} /></td>
-                                    <td className="px-4 py-3"><FitScoreBadge score={candidate.fitScore} /></td>
-                                    <td className="px-4 py-3 text-sm text-zinc-500">{candidate.lastUpdated}</td>
+                                    <td className="px-3 sm:px-4 py-3 text-xs sm:text-sm font-medium text-zinc-900 whitespace-nowrap">{candidate.name}</td>
+                                    <td className="px-3 sm:px-4 py-3"><StageBadge stage={candidate.stage} /></td>
+                                    <td className="px-3 sm:px-4 py-3"><FitScoreBadge score={candidate.fitScore} /></td>
+                                    <td className="px-3 sm:px-4 py-3 text-xs sm:text-sm text-zinc-500 whitespace-nowrap">{candidate.lastUpdated}</td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -333,23 +356,24 @@ export const DashboardPreviewTabs: React.FC = () => {
                       </div>
 
                       {/* Radar Chart */}
-                      <div>
+                      <div className="hidden sm:block">
                         <Card className="border-zinc-200 h-full">
                           <CardHeader className="pb-2">
                             <CardTitle className="text-base font-semibold text-zinc-900">{t('landing.dashboardPreview.scorecard.competencyOverview')}</CardTitle>
                           </CardHeader>
                           <CardContent>
                             <ResponsiveContainer width="100%" height={250}>
-                              <RadarChart data={competencyData}>
+                              <RadarChart data={competencyData} outerRadius="70%">
                                 <PolarGrid stroke="#e4e4e7" />
                                 <PolarAngleAxis 
                                   dataKey="skill" 
-                                  tick={{ fontSize: 10, fill: '#71717a' }}
+                                  tick={{ fontSize: 9, fill: '#71717a' }}
+                                  tickLine={false}
                                 />
                                 <PolarRadiusAxis 
                                   angle={30} 
                                   domain={[0, 100]}
-                                  tick={{ fontSize: 10, fill: '#71717a' }}
+                                  tick={{ fontSize: 9, fill: '#71717a' }}
                                 />
                                 <Radar
                                   name="Score"
@@ -381,13 +405,33 @@ export const DashboardPreviewTabs: React.FC = () => {
                           <div>
                             <label className="text-xs font-medium text-zinc-500 uppercase">{t('landing.dashboardPreview.developer.apiKey')}</label>
                             <div className="mt-1 flex items-center gap-2">
-                              <code className="flex-1 px-3 py-2 bg-zinc-100 rounded-md text-sm font-mono text-zinc-700">
-                                voc_live_••••••••••••••••••••••••
+                              <code className="flex-1 px-3 py-2 bg-zinc-100 rounded-md text-sm font-mono text-zinc-700 truncate">
+                                {isKeyRevealed ? MOCK_API_KEY : MASKED_API_KEY}
                               </code>
-                              <button className="px-3 py-2 text-xs font-medium text-purple-600 hover:bg-purple-50 rounded-md transition-colors">
-                                {t('landing.dashboardPreview.developer.reveal')}
+                              <button
+                                onClick={toggleReveal}
+                                className="shrink-0 p-2 text-zinc-600 hover:text-purple-600 hover:bg-purple-50 rounded-md transition-colors"
+                                title={isKeyRevealed ? t('landing.dashboardPreview.developer.hide') : t('landing.dashboardPreview.developer.reveal')}
+                              >
+                                {isKeyRevealed ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                              </button>
+                              <button
+                                onClick={handleCopyKey}
+                                className={`shrink-0 p-2 rounded-md transition-colors ${
+                                  isCopied 
+                                    ? 'bg-purple-100 text-purple-700' 
+                                    : 'text-zinc-600 hover:text-purple-600 hover:bg-purple-50'
+                                }`}
+                                title={isCopied ? t('landing.dashboardPreview.developer.copied') : t('landing.dashboardPreview.developer.copy')}
+                              >
+                                {isCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                               </button>
                             </div>
+                            {isCopied && (
+                              <p className="mt-1 text-xs text-purple-600 font-medium">
+                                {t('landing.dashboardPreview.developer.copied', 'Copied to clipboard!')}
+                              </p>
+                            )}
                           </div>
                           <div>
                             <label className="text-xs font-medium text-zinc-500 uppercase">{t('landing.dashboardPreview.developer.environment')}</label>

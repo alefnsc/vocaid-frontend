@@ -21,32 +21,28 @@ export const FAQAccordion: React.FC = () => {
 
   const faqItems = [
     {
-      question: t('landing.faq.items.multiTenancy.question'),
-      answer: t('landing.faq.items.multiTenancy.answer'),
+      question: t('landing.faq.items.whatIsVocaid.question'),
+      answer: t('landing.faq.items.whatIsVocaid.answer'),
     },
     {
-      question: t('landing.faq.items.whiteLabel.question'),
-      answer: t('landing.faq.items.whiteLabel.answer'),
-    },
-    {
-      question: t('landing.faq.items.billing.question'),
-      answer: t('landing.faq.items.billing.answer'),
-    },
-    {
-      question: t('landing.faq.items.compliance.question'),
-      answer: t('landing.faq.items.compliance.answer'),
-    },
-    {
-      question: t('landing.faq.items.atsIntegration.question'),
-      answer: t('landing.faq.items.atsIntegration.answer'),
+      question: t('landing.faq.items.howCreditsWork.question'),
+      answer: t('landing.faq.items.howCreditsWork.answer'),
     },
     {
       question: t('landing.faq.items.multilingual.question'),
       answer: t('landing.faq.items.multilingual.answer'),
     },
     {
-      question: t('landing.faq.items.security.question'),
-      answer: t('landing.faq.items.security.answer'),
+      question: t('landing.faq.items.resumeRepository.question'),
+      answer: t('landing.faq.items.resumeRepository.answer'),
+    },
+    {
+      question: t('landing.faq.items.linkedinImport.question'),
+      answer: t('landing.faq.items.linkedinImport.answer'),
+    },
+    {
+      question: t('landing.faq.items.privacy.question'),
+      answer: t('landing.faq.items.privacy.answer'),
     },
     {
       question: t('landing.faq.items.support.question'),
@@ -55,10 +51,6 @@ export const FAQAccordion: React.FC = () => {
     {
       question: t('landing.faq.items.rubrics.question'),
       answer: t('landing.faq.items.rubrics.answer'),
-    },
-    {
-      question: t('landing.faq.items.trial.question'),
-      answer: t('landing.faq.items.trial.answer'),
     },
   ]
 

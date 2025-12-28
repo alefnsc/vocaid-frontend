@@ -30,12 +30,12 @@ const CACHE_TTL = {
 
 // Cache storage keys
 const CACHE_KEYS = {
-    DASHBOARD_STATS: (userId: string) => `voxly_stats_${userId}`,
-    INTERVIEWS_LIST: (userId: string, page: number, limit: number) => `voxly_interviews_${userId}_${page}_${limit}`,
-    INTERVIEW_DETAILS: (interviewId: string) => `voxly_interview_${interviewId}`,
-    SCORE_EVOLUTION: (userId: string, months: number) => `voxly_scores_${userId}_${months}`,
-    SPENDING_HISTORY: (userId: string, months: number) => `voxly_spending_${userId}_${months}`,
-    PAYMENT_HISTORY: (userId: string) => `voxly_payments_${userId}`,
+    DASHBOARD_STATS: (userId: string) => `Vocaid_stats_${userId}`,
+    INTERVIEWS_LIST: (userId: string, page: number, limit: number) => `Vocaid_interviews_${userId}_${page}_${limit}`,
+    INTERVIEW_DETAILS: (interviewId: string) => `Vocaid_interview_${interviewId}`,
+    SCORE_EVOLUTION: (userId: string, months: number) => `Vocaid_scores_${userId}_${months}`,
+    SPENDING_HISTORY: (userId: string, months: number) => `Vocaid_spending_${userId}_${months}`,
+    PAYMENT_HISTORY: (userId: string) => `Vocaid_payments_${userId}`,
 };
 
 /**
@@ -102,10 +102,10 @@ function invalidateCache(pattern: string): void {
 }
 
 /**
- * Clear all Voxly cache entries
+ * Clear all Vocaid cache entries
  */
 function clearAllCache(): void {
-    invalidateCache('voxly_');
+    invalidateCache('Vocaid_');
 }
 
 // ==========================================
@@ -185,6 +185,7 @@ interface Metadata {
     first_name: string;
     last_name?: string;
     job_title: string;
+    seniority?: string; // Candidate seniority: intern, junior, mid, senior, staff, principal
     company_name: string;
     job_description: string;
     interviewee_cv: string; // Base64 encoded resume content
@@ -244,6 +245,8 @@ export interface InterviewSummary {
     callDuration: number | null; // in milliseconds from backend
     score: number | null;  // Backend field name
     status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';
+    seniority?: string;    // Seniority level (intern, junior, mid, senior, staff, principal)
+    language?: string;     // Interview language
     // Aliases for backward compatibility
     position?: string;
     company?: string;
@@ -301,8 +304,10 @@ export interface SpendingDataPoint {
 
 export interface CreateInterviewData {
     jobTitle: string;
+    seniority?: string; // Candidate seniority: intern, junior, mid, senior, staff, principal
     companyName: string;
     jobDescription: string;
+    language?: string; // Interview language code
     resumeData?: string;
     resumeFileName?: string;
     resumeMimeType?: string;
@@ -545,8 +550,10 @@ class APIService {
             try {
                 const interview = await this.createInterview(body.userId, {
                     jobTitle: body.metadata.job_title,
+                    seniority: body.metadata.seniority,
                     companyName: body.metadata.company_name,
                     jobDescription: body.metadata.job_description,
+                    language: body.metadata.preferred_language,
                     resumeData: body.metadata.interviewee_cv, // Now Base64 encoded
                     resumeFileName: body.metadata.resume_file_name,
                     resumeMimeType: body.metadata.resume_mime_type,
@@ -608,13 +615,42 @@ class APIService {
         });
     }
 
-    async getFeedback(call_id: string): Promise<Response> {
+    /**
+     * Get feedback for an interview
+     * @param call_id - Retell call ID
+     * @param options - Optional parameters for structured feedback
+     * @param options.structured - Request structured feedback format (v2.0)
+     * @param options.seniority - Candidate seniority level
+     * @param options.language - Feedback language code
+     */
+    async getFeedback(
+        call_id: string, 
+        options?: {
+            structured?: boolean;
+            seniority?: 'intern' | 'junior' | 'mid' | 'senior' | 'staff' | 'principal';
+            language?: 'en' | 'es' | 'pt-BR' | 'zh-CN';
+        }
+    ): Promise<Response> {
+        // Build query params
+        const params = new URLSearchParams();
+        if (options?.structured) {
+            params.append('structured', 'true');
+        }
+        if (options?.seniority) {
+            params.append('seniority', options.seniority);
+        }
+        if (options?.language) {
+            params.append('language', options.language);
+        }
+        
+        const queryString = params.toString();
+        const url = `${BACKEND_URL}/get-feedback-for-interview/${call_id}${queryString ? `?${queryString}` : ''}`;
+        
         // Backend endpoint required for AI-generated interview feedback
-        return await fetch(`${BACKEND_URL}/get-feedback-for-interview/${call_id}`, 
-            {
-              method: 'GET',
-              headers: getHeaders()
-            });
+        return await fetch(url, {
+            method: 'GET',
+            headers: getHeaders()
+        });
     }
 
     async restoreCredit(userId: string, reason: string, callId?: string): Promise<{ status: string; newCredits?: number; message?: string }> {
@@ -905,18 +941,18 @@ class APIService {
      * Invalidate all interview-related caches (call after interview completion)
      */
     invalidateInterviewCaches(userId: string): void {
-        invalidateCache(`voxly_stats_${userId}`);
-        invalidateCache(`voxly_interviews_${userId}`);
-        invalidateCache(`voxly_scores_${userId}`);
+        invalidateCache(`Vocaid_stats_${userId}`);
+        invalidateCache(`Vocaid_interviews_${userId}`);
+        invalidateCache(`Vocaid_scores_${userId}`);
     }
 
     /**
      * Invalidate payment caches (call after successful payment)
      */
     invalidatePaymentCaches(userId: string): void {
-        invalidateCache(`voxly_stats_${userId}`);
-        invalidateCache(`voxly_payments_${userId}`);
-        invalidateCache(`voxly_spending_${userId}`);
+        invalidateCache(`Vocaid_stats_${userId}`);
+        invalidateCache(`Vocaid_payments_${userId}`);
+        invalidateCache(`Vocaid_spending_${userId}`);
     }
 
     /**
@@ -1008,7 +1044,7 @@ class APIService {
      * Uses sessionStorage cache to prevent excessive API calls
      */
     async getCurrentUser(userId: string, skipCache: boolean = false): Promise<{ status: string; user: any }> {
-        const cacheKey = `voxly_current_user_${userId}`;
+        const cacheKey = `Vocaid_current_user_${userId}`;
         const cacheTTL = 60 * 1000; // 1 minute cache
         
         // Check cache first (unless skipCache is true)
@@ -1080,7 +1116,7 @@ class APIService {
     }> {
         console.log('💰 Getting wallet balance:', userId);
         
-        const response = await fetch(`${BACKEND_URL}/api/credits`, {
+        const response = await fetch(`${BACKEND_URL}/api/credits/balance`, {
             method: 'GET',
             headers: getHeaders(userId),
         });
@@ -1291,7 +1327,7 @@ class APIService {
         
         // For now, just store locally
         if (params.preferredLanguage) {
-            localStorage.setItem('voxly_language', params.preferredLanguage);
+            localStorage.setItem('Vocaid_language', params.preferredLanguage);
         }
         
         return { status: 'success' };
@@ -1460,6 +1496,7 @@ class APIService {
         params: {
             packageId: 'starter' | 'intermediate' | 'professional';
             language?: string;
+            provider?: 'mercadopago' | 'paypal';
         }
     ): Promise<{
         status: string;
@@ -1744,6 +1781,98 @@ class APIService {
         
         if (!response.ok) {
             throw new Error(`Error creating resume version: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Score a resume against a specific role
+     */
+    async scoreResume(
+        userId: string,
+        resumeId: string,
+        roleTitle: string
+    ): Promise<{
+        status: string;
+        data: {
+            resumeId: string;
+            roleTitle: string;
+            score: number;
+            provider: string;
+            breakdown: Record<string, unknown> | null;
+            cachedAt: string | null;
+        };
+    }> {
+        const response = await fetch(`${BACKEND_URL}/api/resumes/${resumeId}/score`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+            body: JSON.stringify({ roleTitle }),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error scoring resume: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Get all scores for a resume
+     */
+    async getResumeScores(
+        userId: string,
+        resumeId: string
+    ): Promise<{
+        status: string;
+        data: Array<{
+            roleTitle: string;
+            score: number;
+            provider: string;
+            cachedAt: string | null;
+        }>;
+    }> {
+        const response = await fetch(`${BACKEND_URL}/api/resumes/scores?resumeId=${resumeId}`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error getting resume scores: ${response.status}`);
+        }
+        
+        return response.json();
+    }
+
+    /**
+     * Create a resume from LinkedIn profile data (manual entry)
+     */
+    async createLinkedInResume(
+        userId: string,
+        data: {
+            name: string;
+            email: string;
+            headline: string;
+            linkedInUrl?: string;
+        }
+    ): Promise<{
+        status: string;
+        data: {
+            id: string;
+            title: string;
+            fileName: string;
+            version: number;
+            isPrimary: boolean;
+        };
+    }> {
+        const response = await fetch(`${BACKEND_URL}/api/resumes/linkedin`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+            body: JSON.stringify(data),
+        });
+        
+        if (!response.ok) {
+            throw new Error(`Error creating LinkedIn resume: ${response.status}`);
         }
         
         return response.json();
@@ -2139,6 +2268,503 @@ class APIService {
         
         return response.json();
     }
+
+    // ==========================================
+    // CONSENT MANAGEMENT
+    // ==========================================
+
+    /**
+     * Get consent requirements (public - no auth required)
+     * Returns current versions and URLs for legal documents
+     */
+    async getConsentRequirements(): Promise<ConsentRequirements> {
+        const response = await fetch(`${BACKEND_URL}/api/consent/requirements`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const result = await safeJsonParse<{ ok: boolean; data: ConsentRequirements }>(
+            response,
+            'getConsentRequirements'
+        );
+
+        if (!response.ok || !result.ok) {
+            throw new Error('Failed to get consent requirements');
+        }
+
+        return result.data;
+    }
+
+    /**
+     * Get user's consent status (auth required)
+     * Returns whether user has required consents and their preferences
+     */
+    async getConsentStatus(userId: string): Promise<ConsentStatus> {
+        const response = await fetch(`${BACKEND_URL}/api/consent/status`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+
+        const result = await safeJsonParse<{ ok: boolean; data: ConsentStatus }>(
+            response,
+            'getConsentStatus'
+        );
+
+        if (!response.ok || !result.ok) {
+            throw new Error('Failed to get consent status');
+        }
+
+        return result.data;
+    }
+
+    /**
+     * Submit user consent (auth required)
+     * Creates or updates consent record with audit metadata
+     */
+    async submitConsent(
+        userId: string,
+        params: SubmitConsentParams
+    ): Promise<ConsentSubmitResult> {
+        const response = await fetch(`${BACKEND_URL}/api/consent/submit`, {
+            method: 'POST',
+            headers: {
+                ...getHeaders(userId),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(params),
+        });
+
+        const result = await safeJsonParse<{ ok: boolean; data: ConsentSubmitResult; error?: string; code?: string }>(
+            response,
+            'submitConsent'
+        );
+
+        if (!response.ok || !result.ok) {
+            throw new Error(result.error || 'Failed to submit consent');
+        }
+
+        return result.data;
+    }
+
+    /**
+     * Update marketing preference only (auth required)
+     */
+    async updateMarketingPreference(
+        userId: string,
+        marketingOptIn: boolean
+    ): Promise<{ success: boolean; marketingOptIn: boolean }> {
+        const response = await fetch(`${BACKEND_URL}/api/consent/marketing`, {
+            method: 'PATCH',
+            headers: {
+                ...getHeaders(userId),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ marketingOptIn }),
+        });
+
+        const result = await safeJsonParse<{ ok: boolean; data: { success: boolean; marketingOptIn: boolean } }>(
+            response,
+            'updateMarketingPreference'
+        );
+
+        if (!response.ok || !result.ok) {
+            throw new Error('Failed to update marketing preference');
+        }
+
+        return result.data;
+    }
+
+    // ==========================================
+    // UNIFIED CANDIDATE DASHBOARD
+    // ==========================================
+
+    /**
+     * Get candidate dashboard with filtering support (auth required)
+     * Single endpoint that returns all dashboard data
+     */
+    async getCandidateDashboard(
+        userId: string,
+        filters?: CandidateDashboardFilters,
+        forceRefresh = false
+    ): Promise<CandidateDashboardResponse> {
+        const params = new URLSearchParams();
+        
+        if (filters?.startDate) params.append('startDate', filters.startDate);
+        if (filters?.endDate) params.append('endDate', filters.endDate);
+        if (filters?.roleTitle) params.append('roleTitle', filters.roleTitle);
+        if (filters?.seniority) params.append('seniority', filters.seniority);
+        if (filters?.resumeId) params.append('resumeId', filters.resumeId);
+        if (filters?.limit) params.append('limit', filters.limit.toString());
+
+        const cacheKey = `Vocaid_dashboard_${userId}_${params.toString()}`;
+
+        return getCachedOrFetch(
+            cacheKey,
+            async () => {
+                const response = await fetch(
+                    `${BACKEND_URL}/api/dashboard/candidate?${params.toString()}`,
+                    {
+                        method: 'GET',
+                        headers: getHeaders(userId),
+                    }
+                );
+
+                const result = await safeJsonParse<{ status: string; data: CandidateDashboardResponse }>(
+                    response,
+                    'getCandidateDashboard'
+                );
+
+                if (!response.ok || result.status !== 'success') {
+                    throw new Error('Failed to fetch dashboard data');
+                }
+
+                return result.data;
+            },
+            60000, // 1 minute cache
+            forceRefresh
+        );
+    }
+
+    /**
+     * Download resume file (auth required)
+     */
+    async downloadResume(
+        userId: string,
+        resumeId: string
+    ): Promise<{ fileName: string; mimeType: string; base64: string }> {
+        const response = await fetch(
+            `${BACKEND_URL}/api/dashboard/resumes/${resumeId}/download`,
+            {
+                method: 'GET',
+                headers: getHeaders(userId),
+            }
+        );
+
+        const result = await safeJsonParse<{
+            status: string;
+            data: { fileName: string; mimeType: string; base64: string };
+        }>(response, 'downloadResume');
+
+        if (!response.ok || result.status !== 'success') {
+            throw new Error('Failed to download resume');
+        }
+
+        return result.data;
+    }
+
+    // ==========================================
+    // B2C USER PROFILE API
+    // ==========================================
+
+    /**
+     * Get current user's full profile including B2C status
+     */
+    async getUserProfile(userId: string): Promise<B2CUserProfile> {
+        const response = await fetch(`${BACKEND_URL}/api/users/me`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+
+        const result = await safeJsonParse<{
+            ok: boolean;
+            status: string;
+            data: B2CUserProfile;
+        }>(response, 'getUserProfile');
+
+        if (!response.ok || !result.ok) {
+            throw new Error('Failed to fetch user profile');
+        }
+
+        return result.data;
+    }
+
+    /**
+     * Update user profile (country, language, etc.)
+     */
+    async updateUserProfile(
+        userId: string,
+        updates: {
+            countryCode?: string;
+            preferredLanguage?: string;
+            role?: string;
+            marketingOptIn?: boolean;
+        }
+    ): Promise<B2CUserProfile> {
+        const response = await fetch(`${BACKEND_URL}/api/users/me`, {
+            method: 'PUT',
+            headers: getHeaders(userId),
+            body: JSON.stringify(updates),
+        });
+
+        const result = await safeJsonParse<{
+            ok: boolean;
+            status: string;
+            data: B2CUserProfile;
+            error?: { code: string; message: string };
+        }>(response, 'updateUserProfile');
+
+        if (!response.ok || !result.ok) {
+            const errorCode = result.error?.code || 'UPDATE_FAILED';
+            const errorMessage = result.error?.message || 'Failed to update profile';
+            throw new B2CApiError(errorCode, errorMessage);
+        }
+
+        // Invalidate user cache
+        invalidateCache(`Vocaid_current_user_${userId}`);
+
+        return result.data;
+    }
+
+    /**
+     * Get B2C access status (eligibility checks)
+     */
+    async getB2CStatus(userId: string): Promise<B2CAccessStatus> {
+        const response = await fetch(`${BACKEND_URL}/api/users/me/b2c-status`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+
+        const result = await safeJsonParse<{
+            ok: boolean;
+            status: string;
+            data: B2CAccessStatus;
+        }>(response, 'getB2CStatus');
+
+        if (!response.ok || !result.ok) {
+            throw new Error('Failed to fetch B2C status');
+        }
+
+        return result.data;
+    }
+
+    // ==========================================
+    // IDENTITY VERIFICATION API
+    // ==========================================
+
+    /**
+     * Get identity verification status
+     */
+    async getIdentityStatus(userId: string): Promise<IdentityVerificationStatus> {
+        const response = await fetch(`${BACKEND_URL}/api/identity/status`, {
+            method: 'GET',
+            headers: getHeaders(userId),
+        });
+
+        const result = await safeJsonParse<{
+            ok: boolean;
+            status: string;
+            data: IdentityVerificationStatus;
+        }>(response, 'getIdentityStatus');
+
+        if (!response.ok || !result.ok) {
+            throw new Error('Failed to fetch identity status');
+        }
+
+        return result.data;
+    }
+
+    /**
+     * Record consent for identity verification
+     */
+    async recordIdentityConsent(
+        userId: string,
+        params: { termsAccepted: boolean; biometricConsent: boolean }
+    ): Promise<{ sessionId: string; status: string; expiresAt: string }> {
+        const response = await fetch(`${BACKEND_URL}/api/identity/consent`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+            body: JSON.stringify(params),
+        });
+
+        const result = await safeJsonParse<{
+            ok: boolean;
+            status: string;
+            data: { sessionId: string; status: string; expiresAt: string };
+        }>(response, 'recordIdentityConsent');
+
+        if (!response.ok || !result.ok) {
+            throw new Error('Failed to record consent');
+        }
+
+        return result.data;
+    }
+
+    /**
+     * Start identity verification session
+     */
+    async startIdentityVerification(
+        userId: string,
+        params?: { documentType?: 'RG' | 'CNH' | 'CPF' }
+    ): Promise<{ sessionId: string; status: string; nextStep: string }> {
+        const response = await fetch(`${BACKEND_URL}/api/identity/start`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+            body: JSON.stringify(params || {}),
+        });
+
+        const result = await safeJsonParse<{
+            ok: boolean;
+            status: string;
+            data: { sessionId: string; status: string; nextStep: string };
+        }>(response, 'startIdentityVerification');
+
+        if (!response.ok || !result.ok) {
+            throw new Error('Failed to start verification');
+        }
+
+        return result.data;
+    }
+
+    /**
+     * Upload identity documents
+     */
+    async uploadIdentityDocuments(
+        userId: string,
+        params: { sessionId: string; selfieBase64: string; documentBase64: string }
+    ): Promise<IdentityVerificationResult> {
+        const response = await fetch(`${BACKEND_URL}/api/identity/upload`, {
+            method: 'POST',
+            headers: getHeaders(userId),
+            body: JSON.stringify(params),
+        });
+
+        const result = await safeJsonParse<{
+            ok: boolean;
+            status: string;
+            data: IdentityVerificationResult;
+        }>(response, 'uploadIdentityDocuments');
+
+        if (!response.ok || !result.ok) {
+            throw new Error('Failed to upload documents');
+        }
+
+        return result.data;
+    }
+}
+
+// ==========================================
+// B2C API ERROR CLASS
+// ==========================================
+
+export class B2CApiError extends Error {
+    constructor(public code: string, message: string) {
+        super(message);
+        this.name = 'B2CApiError';
+    }
+}
+
+// ==========================================
+// B2C TYPES
+// ==========================================
+
+export type UserType = 'PERSONAL' | 'CANDIDATE' | 'EMPLOYEE';
+
+export interface B2CUserProfile {
+    id: string;
+    clerkId: string;
+    email: string;
+    firstName: string | null;
+    lastName: string | null;
+    imageUrl: string | null;
+    credits: number;
+    userType: UserType;
+    countryCode: string | null;
+    preferredLanguage: string | null;
+    currentRole: string | null;
+    currentSeniority: string | null;
+    onboardingComplete: boolean;
+    createdAt: string;
+    updatedAt: string;
+    b2cEligible: boolean;
+    countrySupported: boolean;
+}
+
+export interface B2CAccessStatus {
+    b2cEligible: boolean;
+    userType: UserType;
+    countryCode: string | null;
+    countrySupported: boolean;
+    needsCountrySelection: boolean;
+    onboardingComplete: boolean;
+    restrictions: {
+        canCreateInterview: boolean;
+        canPurchaseCredits: boolean;
+        canAccessDashboard: boolean;
+    };
+}
+
+export interface IdentityVerificationStatus {
+    featureEnabled: boolean;
+    verification: {
+        id?: string;
+        status: 'NOT_STARTED' | 'PENDING' | 'VERIFIED' | 'FAILED' | 'EXPIRED';
+        provider?: string;
+        documentType?: string;
+        verifiedAt?: string;
+        failureReason?: string;
+        createdAt?: string;
+        expiresAt?: string;
+    };
+    canStartNew: boolean;
+}
+
+export interface IdentityVerificationResult {
+    sessionId: string;
+    status: 'VERIFIED' | 'FAILED';
+    verified: boolean;
+    confidence: number;
+    failureReason?: string;
+    verifiedAt?: string;
+}
+
+// ==========================================
+// CONSENT TYPES
+// ==========================================
+
+export interface ConsentRequirements {
+    versions: {
+        terms: string;
+        privacy: string;
+        marketing: string;
+    };
+    urls: {
+        termsOfUse: string;
+        privacyPolicy: string;
+    };
+    requirements: {
+        termsRequired: boolean;
+        privacyRequired: boolean;
+        transactionalRequired: boolean;
+        marketingOptional: boolean;
+    };
+}
+
+export interface ConsentStatus {
+    hasRequiredConsents: boolean;
+    marketingOptIn: boolean;
+    transactionalOptIn: boolean;
+    versionsAccepted: {
+        terms: string | null;
+        privacy: string | null;
+        marketing: string | null;
+    };
+    needsReConsent: boolean;
+    consentRecordedAt: string | null;
+}
+
+export interface SubmitConsentParams {
+    acceptTerms: boolean;
+    acceptPrivacy: boolean;
+    marketingOptIn: boolean;
+    source?: 'FORM' | 'OAUTH';
+}
+
+export interface ConsentSubmitResult {
+    hasRequiredConsents: boolean;
+    marketingOptIn: boolean;
+    onboardingCompletedAt: string | null;
 }
 
 // ==========================================
@@ -2270,6 +2896,84 @@ export interface ComparisonResult {
     };
     improvements: string[];
     regressions: string[];
+}
+
+// ==========================================
+// CANDIDATE DASHBOARD TYPES
+// ==========================================
+
+export interface CandidateDashboardFilters {
+    startDate?: string;
+    endDate?: string;
+    roleTitle?: string;
+    seniority?: string;
+    resumeId?: string;
+    limit?: number;
+}
+
+export interface DashboardKPIs {
+    totalInterviews: number;
+    completedInterviews: number;
+    averageScore: number | null;
+    scoreChange: number | null;
+    averageDurationMinutes: number | null;
+    totalSpent: number;
+    creditsRemaining: number;
+    interviewsThisMonth: number;
+    passRate: number | null;
+}
+
+export interface ScoreEvolutionPoint {
+    date: string;
+    score: number;
+    roleTitle: string;
+    seniority: string | null;
+}
+
+export interface RecentInterview {
+    id: string;
+    date: string;
+    roleTitle: string;
+    companyName: string;
+    seniority: string | null;
+    resumeTitle: string | null;
+    resumeId: string | null;
+    durationMinutes: number | null;
+    score: number | null;
+    status: string;
+}
+
+export interface ResumeUtilization {
+    id: string;
+    title: string;
+    fileName: string;
+    createdAt: string;
+    lastUsedAt: string | null;
+    interviewCount: number;
+    filteredInterviewCount: number;
+    isPrimary: boolean;
+    qualityScore: number | null;
+}
+
+export interface DashboardFilterOptions {
+    roleTitles: string[];
+    seniorities: string[];
+    resumes: Array<{ id: string; title: string }>;
+}
+
+export interface CandidateDashboardResponse {
+    kpis: DashboardKPIs;
+    scoreEvolution: ScoreEvolutionPoint[];
+    recentInterviews: RecentInterview[];
+    resumes: ResumeUtilization[];
+    filterOptions: DashboardFilterOptions;
+    filters: {
+        startDate: string | null;
+        endDate: string | null;
+        roleTitle: string | null;
+        seniority: string | null;
+        resumeId: string | null;
+    };
 }
 
 const apiService = new APIService();

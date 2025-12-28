@@ -16,6 +16,12 @@ export { AuthSelect } from './AuthSelect';
 // OAuth buttons
 export { AuthButtons, AuthDivider } from './AuthButtons';
 
+// Layout components
+export { AuthShell } from './AuthShell';
+export { AuthLogoBlock } from './AuthLogoBlock';
+export { AuthLegalNotice } from './AuthLegalNotice';
+export { AuthFeaturePills } from './AuthFeaturePills';
+
 // Avatar
 export { CustomAvatar } from './CustomAvatar';
 

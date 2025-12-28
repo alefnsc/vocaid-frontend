@@ -17,7 +17,7 @@ import apiService from '../services/APIService';
 import { getDeviceFingerprint } from '../services/deviceFingerprint';
 
 // Cache TTL for user data (5 minutes - but we manually invalidate on actions)
-const USER_CACHE_KEY = 'voxly_user_cache';
+const USER_CACHE_KEY = 'Vocaid_user_cache';
 const USER_CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 interface CachedUser {

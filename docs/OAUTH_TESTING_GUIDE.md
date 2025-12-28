@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document provides manual testing steps for all OAuth providers in the Voxly authentication system.
+This document provides manual testing steps for all OAuth providers in the Vocaid authentication system.
 
 ---
 

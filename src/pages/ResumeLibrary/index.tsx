@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { DefaultLayout } from 'components/default-layout';
 import Loading from 'components/loading';
 import { Input } from 'components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'components/ui/select';
 import PurpleButton from 'components/ui/purple-button';
 import {
   Upload,
@@ -19,10 +20,14 @@ import {
   Clock,
   Tag,
   MoreVertical,
-  ArrowLeft,
   FolderOpen,
   Check,
-  X
+  X,
+  Linkedin,
+  Target,
+  TrendingUp,
+  Filter as FilterIcon,
+  RefreshCw
 } from 'lucide-react';
 import apiService, { ResumeListItem } from 'services/APIService';
 
@@ -40,6 +45,34 @@ const ResumeLibrary: React.FC = () => {
   const [editTitle, setEditTitle] = useState('');
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  
+  // Role scoring state
+  const [selectedRole, setSelectedRole] = useState<string>('');
+  const [resumeScores, setResumeScores] = useState<Record<string, number>>({});
+  const [isScoring, setIsScoring] = useState<string | null>(null);
+  
+  // LinkedIn import state
+  const [showLinkedInModal, setShowLinkedInModal] = useState(false);
+  const [linkedInName, setLinkedInName] = useState('');
+  const [linkedInEmail, setLinkedInEmail] = useState('');
+  const [linkedInUrl, setLinkedInUrl] = useState('');
+  const [linkedInHeadline, setLinkedInHeadline] = useState('');
+  const [isImportingLinkedIn, setIsImportingLinkedIn] = useState(false);
+  
+  // Common role options for filtering/scoring
+  const roleOptions = [
+    'Software Engineer',
+    'Product Manager',
+    'Data Analyst',
+    'Data Scientist',
+    'UX Designer',
+    'Marketing Manager',
+    'Project Manager',
+    'DevOps Engineer',
+    'Frontend Developer',
+    'Backend Developer',
+    'Full Stack Developer'
+  ];
 
   // Load resumes
   const loadResumes = useCallback(async () => {
@@ -53,7 +86,7 @@ const ResumeLibrary: React.FC = () => {
       }
     } catch (err) {
       console.error('Failed to load resumes:', err);
-      setError('Failed to load resumes');
+      setError(t('resumeLibrary.errors.loadFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -84,13 +117,13 @@ const ResumeLibrary: React.FC = () => {
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     ];
     if (!validTypes.includes(file.type)) {
-      setError('Please upload a PDF or Word document');
+      setError(t('resumeLibrary.errors.invalidFileType'));
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      setError('File size must be less than 5MB');
+      setError(t('resumeLibrary.errors.fileTooLarge'));
       return;
     }
 
@@ -117,13 +150,13 @@ const ResumeLibrary: React.FC = () => {
         setIsUploading(false);
       };
       reader.onerror = () => {
-        setError('Failed to read file');
+        setError(t('resumeLibrary.errors.readFailed'));
         setIsUploading(false);
       };
       reader.readAsDataURL(file);
     } catch (err) {
       console.error('Failed to upload resume:', err);
-      setError('Failed to upload resume');
+      setError(t('resumeLibrary.errors.uploadFailed'));
       setIsUploading(false);
     }
 
@@ -141,7 +174,7 @@ const ResumeLibrary: React.FC = () => {
       setActiveMenu(null);
     } catch (err) {
       console.error('Failed to set primary:', err);
-      setError('Failed to set as primary');
+      setError(t('resumeLibrary.errors.setPrimaryFailed'));
     }
   };
 
@@ -159,7 +192,7 @@ const ResumeLibrary: React.FC = () => {
       setActiveMenu(null);
     } catch (err) {
       console.error('Failed to delete resume:', err);
-      setError('Failed to delete resume');
+      setError(t('resumeLibrary.errors.deleteFailed'));
     }
   };
 
@@ -174,7 +207,69 @@ const ResumeLibrary: React.FC = () => {
       setEditTitle('');
     } catch (err) {
       console.error('Failed to update resume:', err);
-      setError('Failed to update resume');
+      setError(t('resumeLibrary.errors.updateFailed'));
+    }
+  };
+
+  // Score resume for selected role
+  const handleScoreResume = async (resumeId: string) => {
+    if (!user?.id || !selectedRole) return;
+    
+    setIsScoring(resumeId);
+    try {
+      const response = await apiService.scoreResume(user.id, resumeId, selectedRole);
+      if (response.status === 'success' && response.data) {
+        setResumeScores(prev => ({
+          ...prev,
+          [resumeId]: response.data.score
+        }));
+      }
+    } catch (err) {
+      console.error('Failed to score resume:', err);
+      setError(t('resumeLibrary.errors.scoreFailed', 'Failed to score resume'));
+    } finally {
+      setIsScoring(null);
+    }
+  };
+
+  // Score all resumes for selected role
+  const handleScoreAllResumes = async () => {
+    if (!user?.id || !selectedRole) return;
+    
+    for (const resume of resumes) {
+      await handleScoreResume(resume.id);
+    }
+  };
+
+  // LinkedIn import (manual fallback - OAuth requires backend setup)
+  const handleLinkedInImport = async () => {
+    if (!user?.id || !linkedInName) return;
+    
+    setIsImportingLinkedIn(true);
+    setError(null);
+    
+    try {
+      const response = await apiService.createLinkedInResume(user.id, {
+        name: linkedInName,
+        email: linkedInEmail || '',
+        headline: linkedInHeadline || '',
+        linkedInUrl: linkedInUrl || undefined
+      });
+      
+      if (response.status === 'success') {
+        await loadResumes();
+        setShowLinkedInModal(false);
+        // Reset form
+        setLinkedInName('');
+        setLinkedInEmail('');
+        setLinkedInUrl('');
+        setLinkedInHeadline('');
+      }
+    } catch (err) {
+      console.error('Failed to import from LinkedIn:', err);
+      setError(t('resumeLibrary.errors.linkedInImportFailed', 'Failed to import from LinkedIn'));
+    } finally {
+      setIsImportingLinkedIn(false);
     }
   };
 
@@ -184,6 +279,11 @@ const ResumeLibrary: React.FC = () => {
     resume.fileName.toLowerCase().includes(searchQuery.toLowerCase()) ||
     resume.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
   );
+  
+  // Sort by score if role is selected
+  const sortedResumes = selectedRole 
+    ? [...filteredResumes].sort((a, b) => (resumeScores[b.id] || 0) - (resumeScores[a.id] || 0))
+    : filteredResumes;
 
   // Format file size
   const formatFileSize = (bytes: number) => {
@@ -211,22 +311,28 @@ const ResumeLibrary: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
           <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <ArrowLeft
-                onClick={() => navigate('/dashboard')}
-                className="w-5 h-5 text-zinc-600 hover:text-zinc-900 transition-colors cursor-pointer"
-              />
-              <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900">
-                {t('resumeLibrary.title', 'Resume')} <span className="text-purple-600">{t('resumeLibrary.titleHighlight', 'Library')}</span>
-              </h1>
-            </div>
-            <p className="text-zinc-600 mt-1 pl-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900 mb-2">
+              {t('resumeLibrary.title', 'Resume')} <span className="text-purple-600">{t('resumeLibrary.titleHighlight', 'Library')}</span>
+            </h1>
+            <p className="text-zinc-600 mt-1">
               {t('resumeLibrary.subtitle', 'Manage your resumes for quick interview setup')}
             </p>
           </div>
 
-          {/* Upload Button */}
-          <div>
+          {/* Action Buttons */}
+          <div className="flex items-center gap-2">
+            {/* LinkedIn Import Button */}
+            <PurpleButton
+              variant="outline"
+              onClick={() => setShowLinkedInModal(true)}
+              className="flex items-center gap-2"
+            >
+              <Linkedin className="w-4 h-4" />
+              <span className="hidden sm:inline">{t('resumeLibrary.importLinkedIn', 'Import from LinkedIn')}</span>
+              <span className="sm:hidden">LinkedIn</span>
+            </PurpleButton>
+            
+            {/* Upload Button */}
             <input
               type="file"
               id="resume-upload"
@@ -266,6 +372,47 @@ const ResumeLibrary: React.FC = () => {
             </button>
           </div>
         )}
+
+        {/* Role Filter & Scoring Section */}
+        <div className="mb-6 p-4 bg-white border border-zinc-200 rounded-xl">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Target className="w-5 h-5 text-purple-600" />
+              <span className="font-medium text-zinc-900">
+                {t('resumeLibrary.compareFor', 'Compare for Role:')}
+              </span>
+            </div>
+            
+            <Select value={selectedRole} onValueChange={setSelectedRole}>
+              <SelectTrigger className="w-full sm:w-64">
+                <SelectValue placeholder={t('resumeLibrary.selectRole', 'Select a role to compare...')} />
+              </SelectTrigger>
+              <SelectContent>
+                {roleOptions.map((role) => (
+                  <SelectItem key={role} value={role}>{role}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            
+            {selectedRole && (
+              <PurpleButton
+                variant="secondary"
+                size="sm"
+                onClick={handleScoreAllResumes}
+                className="flex items-center gap-2"
+              >
+                <TrendingUp className="w-4 h-4" />
+                {t('resumeLibrary.scoreAll', 'Score All Resumes')}
+              </PurpleButton>
+            )}
+          </div>
+          
+          {selectedRole && (
+            <p className="mt-2 text-sm text-zinc-500">
+              {t('resumeLibrary.scoringInfo', 'Scores show how well each resume matches the selected role. Higher is better.')}
+            </p>
+          )}
+        </div>
 
         {/* Search Bar */}
         <div className="mb-6">
@@ -442,6 +589,48 @@ const ResumeLibrary: React.FC = () => {
                   </div>
                 )}
 
+                {/* Role-Based ATS Score */}
+                {selectedRole && (
+                  <div className="mb-3 p-2 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg border border-purple-100">
+                    <div className="flex items-center justify-between text-xs mb-1">
+                      <span className="text-purple-700 font-medium flex items-center gap-1">
+                        <Target className="w-3 h-3" />
+                        {selectedRole} {t('resumeLibrary.fit', 'Fit')}
+                      </span>
+                      {isScoring === resume.id ? (
+                        <RefreshCw className="w-3 h-3 text-purple-600 animate-spin" />
+                      ) : resumeScores[resume.id] !== undefined ? (
+                        <span className={`font-bold ${
+                          resumeScores[resume.id] >= 80 ? 'text-green-600' :
+                          resumeScores[resume.id] >= 60 ? 'text-amber-600' :
+                          'text-red-600'
+                        }`}>
+                          {resumeScores[resume.id]}%
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => handleScoreResume(resume.id)}
+                          className="text-purple-600 hover:text-purple-800 font-medium"
+                        >
+                          {t('resumeLibrary.score', 'Score')}
+                        </button>
+                      )}
+                    </div>
+                    {resumeScores[resume.id] !== undefined && (
+                      <div className="h-1.5 bg-purple-100 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full transition-all duration-500 ${
+                            resumeScores[resume.id] >= 80 ? 'bg-green-500' :
+                            resumeScores[resume.id] >= 60 ? 'bg-amber-500' :
+                            'bg-red-500'
+                          }`}
+                          style={{ width: `${resumeScores[resume.id]}%` }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* Tags */}
                 {resume.tags.length > 0 && (
                   <div className="flex flex-wrap gap-1">
@@ -479,6 +668,118 @@ const ResumeLibrary: React.FC = () => {
           className="fixed inset-0 z-0"
           onClick={() => setActiveMenu(null)}
         />
+      )}
+
+      {/* LinkedIn Import Modal */}
+      {showLinkedInModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
+            {/* Modal Header */}
+            <div className="p-5 border-b border-zinc-200 bg-gradient-to-r from-blue-50 to-cyan-50">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-600 rounded-lg">
+                  <Linkedin className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-zinc-900">
+                    {t('resumeLibrary.linkedInImport', 'Import from LinkedIn')}
+                  </h2>
+                  <p className="text-sm text-zinc-500">
+                    {t('resumeLibrary.linkedInImportDesc', 'Create a resume from your LinkedIn profile')}
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Modal Body */}
+            <div className="p-5 space-y-4">
+              <p className="text-sm text-zinc-600 mb-4">
+                {t('resumeLibrary.linkedInManualNote', 'Enter your LinkedIn profile details to generate a resume. Make sure your LinkedIn profile is up to date for best results.')}
+              </p>
+              
+              <div>
+                <label className="block text-sm font-medium text-zinc-700 mb-1">
+                  {t('resumeLibrary.fullName', 'Full Name')} *
+                </label>
+                <Input
+                  type="text"
+                  value={linkedInName}
+                  onChange={(e) => setLinkedInName(e.target.value)}
+                  placeholder="John Doe"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-zinc-700 mb-1">
+                  {t('resumeLibrary.email', 'Email')} *
+                </label>
+                <Input
+                  type="email"
+                  value={linkedInEmail}
+                  onChange={(e) => setLinkedInEmail(e.target.value)}
+                  placeholder="john@example.com"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-zinc-700 mb-1">
+                  {t('resumeLibrary.linkedInUrl', 'LinkedIn Profile URL')}
+                </label>
+                <Input
+                  type="url"
+                  value={linkedInUrl}
+                  onChange={(e) => setLinkedInUrl(e.target.value)}
+                  placeholder="https://linkedin.com/in/johndoe"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-zinc-700 mb-1">
+                  {t('resumeLibrary.headline', 'Professional Headline')} *
+                </label>
+                <Input
+                  type="text"
+                  value={linkedInHeadline}
+                  onChange={(e) => setLinkedInHeadline(e.target.value)}
+                  placeholder="Senior Software Engineer at Tech Company"
+                />
+              </div>
+            </div>
+            
+            {/* Modal Footer */}
+            <div className="p-5 border-t border-zinc-200 bg-zinc-50 flex items-center justify-end gap-3">
+              <button
+                onClick={() => {
+                  setShowLinkedInModal(false);
+                  setLinkedInName('');
+                  setLinkedInEmail('');
+                  setLinkedInUrl('');
+                  setLinkedInHeadline('');
+                }}
+                className="px-4 py-2 text-sm font-medium text-zinc-600 hover:text-zinc-800 transition-colors"
+              >
+                {t('common.cancel', 'Cancel')}
+              </button>
+              <PurpleButton
+                variant="primary"
+                onClick={handleLinkedInImport}
+                disabled={isImportingLinkedIn || !linkedInName || !linkedInEmail || !linkedInHeadline}
+              >
+                {isImportingLinkedIn ? (
+                  <span className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    {t('common.importing', 'Importing...')}
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <Linkedin className="w-4 h-4" />
+                    {t('resumeLibrary.createResume', 'Create Resume')}
+                  </span>
+                )}
+              </PurpleButton>
+            </div>
+          </div>
+        </div>
       )}
     </DefaultLayout>
   );

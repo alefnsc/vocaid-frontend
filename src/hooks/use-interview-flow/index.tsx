@@ -27,7 +27,7 @@ interface InterviewFlowContextType {
   isInFlow: boolean;
 }
 
-const SESSION_KEY = 'voxly_interview_flow';
+const SESSION_KEY = 'Vocaid_interview_flow';
 
 const defaultState: InterviewFlowState = {
   currentStage: 'details',

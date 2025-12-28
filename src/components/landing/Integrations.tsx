@@ -104,8 +104,8 @@ export const Integrations: React.FC = () => {
                   <span className="text-xs text-zinc-400 font-mono ml-2">terminal</span>
                 </div>
                 <CardContent className="p-0">
-                  <div className="bg-zinc-950 p-4 overflow-x-auto">
-                    <pre className="text-sm font-mono">
+                  <div className="bg-zinc-950 p-3 sm:p-4 overflow-x-auto">
+                    <pre className="text-xs sm:text-sm font-mono">
                       <code>
                         <span className="text-zinc-500"># Install the SDK</span>{'\n'}
                         <span className="text-emerald-400">npm</span>{' '}

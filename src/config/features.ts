@@ -14,6 +14,12 @@ export const FEATURES = {
   B2C_INTERVIEW_PRACTICE_ENABLED: true,
   
   // ============================================
+  // Interview Repository (ACTIVE)
+  // Unified interview history with filtering and analysis
+  // ============================================
+  INTERVIEW_REPOSITORY_ENABLED: true,
+  
+  // ============================================
   // B2B: Recruiter Interview Platform (DISABLED)
   // ============================================
   B2B_RECRUITER_PLATFORM_ENABLED: false,
@@ -35,6 +41,12 @@ export const FEATURES = {
   RESUME_SCORING_ENABLED: true,
   ANALYTICS_FILTERS_ENABLED: true,
   DEVELOPER_PORTAL_ENABLED: false,
+  
+  // ============================================
+  // AI Analysis Providers
+  // ============================================
+  AI_PROVIDER_OPENAI_ENABLED: true,
+  AI_PROVIDER_GEMINI_ENABLED: false, // Coming soon
 } as const;
 
 /**

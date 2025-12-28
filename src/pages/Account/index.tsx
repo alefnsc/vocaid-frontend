@@ -21,7 +21,7 @@ import { useLanguage } from 'hooks/use-language';
 import { CustomAvatar } from 'components/auth/CustomAvatar';
 import { AuthInput } from 'components/auth/AuthInput';
 import { AuthSelect } from 'components/auth/AuthSelect';
-import { profileUpdateSchema, USER_ROLES, UserRole } from 'components/auth/validation';
+import { profileUpdateSchema, USER_ROLES, SUPPORTED_COUNTRIES, UserRole } from 'components/auth/validation';
 
 // Section types
 type Section = 'profile' | 'security' | 'danger';
@@ -61,6 +61,9 @@ const AccountDashboard: React.FC = () => {
     role: 'Candidate',
   });
   
+  // Country state (separate from profileData since it's persisted differently)
+  const [countryCode, setCountryCode] = useState<string>('BR');
+  
   // Password change
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -87,6 +90,11 @@ const AccountDashboard: React.FC = () => {
         lastName: user.lastName || '',
         role: (user.publicMetadata?.role as UserRole) || 'Candidate',
       });
+      // Load country from Clerk metadata
+      const userCountry = user.publicMetadata?.countryCode as string;
+      if (userCountry) {
+        setCountryCode(userCountry);
+      }
     }
   }, [user]);
 
@@ -102,6 +110,14 @@ const AccountDashboard: React.FC = () => {
     value: code,
     label: info.name,
     flag: info.flag,
+  }));
+
+  // Country options (Brazil-only enabled for now)
+  const countryOptions = SUPPORTED_COUNTRIES.map((country) => ({
+    value: country.code,
+    label: `${country.flag} ${country.name}`,
+    disabled: !country.enabled,
+    sublabel: !country.enabled ? '(Coming soon)' : undefined,
   }));
 
   // Role options
@@ -132,6 +148,30 @@ const AccountDashboard: React.FC = () => {
       });
     } catch (error) {
       console.warn('Failed to sync language to backend:', error);
+    }
+  };
+
+  // Handle country change
+  const handleCountryChange = async (newCountry: string) => {
+    setCountryCode(newCountry);
+    
+    // Update in backend
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/metadata`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ countryCode: newCountry }),
+      });
+      
+      if (!response.ok) {
+        const data = await response.json();
+        setProfileError(data.error?.message || t('account.validation.updateFailed', 'Failed to update country'));
+      } else {
+        setProfileSuccess(t('account.countryUpdated', 'Country updated successfully'));
+      }
+    } catch (error) {
+      console.warn('Failed to sync country to backend:', error);
     }
   };
 
@@ -175,7 +215,7 @@ const AccountDashboard: React.FC = () => {
       setProfileSuccess(t('account.profileUpdated', 'Profile updated successfully'));
     } catch (error: any) {
       console.error('Profile update error:', error);
-      setProfileError(error.errors?.[0]?.message || 'Failed to update profile');
+      setProfileError(error.errors?.[0]?.message || t('account.validation.failedToUpdateProfile'));
     } finally {
       setIsUpdatingProfile(false);
     }
@@ -189,12 +229,12 @@ const AccountDashboard: React.FC = () => {
     
     // Validate passwords match
     if (newPassword !== confirmPassword) {
-      setPasswordError('Passwords do not match');
+      setPasswordError(t('account.validation.passwordsDoNotMatch'));
       return;
     }
     
     if (newPassword.length < 8) {
-      setPasswordError('Password must be at least 8 characters');
+      setPasswordError(t('account.validation.passwordTooShort'));
       return;
     }
     
@@ -214,7 +254,7 @@ const AccountDashboard: React.FC = () => {
       setConfirmPassword('');
     } catch (error: any) {
       console.error('Password change error:', error);
-      setPasswordError(error.errors?.[0]?.message || 'Failed to change password');
+      setPasswordError(error.errors?.[0]?.message || t('account.validation.failedToChangePassword'));
     } finally {
       setIsChangingPassword(false);
     }
@@ -225,7 +265,7 @@ const AccountDashboard: React.FC = () => {
     if (!user) return;
     
     if (deleteConfirmation !== 'DELETE') {
-      setDeleteError('Please type DELETE to confirm');
+      setDeleteError(t('account.validation.typeDeleteToConfirm'));
       return;
     }
     
@@ -238,7 +278,7 @@ const AccountDashboard: React.FC = () => {
       navigate('/');
     } catch (error: any) {
       console.error('Delete account error:', error);
-      setDeleteError(error.errors?.[0]?.message || 'Failed to delete account');
+      setDeleteError(error.errors?.[0]?.message || t('account.validation.failedToDeleteAccount'));
       setIsDeletingAccount(false);
     }
   };
@@ -254,12 +294,12 @@ const AccountDashboard: React.FC = () => {
   }
 
   return (
-    <DefaultLayout>
+    <DefaultLayout className="bg-zinc-50">
       <div className="max-w-4xl mx-auto py-8 px-4">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-zinc-900">
-            {t('account.title', 'Account Settings')}
+            {t('account.title', 'Account')} <span className="text-purple-600">{t('account.titleHighlight', 'Settings')}</span>
           </h1>
           <p className="text-zinc-500 mt-1">
             {t('account.subtitle', 'Manage your profile and preferences')}
@@ -404,6 +444,14 @@ const AccountDashboard: React.FC = () => {
                         value={currentLanguage}
                         onChange={handleLanguageChange}
                         options={languageOptions}
+                      />
+
+                      {/* Country */}
+                      <AuthSelect
+                        label={t('auth.country', 'Country')}
+                        value={countryCode}
+                        onChange={handleCountryChange}
+                        options={countryOptions}
                       />
 
                       {/* Submit Button */}

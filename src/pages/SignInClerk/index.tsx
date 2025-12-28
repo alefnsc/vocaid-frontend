@@ -15,13 +15,14 @@ import { SignIn } from '@clerk/clerk-react';
 import { useUser } from '@clerk/clerk-react';
 import { Navigate, Link } from 'react-router-dom';
 import { BrandMark, CopyrightNotice } from 'components/shared/Brand';
+import { B2C_ROUTES } from 'routes/b2cRoutes';
 
 const SignInClerk: React.FC = () => {
   const { isSignedIn, isLoaded } = useUser();
 
   // Redirect if already signed in
   if (isLoaded && isSignedIn) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to={B2C_ROUTES.DASHBOARD} replace />;
   }
 
   return (

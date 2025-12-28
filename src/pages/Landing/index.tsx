@@ -6,14 +6,18 @@ import {
   LandingHeader,
   Hero,
   PlatformShowcase,
-  LandingFeatureGrid,
-  DashboardPreviewTabs,
   Integrations,
-  PricingCards,
   FAQAccordion,
   DemoModal,
   FinalCTA,
+  LandingB2CFeatures,
+  LandingB2BRecruiting,
+  LandingB2BEmployeeHub,
+  LandingTrust,
+  LandingPreviewTabs,
+  DashboardPreviewTabs,
 } from 'components/landing'
+import { PricingSection } from 'components/landing/pricing'
 import { FREE_TRIAL_CREDITS } from 'config/credits'
 
 export const Landing: React.FC = () => {
@@ -55,12 +59,34 @@ export const Landing: React.FC = () => {
         <LandingHeader onDemoClick={handleDemoClick} />
         
         <main>
+          {/* Hero with language badges and dual CTAs */}
           <Hero onDemoClick={handleDemoClick} />
+          
+          {/* Interactive 5-tab product preview */}
+          <LandingPreviewTabs />
+          
+          {/* B2C Personal Interview Practice features */}
+          <LandingB2CFeatures />
+          
+          {/* B2B Sections with anchor for navigation */}
+          <div id="organizations">
+            <LandingB2BRecruiting />
+            <LandingB2BEmployeeHub />
+          </div>
+          
+          {/* Trust/Security section */}
+          <LandingTrust />
+          
+          {/* Platform showcase and integrations */}
           <PlatformShowcase />
-          <LandingFeatureGrid />
-          <DashboardPreviewTabs />
           <Integrations />
-          <PricingCards onDemoClick={handleDemoClick} />
+          
+          {/* Dashboard preview with API key demo and analytics charts */}
+          <DashboardPreviewTabs />
+          
+          {/* New segmented Pricing Section (B2C / B2B / HR tabs) */}
+          <PricingSection onDemoClick={handleDemoClick} />
+          
           <FAQAccordion />
           <FinalCTA onDemoClick={handleDemoClick} />
         </main>

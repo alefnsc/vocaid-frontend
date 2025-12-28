@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useUser } from '@clerk/clerk-react';
 import { DefaultLayout } from 'components/default-layout';
 import Loading from 'components/loading';
@@ -19,6 +20,7 @@ import InterviewContent from 'components/interview-content';
 import InterviewBreadcrumbs from 'components/interview-breadcrumbs';
 
 const Interview = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
     const { body } = location.state || {};
@@ -57,14 +59,14 @@ const Interview = () => {
                     // Check if user has credits
                     if (result.user.credits <= 0) {
                         console.warn('⚠️ User has no credits');
-                        navigate('/', { state: { error: 'No credits available. Please purchase credits to continue.' } });
+                        navigate('/', { state: { error: t('interview.errors.noCreditsError') } });
                     }
                 } else {
                     throw new Error('Validation returned unsuccessful status');
                 }
             } catch (error: any) {
                 console.error('❌ User validation failed:', error);
-                navigate('/', { state: { error: 'Failed to validate session. Please try again.' } });
+                navigate('/', { state: { error: t('interview.errors.sessionValidationFailed') } });
             }
         };
 

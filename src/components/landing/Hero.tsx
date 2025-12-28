@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { motion, useReducedMotion } from 'framer-motion'
 import { Button } from 'components/ui/button'
+import { SUPPORTED_LANGUAGES } from './LandingMockData'
+import { ArrowRight, Building2 } from 'lucide-react'
 
 interface HeroProps {
   onDemoClick: () => void
@@ -82,6 +84,7 @@ export const Hero: React.FC<HeroProps> = ({ onDemoClick }) => {
               {t('landing.hero.description')}
             </motion.p>
 
+            {/* CTAs */}
             <motion.div
               variants={itemVariants}
               className="mt-8 flex flex-col sm:flex-row gap-4"
@@ -89,29 +92,58 @@ export const Hero: React.FC<HeroProps> = ({ onDemoClick }) => {
               <Button
                 size="lg"
                 onClick={() => navigate('/sign-up')}
-                className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-6 text-base font-semibold shadow-lg shadow-purple-200 hover:shadow-xl hover:shadow-purple-200 transition-all"
+                className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-6 text-base font-semibold shadow-lg shadow-purple-200 hover:shadow-xl hover:shadow-purple-200 transition-all group"
               >
                 {t('landing.hero.ctaStart')}
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                onClick={onDemoClick}
-                className="border-zinc-300 text-zinc-700 hover:bg-zinc-50 px-8 py-6 text-base font-semibold"
+                onClick={() => {
+                  const el = document.getElementById('b2b-section')
+                  el?.scrollIntoView({ behavior: 'smooth' })
+                }}
+                className="border-zinc-300 text-zinc-700 hover:bg-zinc-50 px-8 py-6 text-base font-semibold group"
               >
-                {t('landing.hero.ctaDemo')}
+                <Building2 className="w-4 h-4 mr-2" />
+                {t('landing.hero.ctaOrganizations', 'For Organizations')}
+                <span className="ml-2 px-2 py-0.5 text-xs bg-purple-100 text-purple-700 rounded-full">
+                  {t('common.soon', 'Soon')}
+                </span>
               </Button>
+            </motion.div>
+
+            {/* Language Badges */}
+            <motion.div
+              variants={itemVariants}
+              className="mt-8"
+            >
+              <p className="text-xs font-medium text-zinc-500 mb-3">
+                {t('landing.hero.languagesLabel', 'Available in 7 languages')}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {SUPPORTED_LANGUAGES.map((lang) => (
+                  <span
+                    key={lang.code}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-zinc-200 rounded-full text-xs font-medium text-zinc-700 hover:border-purple-300 hover:bg-purple-50 transition-colors"
+                  >
+                    <span>{lang.flag}</span>
+                    <span>{lang.name}</span>
+                  </span>
+                ))}
+              </div>
             </motion.div>
 
             {/* Trust strip */}
             <motion.div
               variants={itemVariants}
-              className="mt-12 pt-8 border-t border-zinc-200"
+              className="mt-10 pt-8 border-t border-zinc-200"
             >
               <p className="text-sm font-medium text-zinc-500 mb-4">
                 {t('landing.hero.trustSubtitle')}
               </p>
-              <div className="flex flex-wrap gap-x-8 gap-y-3 text-sm text-zinc-600">
+              <div className="flex flex-wrap gap-x-6 gap-y-3 text-sm text-zinc-600">
                 <span className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-purple-600" />
                   {t('landing.hero.features.tenant')}
@@ -122,15 +154,7 @@ export const Hero: React.FC<HeroProps> = ({ onDemoClick }) => {
                 </span>
                 <span className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-purple-600" />
-                  {t('landing.hero.features.soc2')}
-                </span>
-                <span className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-600" />
                   {t('landing.hero.features.gdpr')}
-                </span>
-                <span className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-600" />
-                  {t('landing.hero.features.webhook')}
                 </span>
               </div>
             </motion.div>
@@ -180,25 +204,25 @@ export const Hero: React.FC<HeroProps> = ({ onDemoClick }) => {
                 </div>
               </div>
 
-              {/* Floating cards for visual interest */}
+              {/* Floating cards for visual interest - hidden on small screens to prevent overflow */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8, duration: 0.5 }}
-                className="absolute -bottom-6 -left-6 bg-white rounded-xl shadow-lg p-4 border border-zinc-100"
+                className="hidden sm:block absolute -bottom-4 sm:-bottom-6 left-2 sm:-left-6 bg-white rounded-xl shadow-lg p-3 sm:p-4 border border-zinc-100"
               >
-                <div className="text-2xl font-bold text-purple-600">98%</div>
-                <div className="text-xs text-zinc-500">{t('landing.hero.stats.accuracy')}</div>
+                <div className="text-xl sm:text-2xl font-bold text-purple-600">98%</div>
+                <div className="text-[10px] sm:text-xs text-zinc-500">{t('landing.hero.stats.accuracy')}</div>
               </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1, duration: 0.5 }}
-                className="absolute -top-4 -right-4 bg-white rounded-xl shadow-lg p-4 border border-zinc-100"
+                className="hidden sm:block absolute -top-2 sm:-top-4 right-2 sm:-right-4 bg-white rounded-xl shadow-lg p-3 sm:p-4 border border-zinc-100"
               >
-                <div className="text-2xl font-bold text-zinc-900">3.2x</div>
-                <div className="text-xs text-zinc-500">{t('landing.hero.stats.faster')}</div>
+                <div className="text-xl sm:text-2xl font-bold text-zinc-900">3.2x</div>
+                <div className="text-[10px] sm:text-xs text-zinc-500">{t('landing.hero.stats.faster')}</div>
               </motion.div>
             </motion.div>
           </motion.div>

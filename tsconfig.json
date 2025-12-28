@@ -1,5 +1,8 @@
 {
     "compilerOptions": {
+      "target": "ES2020",
+      "module": "ESNext",
+      "lib": ["ES2020", "DOM", "DOM.Iterable"],
       "typeRoots": ["./node_modules/@types", "./src/types"],
       "esModuleInterop": true,
       "allowSyntheticDefaultImports": true,
@@ -7,7 +10,10 @@
       "resolveJsonModule": true,
       "moduleResolution": "node",
       "jsx": "react-jsx",
-      "types": ["jest", "node"]
+      "types": ["jest", "node"],
+      "skipLibCheck": true,
+      "strict": false,
+      "noEmit": true
     },
     "include": ["src/**/*"],
     "exclude": ["node_modules"]

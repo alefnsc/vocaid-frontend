@@ -8,9 +8,10 @@
 /**
  * Number of free trial credits for new users
  * Can be configured via REACT_APP_FREE_TRIAL_CREDITS env var
+ * Default: 5 credits for new signups
  */
 export const FREE_TRIAL_CREDITS = parseInt(
-  process.env.REACT_APP_FREE_TRIAL_CREDITS || '1',
+  process.env.REACT_APP_FREE_TRIAL_CREDITS || '5',
   10
 );
 

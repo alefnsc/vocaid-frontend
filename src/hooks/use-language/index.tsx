@@ -67,7 +67,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
   
   const [currentLanguage, setCurrentLanguage] = useState<SupportedLanguageCode>(() => {
     // Initialize from localStorage or i18n
-    const stored = localStorage.getItem('voxly_language');
+    const stored = localStorage.getItem('Vocaid_language');
     if (stored && isLanguageSupported(stored)) {
       return stored as SupportedLanguageCode;
     }
@@ -151,7 +151,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     
     try {
       // Check if user has manually set language
-      const manuallySet = localStorage.getItem('voxly_language_manual') === 'true';
+      const manuallySet = localStorage.getItem('Vocaid_language_manual') === 'true';
       if (manuallySet) {
         setIsLoading(false);
         return;

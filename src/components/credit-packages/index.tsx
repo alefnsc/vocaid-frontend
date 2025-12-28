@@ -152,7 +152,7 @@ const CreditPackages: React.FC<CreditPackagesProps> = ({ onPurchaseComplete }) =
   const [isLoadingProvider, setIsLoadingProvider] = useState(false);
 
   // Storage key for persisting package selection through auth flow
-  const PENDING_PACKAGE_KEY = 'voxly_pending_package';
+  const PENDING_PACKAGE_KEY = 'Vocaid_pending_package';
 
   // Get pending package from localStorage
   const getPendingPackage = (): CreditPackage | null => {

@@ -1,0 +1,49 @@
+/**
+ * Query Hooks Barrel Export
+ * 
+ * Centralized exports for all React Query hooks
+ * 
+ * @module hooks/queries
+ */
+
+// Dashboard
+export {
+  useDashboardQuery,
+  usePrefetchDashboard,
+  useRefreshDashboard,
+} from './useDashboardQueries';
+
+// Interviews
+export {
+  useInterviewsQuery,
+  useInfiniteInterviewsQuery,
+  useInterviewDetailQuery,
+  useInterviewFeedbackQuery,
+  useCreateInterviewMutation,
+  useCloneInterviewMutation,
+} from './useInterviewQueries';
+
+// Resumes
+export {
+  useResumesQuery,
+  useResumeDetailQuery,
+  useResumeScoresQuery,
+  useUploadResumeMutation,
+  useUpdateResumeMutation,
+  useSetPrimaryResumeMutation,
+  useDeleteResumeMutation,
+  useScoreResumeMutation,
+  useLinkedInResumeMutation,
+} from './useResumeQueries';
+
+// Wallet/Credits
+export {
+  useWalletBalanceQuery,
+  useWalletHistoryQuery,
+  useBillingPackagesQuery,
+  useBillingHistoryQuery,
+  useConsumeCreditMutation,
+  useRestoreCreditMutation,
+  useCreatePaymentMutation,
+  useCheckPaymentStatusMutation,
+} from './useWalletQueries';

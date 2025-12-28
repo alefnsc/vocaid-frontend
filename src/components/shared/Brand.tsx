@@ -84,9 +84,9 @@ interface BrandLockupProps {
 }
 
 const lockupSizeMap = {
-  sm: { logoSize: 36, textSize: 'text-lg', taglineSize: 'text-xs' },
-  md: { logoSize: 48, textSize: 'text-xl', taglineSize: 'text-sm' },
-  lg: { logoSize: 64, textSize: 'text-2xl', taglineSize: 'text-base' },
+  sm: { logoSize: 60, textSize: 'text-lg', taglineSize: 'text-xs' },
+  md: { logoSize: 80, textSize: 'text-xl', taglineSize: 'text-sm' },
+  lg: { logoSize: 120, textSize: 'text-2xl', taglineSize: 'text-base' },
 };
 
 export function BrandLockup({
@@ -107,9 +107,6 @@ export function BrandLockup({
         className="object-contain"
       />
       <div className="flex flex-col">
-        <span className={`${config.textSize} font-bold text-zinc-900`}>
-          {BRAND.name}
-        </span>
         {showTagline && (
           <span className={`${config.taglineSize} text-zinc-500`}>
             {BRAND.tagline}

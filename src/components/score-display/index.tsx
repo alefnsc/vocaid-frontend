@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface ScoreDisplayProps {
   score: number; // 0-100 percentage
@@ -17,6 +18,8 @@ const ScoreDisplay: React.FC<ScoreDisplayProps> = ({
   showLabel = true,
   size = 'md'
 }) => {
+  const { t } = useTranslation();
+  
   // Clamp score to 0-100 range
   const normalizedScore = useMemo(() => {
     return Math.min(Math.max(Math.round(score), 0), 100);
@@ -24,11 +27,11 @@ const ScoreDisplay: React.FC<ScoreDisplayProps> = ({
 
   // Get performance label based on score
   const performanceLabel = useMemo(() => {
-    if (normalizedScore >= 80) return { text: 'Excellent', color: 'text-green-600' };
-    if (normalizedScore >= 60) return { text: 'Good', color: 'text-purple-600' };
-    if (normalizedScore >= 40) return { text: 'Average', color: 'text-yellow-600' };
-    return { text: 'Needs Improvement', color: 'text-red-600' };
-  }, [normalizedScore]);
+    if (normalizedScore >= 80) return { text: t('scoreDisplay.excellent'), color: 'text-green-600' };
+    if (normalizedScore >= 60) return { text: t('scoreDisplay.good'), color: 'text-purple-600' };
+    if (normalizedScore >= 40) return { text: t('scoreDisplay.average'), color: 'text-yellow-600' };
+    return { text: t('scoreDisplay.needsImprovement'), color: 'text-red-600' };
+  }, [normalizedScore, t]);
 
   // Notify parent of score changes
   useEffect(() => {

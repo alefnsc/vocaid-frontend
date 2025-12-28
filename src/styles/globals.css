@@ -32,21 +32,21 @@
     --input: 0 0% 90%;
     --ring: 0 0% 60%;
 
-    /* Voxly Brand Colors */
-    --voxly-purple: 264 83% 44%;
-    --voxly-purple-light: 264 83% 54%;
-    --voxly-purple-dark: 264 83% 34%;
-    --voxly-green: 160 76% 55%;
-    --voxly-gray-50: 0 0% 98%;
-    --voxly-gray-100: 0 0% 96%;
-    --voxly-gray-200: 0 0% 90%;
-    --voxly-gray-300: 0 0% 83%;
-    --voxly-gray-400: 0 0% 64%;
-    --voxly-gray-500: 0 0% 45%;
-    --voxly-gray-600: 0 0% 32%;
-    --voxly-gray-700: 0 0% 25%;
-    --voxly-gray-800: 0 0% 15%;
-    --voxly-gray-900: 0 0% 9%;
+    /* Vocaid Brand Colors */
+    --Vocaid-purple: 264 83% 44%;
+    --Vocaid-purple-light: 264 83% 54%;
+    --Vocaid-purple-dark: 264 83% 34%;
+    --Vocaid-green: 160 76% 55%;
+    --Vocaid-gray-50: 0 0% 98%;
+    --Vocaid-gray-100: 0 0% 96%;
+    --Vocaid-gray-200: 0 0% 90%;
+    --Vocaid-gray-300: 0 0% 83%;
+    --Vocaid-gray-400: 0 0% 64%;
+    --Vocaid-gray-500: 0 0% 45%;
+    --Vocaid-gray-600: 0 0% 32%;
+    --Vocaid-gray-700: 0 0% 25%;
+    --Vocaid-gray-800: 0 0% 15%;
+    --Vocaid-gray-900: 0 0% 9%;
 
     --novel-highlight-default: #f5f5f5;
     --novel-highlight-purple: #e5e5e5;
@@ -426,51 +426,51 @@ ul[data-type="taskList"] li[data-checked="true"] > div > p {
 }
 
 /* ==========================================
-   VOXLY GLOBAL STYLES & RESPONSIVE STANDARDS
+   Vocaid GLOBAL STYLES & RESPONSIVE STANDARDS
    ========================================== */
 
-/* Voxly Brand Colors */
+/* Vocaid Brand Colors */
 @layer utilities {
   /* Purple variations */
-  .bg-voxly-purple {
-    background-color: hsl(var(--voxly-purple));
+  .bg-Vocaid-purple {
+    background-color: hsl(var(--Vocaid-purple));
   }
-  .bg-voxly-purple-light {
-    background-color: hsl(var(--voxly-purple-light));
+  .bg-Vocaid-purple-light {
+    background-color: hsl(var(--Vocaid-purple-light));
   }
-  .bg-voxly-purple-dark {
-    background-color: hsl(var(--voxly-purple-dark));
+  .bg-Vocaid-purple-dark {
+    background-color: hsl(var(--Vocaid-purple-dark));
   }
-  .text-voxly-purple {
-    color: hsl(var(--voxly-purple));
+  .text-Vocaid-purple {
+    color: hsl(var(--Vocaid-purple));
   }
-  .text-voxly-purple-light {
-    color: hsl(var(--voxly-purple-light));
+  .text-Vocaid-purple-light {
+    color: hsl(var(--Vocaid-purple-light));
   }
-  .text-voxly-purple-dark {
-    color: hsl(var(--voxly-purple-dark));
+  .text-Vocaid-purple-dark {
+    color: hsl(var(--Vocaid-purple-dark));
   }
-  .border-voxly-purple {
-    border-color: hsl(var(--voxly-purple));
+  .border-Vocaid-purple {
+    border-color: hsl(var(--Vocaid-purple));
   }
 
   /* Green variations */
-  .bg-voxly-green {
-    background-color: hsl(var(--voxly-green));
+  .bg-Vocaid-green {
+    background-color: hsl(var(--Vocaid-green));
   }
-  .text-voxly-green {
-    color: hsl(var(--voxly-green));
+  .text-Vocaid-green {
+    color: hsl(var(--Vocaid-green));
   }
-  .border-voxly-green {
-    border-color: hsl(var(--voxly-green));
+  .border-Vocaid-green {
+    border-color: hsl(var(--Vocaid-green));
   }
 
   /* Purple gradient backgrounds */
-  .bg-voxly-gradient {
-    background: linear-gradient(135deg, hsl(var(--voxly-purple-dark)) 0%, hsl(var(--voxly-purple)) 50%, hsl(var(--voxly-purple-light)) 100%);
+  .bg-Vocaid-gradient {
+    background: linear-gradient(135deg, hsl(var(--Vocaid-purple-dark)) 0%, hsl(var(--Vocaid-purple)) 50%, hsl(var(--Vocaid-purple-light)) 100%);
   }
-  .bg-voxly-gradient-horizontal {
-    background: linear-gradient(90deg, hsl(var(--voxly-purple-dark)) 0%, hsl(var(--voxly-purple-light)) 100%);
+  .bg-Vocaid-gradient-horizontal {
+    background: linear-gradient(90deg, hsl(var(--Vocaid-purple-dark)) 0%, hsl(var(--Vocaid-purple-light)) 100%);
   }
 
   /* Chart colors */
@@ -488,8 +488,8 @@ ul[data-type="taskList"] li[data-checked="true"] > div > p {
     @apply w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-10;
   }
 
-  /* Card component with Voxly styling */
-  .voxly-card {
+  /* Card component with Vocaid styling */
+  .Vocaid-card {
     @apply bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6;
   }
 
@@ -498,28 +498,28 @@ ul[data-type="taskList"] li[data-checked="true"] > div > p {
     @apply bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 flex flex-col;
   }
 
-  /* Primary button with Voxly purple */
-  .btn-voxly {
+  /* Primary button with Vocaid purple */
+  .btn-Vocaid {
     @apply px-4 py-2 text-sm font-medium text-white rounded-lg transition-all duration-200;
-    background-color: hsl(var(--voxly-purple));
+    background-color: hsl(var(--Vocaid-purple));
   }
-  .btn-voxly:hover {
-    background-color: hsl(var(--voxly-purple-dark));
+  .btn-Vocaid:hover {
+    background-color: hsl(var(--Vocaid-purple-dark));
   }
-  .btn-voxly:focus {
+  .btn-Vocaid:focus {
     @apply outline-none ring-2 ring-offset-2;
-    --tw-ring-color: hsl(var(--voxly-purple-light));
+    --tw-ring-color: hsl(var(--Vocaid-purple-light));
   }
 
   /* Secondary button */
-  .btn-voxly-secondary {
+  .btn-Vocaid-secondary {
     @apply px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 border;
-    color: hsl(var(--voxly-purple));
-    border-color: hsl(var(--voxly-purple));
+    color: hsl(var(--Vocaid-purple));
+    border-color: hsl(var(--Vocaid-purple));
     background-color: transparent;
   }
-  .btn-voxly-secondary:hover {
-    background-color: hsl(var(--voxly-purple));
+  .btn-Vocaid-secondary:hover {
+    background-color: hsl(var(--Vocaid-purple));
     @apply text-white;
   }
 
@@ -532,8 +532,8 @@ ul[data-type="taskList"] li[data-checked="true"] > div > p {
   }
   .nav-link-active {
     @apply text-sm font-medium px-3 py-2 rounded-xl;
-    color: hsl(var(--voxly-purple));
-    background-color: hsl(var(--voxly-purple) / 0.1);
+    color: hsl(var(--Vocaid-purple));
+    background-color: hsl(var(--Vocaid-purple) / 0.1);
   }
 
   /* Mobile menu styling */
@@ -578,7 +578,7 @@ ul[data-type="taskList"] li[data-checked="true"] > div > p {
   /* Metric value display */
   .metric-value {
     @apply text-2xl sm:text-3xl md:text-4xl font-bold;
-    color: hsl(var(--voxly-purple));
+    color: hsl(var(--Vocaid-purple));
   }
   .metric-label {
     @apply text-xs sm:text-sm text-gray-500 uppercase tracking-wide;

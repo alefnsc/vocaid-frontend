@@ -4,12 +4,13 @@ import { useEffect, useState, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useUser } from '@clerk/clerk-react'
 import { useTranslation } from 'react-i18next'
-import { DefaultLayout } from 'components/default-layout'
 import Loading from 'components/loading'
 import ContactButton from 'components/contact-button'
 import PurpleButton from 'components/ui/purple-button'
 import StatsCard from 'components/ui/stats-card'
 import apiService, { InterviewDetail } from 'services/APIService'
+import { useWorkspace } from 'contexts/WorkspaceContext'
+import { b2cInterviewsList } from 'routes/b2cRoutes'
 import {
   AnalysisDashboard,
   TranscriptViewer,
@@ -87,6 +88,7 @@ export default function InterviewDetails() {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const { userRole } = useWorkspace()
 
   const [isLoading, setIsLoading] = useState(true)
   const [interview, setInterview] = useState<InterviewDetail | null>(null)
@@ -101,6 +103,34 @@ export default function InterviewDetails() {
   const [learningPathData, setLearningPathData] = useState<LearningPathData | null>(null)
   const [analyticsLoading, setAnalyticsLoading] = useState(false)
   const [currentTime, setCurrentTime] = useState<number>(0)
+
+  /**
+   * Role-aware back navigation
+   * - Personal/Candidate: Go to B2C interviews list
+   * - Employee: Go to employee placeholder (or fallback)
+   * - Unknown: Safe fallback to B2C interviews
+   */
+  const handleBackNavigation = useCallback(() => {
+    let destination: string;
+    
+    switch (userRole) {
+      case 'candidate':
+      case 'admin':
+        destination = b2cInterviewsList();
+        break;
+      case 'employee':
+        destination = '/app/employee/interviews';
+        break;
+      case 'recruiter':
+      case 'manager':
+        destination = '/app/b2b/interviews';
+        break;
+      default:
+        destination = b2cInterviewsList();
+    }
+    
+    navigate(destination);
+  }, [userRole, navigate]);
 
   const fetchInterviewDetails = useCallback(async () => {
     if (!user?.id || !id) return
@@ -220,10 +250,10 @@ export default function InterviewDetails() {
     })
   }
 
-  // Get performance label
+  // Get performance label with semantic score colors
   const getPerformanceLabel = (score: number) => {
-    if (score >= 80) return { text: t('interviewDetails.performance.excellent'), color: 'text-green-600' }
-    if (score >= 60) return { text: t('interviewDetails.performance.good'), color: 'text-blue-600' }
+    if (score >= 80) return { text: t('interviewDetails.performance.excellent'), color: 'text-emerald-600' }
+    if (score >= 60) return { text: t('interviewDetails.performance.good'), color: 'text-amber-600' }
     if (score >= 40) return { text: t('interviewDetails.performance.average'), color: 'text-yellow-600' }
     return { text: t('interviewDetails.performance.needs'), color: 'text-red-600' }
   }
@@ -286,20 +316,22 @@ export default function InterviewDetails() {
 
   if (!isLoaded || isLoading) {
     return (
-      <DefaultLayout className="flex flex-col overflow-hidden bg-white">
-        <div className="flex items-center justify-center min-h-[60vh]">
-          <Loading />
+      <div className="min-h-screen bg-zinc-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex items-center justify-center min-h-[60vh]">
+            <Loading />
+          </div>
         </div>
-      </DefaultLayout>
+      </div>
     )
   }
 
   if (error || !interview) {
     return (
-      <DefaultLayout className="flex flex-col overflow-hidden bg-white">
-        <div className="page-container py-6 sm:py-8">
+      <div className="min-h-screen bg-zinc-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="p-6 bg-white border border-zinc-200 rounded-xl text-center py-12">
-            <AlertTriangle className="w-16 h-16 text-red-400 mx-auto mb-4" />
+            <AlertTriangle className="w-16 h-16 text-zinc-400 mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-zinc-900 mb-2">
               {error || t('interviewDetails.notFound')}
             </h2>
@@ -309,7 +341,7 @@ export default function InterviewDetails() {
             <PurpleButton
               variant="primary"
               size="lg"
-              onClick={() => navigate('/')}
+              onClick={handleBackNavigation}
             >
               <ArrowLeft className="w-5 h-5" />
               {t('interviewDetails.backToDashboard')}
@@ -317,7 +349,7 @@ export default function InterviewDetails() {
           </div>
         </div>
         <ContactButton />
-      </DefaultLayout>
+      </div>
     )
   }
 
@@ -331,13 +363,13 @@ export default function InterviewDetails() {
   const displayScore = interview.score ?? interview.feedback?.overallScore ?? null
 
   return (
-    <DefaultLayout className="flex flex-col overflow-hidden bg-white">
-      <div className="page-container py-6 sm:py-8">
+    <div className="min-h-screen bg-zinc-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6 sm:mb-8">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
-              <ArrowLeft onClick={() => navigate('/')} className="w-5 h-5 text-zinc-600 hover:text-zinc-900 transition-colors cursor-pointer" />
+              <ArrowLeft onClick={handleBackNavigation} className="w-5 h-5 text-zinc-600 hover:text-zinc-900 transition-colors cursor-pointer" />
               <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900">
                 {t('interviewDetails.title')} <span className="text-purple-600">{t('interviewDetails.titleHighlight')}</span>
               </h1>
@@ -654,6 +686,6 @@ export default function InterviewDetails() {
        <InterviewReady />
       </div>
       <ContactButton />
-    </DefaultLayout>
+    </div>
   )
 }

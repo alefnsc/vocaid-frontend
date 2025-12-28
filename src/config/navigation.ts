@@ -125,15 +125,6 @@ export const NAV_CONFIG: NavItem[] = [
     order: 1,
     requiresAuth: false,
   },
-  {
-    id: 'contact',
-    labelKey: 'nav.contact',
-    path: '/contact',
-    icon: 'Mail',
-    section: 'resources',
-    order: 2,
-    requiresAuth: false,
-  },
 
   // ----------------------------------------
   // B2C: Interview Practice & Performance
@@ -178,16 +169,8 @@ export const NAV_CONFIG: NavItem[] = [
     requiresAuth: true,
     requiredContext: 'b2c',
   },
-  {
-    id: 'b2c-insights',
-    labelKey: 'nav.insights',
-    path: '/app/b2c/insights',
-    icon: 'TrendingUp',
-    section: 'main',
-    order: 5,
-    requiresAuth: true,
-    requiredContext: 'b2c',
-  },
+  // NOTE: b2c-insights has been removed - merged into dashboard
+  // Route /app/b2c/insights now redirects to /app/b2c/dashboard
 
   // ----------------------------------------
   // B2B: Recruiter Interview Platform
@@ -265,12 +248,12 @@ export const NAV_CONFIG: NavItem[] = [
   },
 
   // ----------------------------------------
-  // BILLING (all contexts)
+  // BILLING (B2C context)
   // ----------------------------------------
   {
     id: 'billing',
     labelKey: 'nav.billing',
-    path: '/app/billing',
+    path: '/app/b2c/billing',
     icon: 'CreditCard',
     section: 'billing',
     order: 1,

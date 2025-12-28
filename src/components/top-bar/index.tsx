@@ -24,7 +24,6 @@ interface NavItem {
 const landingNavItems: NavItem[] = [
   { labelKey: 'nav.home', path: '/' },
   { labelKey: 'nav.about', path: '/about' },
-  { labelKey: 'nav.contact', path: '/contact' },
 ];
 
 // Get B2C nav items for authenticated mobile menu

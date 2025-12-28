@@ -77,9 +77,9 @@ export default function UnderConstruction() {
         {/* Help Text */}
         <p className="mt-8 text-sm text-zinc-500">
           {t('pages.underConstruction.haveQuestions')}{' '}
-          <Link to="/contact" className="text-purple-600 hover:underline">
+          <a href="mailto:support@vocaid.ai" className="text-purple-600 hover:underline">
             {t('pages.underConstruction.contactUs')}
-          </Link>
+          </a>
         </p>
       </motion.div>
     </div>

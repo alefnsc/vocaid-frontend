@@ -56,7 +56,7 @@ i18n
     // Language detection options
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
-      lookupLocalStorage: 'voxly_language',
+      lookupLocalStorage: 'Vocaid_language',
       caches: ['localStorage'],
     },
     
@@ -77,7 +77,7 @@ i18n
  */
 export const changeLanguage = async (languageCode: SupportedLanguageCode): Promise<void> => {
   await i18n.changeLanguage(languageCode);
-  localStorage.setItem('voxly_language', languageCode);
+  localStorage.setItem('Vocaid_language', languageCode);
   
   // Update document direction for RTL languages
   const lang = SUPPORTED_LANGUAGES[languageCode];

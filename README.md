@@ -1,7 +1,7 @@
-# Voxly - Frontend
+# Vocaid - Frontend
 
 <p align="center">
-  <img src="public/Main.png" alt="Voxly Logo" width="200"/>
+  <img src="public/Main.png" alt="Vocaid Logo" width="200"/>
 </p>
 
 <p align="center">
@@ -79,8 +79,8 @@
 
 ```bash
 # Clone repository
-git clone https://github.com/alefnsc/voxly-frontend.git
-cd voxly-frontend
+git clone https://github.com/alefnsc/Vocaid-frontend.git
+cd Vocaid-frontend
 
 # Install dependencies
 npm install

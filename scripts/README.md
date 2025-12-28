@@ -1,6 +1,6 @@
 # Role-Based Access Control Test Scripts
 
-This directory contains JavaScript test scripts to mock and test the role-based access control functionality for the Voxly interview application.
+This directory contains JavaScript test scripts to mock and test the role-based access control functionality for the Vocaid interview application.
 
 ## Scripts Overview
 

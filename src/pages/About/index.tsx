@@ -1,14 +1,11 @@
 'use client'
 
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { DefaultLayout } from 'components/default-layout'
-import ContactButton from 'components/contact-button'
 import { FileText, Shield, Sparkles, Info } from 'lucide-react'
 import InterviewReady from 'components/interview-ready'
 
 export default function About() {
-  const navigate = useNavigate()
   const { t } = useTranslation()
 
   const features = [
@@ -21,8 +18,8 @@ export default function About() {
   ]
   
   return (
-    <DefaultLayout className="flex flex-col overflow-hidden bg-white">
-      <div className="page-container py-6 sm:py-8">
+    <div className="min-h-screen bg-zinc-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6 sm:mb-8">
           <div className="flex-1">
@@ -110,8 +107,6 @@ export default function About() {
         {/* CTA Section */}
         <InterviewReady />
       </div>
-      
-      <ContactButton />
-    </DefaultLayout>
+    </div>
   )
 }
